@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Moon, Clock, Settings, Copy, Share2, Wind } from 'lucide-react';
 
 interface SleepSettings {
@@ -10,12 +10,145 @@ interface SleepSettings {
 
 interface TimeResult {
   time: string;
+  time24: string;
   cycles: number;
   timeInBed: string;
   window: string;
   isRecommended: boolean;
   isBest: boolean;
 }
+
+// Helper: Convert 24-hour to 12-hour format with AM/PM
+const formatTo12Hour = (time24: string): string => {
+  const [hours, minutes] = time24.split(':').map(Number);
+  const period = hours >= 12 ? 'PM' : 'AM';
+  const hours12 = hours % 12 || 12;
+  return `${String(hours12).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${period}`;
+};
+
+// Helper: Convert 12-hour to 24-hour format
+const to24Hour = (time12: string): string => {
+  const [time, period] = time12.split(' ');
+  let [hours, minutes] = time.split(':').map(Number);
+  if (period === 'PM' && hours !== 12) hours += 12;
+  if (period === 'AM' && hours === 12) hours = 0;
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+};
+
+// ScrollableTimePicker Component
+const ScrollableTimePicker = ({ value, onChange }: { value: string; onChange: (val: string) => void }) => {
+  const [time12, setTime12] = useState(formatTo12Hour(value));
+  const hoursRef = useRef<HTMLDivElement>(null);
+  const minutesRef = useRef<HTMLDivElement>(null);
+
+  const hours = parseInt(time12.split(':')[0]);
+  const minutes = parseInt(time12.split(':')[1]);
+  const period = time12.includes('PM') ? 'PM' : 'AM';
+
+  const handleHourChange = (e: React.UIEvent<HTMLDivElement>) => {
+    const div = e.currentTarget;
+    const scrollTop = div.scrollTop;
+    const itemHeight = 48;
+    const index = Math.round(scrollTop / itemHeight);
+    const hourArray = Array.from({length: 12}, (_, i) => i + 1);
+    const newHour = hourArray[Math.max(0, Math.min(index, 11))];
+    const newTime12 = `${String(newHour).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${period}`;
+    setTime12(newTime12);
+    onChange(to24Hour(newTime12));
+  };
+
+  const handleMinuteChange = (e: React.UIEvent<HTMLDivElement>) => {
+    const div = e.currentTarget;
+    const scrollTop = div.scrollTop;
+    const itemHeight = 48;
+    const index = Math.round(scrollTop / itemHeight);
+    const minuteArray = Array.from({length: 60}, (_, i) => i);
+    const newMinute = minuteArray[Math.max(0, Math.min(index, 59))];
+    const newTime12 = `${String(hours).padStart(2, '0')}:${String(newMinute).padStart(2, '0')} ${period}`;
+    setTime12(newTime12);
+    onChange(to24Hour(newTime12));
+  };
+
+  const handlePeriodChange = (newPeriod: 'AM' | 'PM') => {
+    const newTime12 = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${newPeriod}`;
+    setTime12(newTime12);
+    onChange(to24Hour(newTime12));
+  };
+
+  return (
+    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-600 p-6">
+      <div className="flex justify-center items-center gap-4">
+        {/* Hours */}
+        <div className="flex flex-col items-center">
+          <div ref={hoursRef} onScroll={handleHourChange} className="h-48 w-16 overflow-y-scroll snap-y snap-mandatory relative">
+            <div className="absolute inset-0 pointer-events-none flex items-center justify-center border-t-2 border-b-2 border-indigo-400 dark:border-indigo-600"></div>
+            {Array.from({length: 12}, (_, i) => i + 1).map((h) => (
+              <div
+                key={h}
+                className={`h-12 flex items-center justify-center text-lg font-semibold snap-center transition-colors ${
+                  h === hours
+                    ? 'text-indigo-600 dark:text-indigo-400'
+                    : 'text-slate-400 dark:text-slate-500'
+                }`}
+              >
+                {String(h).padStart(2, '0')}
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">Hour</p>
+        </div>
+
+        <div className="text-3xl font-bold text-slate-700 dark:text-slate-300">:</div>
+
+        {/* Minutes */}
+        <div className="flex flex-col items-center">
+          <div ref={minutesRef} onScroll={handleMinuteChange} className="h-48 w-16 overflow-y-scroll snap-y snap-mandatory relative">
+            <div className="absolute inset-0 pointer-events-none flex items-center justify-center border-t-2 border-b-2 border-indigo-400 dark:border-indigo-600"></div>
+            {Array.from({length: 60}, (_, i) => i).map((m) => (
+              <div
+                key={m}
+                className={`h-12 flex items-center justify-center text-lg font-semibold snap-center transition-colors ${
+                  m === minutes
+                    ? 'text-indigo-600 dark:text-indigo-400'
+                    : 'text-slate-400 dark:text-slate-500'
+                }`}
+              >
+                {String(m).padStart(2, '0')}
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">Minute</p>
+        </div>
+
+        {/* Period */}
+        <div className="flex flex-col gap-2">
+          <button
+            onClick={() => handlePeriodChange('AM')}
+            className={`px-3 py-2 rounded-lg font-semibold transition-colors ${
+              period === 'AM'
+                ? 'bg-indigo-600 text-white'
+                : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
+            }`}
+            data-testid="button-am"
+          >
+            AM
+          </button>
+          <button
+            onClick={() => handlePeriodChange('PM')}
+            className={`px-3 py-2 rounded-lg font-semibold transition-colors ${
+              period === 'PM'
+                ? 'bg-indigo-600 text-white'
+                : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
+            }`}
+            data-testid="button-pm"
+          >
+            PM
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const OwlMascot = ({ funMode, isAnimating }: { funMode: boolean; isAnimating: boolean }) => {
   return (
@@ -159,15 +292,17 @@ export default function SleepPlanner() {
       cycles.forEach(cycleCount => {
         const bedTimeInBed = cycleCount * settings.cycleLength + settings.latency;
         const bedMinutes = wakeMinutes - bedTimeInBed;
-        const bedTime = minutesToTime(bedMinutes);
+        const bedTime24 = minutesToTime(bedMinutes);
+        const bedTime12 = formatTo12Hour(bedTime24);
         
         const bedWindow = {
-          start: minutesToTime(bedMinutes),
-          end: minutesToTime(bedMinutes + settings.wakeWindow),
+          start: formatTo12Hour(minutesToTime(bedMinutes)),
+          end: formatTo12Hour(minutesToTime(bedMinutes + settings.wakeWindow)),
         };
 
         results.push({
-          time: bedTime,
+          time: bedTime12,
+          time24: bedTime24,
           cycles: cycleCount,
           timeInBed: formatTimeInBed(bedTimeInBed),
           window: `${bedWindow.start} – ${bedWindow.end}`,
@@ -181,15 +316,17 @@ export default function SleepPlanner() {
       cycles.forEach(cycleCount => {
         const wakeTimeInBed = cycleCount * settings.cycleLength + settings.latency;
         const wakeMinutes = bedMinutes + wakeTimeInBed;
-        const wakeTime = minutesToTime(wakeMinutes);
+        const wakeTime24 = minutesToTime(wakeMinutes);
+        const wakeTime12 = formatTo12Hour(wakeTime24);
 
         const wakeWindow = {
-          start: minutesToTime(wakeMinutes),
-          end: minutesToTime(wakeMinutes + settings.wakeWindow),
+          start: formatTo12Hour(minutesToTime(wakeMinutes)),
+          end: formatTo12Hour(minutesToTime(wakeMinutes + settings.wakeWindow)),
         };
 
         results.push({
-          time: wakeTime,
+          time: wakeTime12,
+          time24: wakeTime24,
           cycles: cycleCount,
           timeInBed: formatTimeInBed(wakeTimeInBed),
           window: `${wakeWindow.start} – ${wakeWindow.end}`,
@@ -267,6 +404,16 @@ export default function SleepPlanner() {
             >
               <Settings className="w-6 h-6" />
             </button>
+          </div>
+        </div>
+
+        {/* AdSense Ad Space */}
+        <div className="border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 px-4 py-4">
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-slate-100 dark:bg-slate-700 rounded-lg p-6 text-center text-sm text-slate-500 dark:text-slate-400">
+              {/* Google AdSense horizontal ad will be placed here */}
+              <p>Advertisement Space</p>
+            </div>
           </div>
         </div>
       </header>
@@ -388,23 +535,11 @@ export default function SleepPlanner() {
         )}
 
         {/* Time Input */}
-        <div className="mb-8 p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div className="mb-8">
           <label className="block text-sm font-medium mb-3">
             {mode === 'wake' ? 'I want to wake up at…' : 'I\'m going to bed now'}
           </label>
-          {mode === 'wake' ? (
-            <input
-              type="time"
-              value={selectedTime}
-              onChange={(e) => setSelectedTime(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              data-testid="input-wake-time"
-            />
-          ) : (
-            <div className="px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 dark:bg-slate-700 text-lg font-semibold">
-              {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-            </div>
-          )}
+          <ScrollableTimePicker value={selectedTime} onChange={setSelectedTime} />
         </div>
 
         {/* Owl Mascot */}
