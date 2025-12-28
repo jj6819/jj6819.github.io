@@ -1,0 +1,97 @@
+You are building a one-page interactive sleep calculator website (original, not a copy of sleepcalculator.com) using ONLY plain HTML, CSS, and vanilla JavaScript (no frameworks). It must run in Replit as a static site.
+
+GOAL
+Create a mobile-first, polished one-page site called “NightOwl Sleep Planner” with:
+- Two modes: “Wake up at…” and “Go to bed now”
+- Adjustable settings (latency, cycle length)
+- Results shown as selectable time cards
+- A cute ORIGINAL Owl mascot (inline SVG) with subtle animations + reactions
+
+REPLIT SETUP
+- Create: index.html, styles.css, script.js
+- Link CSS + JS in index.html
+- No external build tools. Optional: use a lightweight time-picker polyfill ONLY if absolutely necessary, but prefer native <input type="time">.
+- Everything must work by clicking “Run” in Replit.
+
+CORE FEATURES
+1) Mode Toggle
+- Toggle buttons: “Wake up at” and “Bedtime now”
+- In “Wake up at”: user selects a wake time (time input).
+- In “Bedtime now”: use current local time as bedtime start (update on button press “Use current time”).
+
+2) Calculation Rules (editable via settings)
+- Sleep latency: default 15 minutes (range 0–60)
+- Sleep cycle length: default 90 minutes (range 80–110)
+- Recommended cycles shown: 4, 5, 6, 7 (show all; highlight 5 and 6 as “recommended”)
+- For “Wake up at”:
+  bedtime = wakeTime - (cycles * cycleLength) - latency
+- For “Bedtime now”:
+  wakeTime = now + latency + (cycles * cycleLength)
+- Handle wrap-around across midnight correctly.
+
+3) Results UI
+- Display 4–7 cycle options as cards/chips:
+  - Large time
+  - Cycles count
+  - “Time in bed” (cycles * cycleLength + latency) formatted as “Xh Ym”
+- Clicking a result:
+  - sets it as “selected”
+  - provides “Copy” button (copy the selected time text to clipboard)
+  - triggers Owl reaction + “zzz” bubble animation if a bedtime option was chosen
+- Add “Share link” button:
+  - Encodes mode, time, latency, cycleLength into URL query params
+  - On load, read query params and restore state
+
+4) Settings + Persistence
+- Sliders for latency and cycle length with live value labels
+- Persist settings + last mode/time in localStorage
+- Respect 12/24h: default use user locale display (Intl.DateTimeFormat) but accept native time input value
+
+UNIQUENESS (MUST IMPLEMENT)
+Add a “Wake Window” feature to differentiate:
+- Slider: Wake window size (0–30 min, default 15)
+- In results, show a window for each recommendation:
+  - e.g., “6:30–6:45” (wake) or “10:45–11:00” (bed), depending on mode
+- Rank/highlight the best two options based on:
+  - recommended cycles (5–6)
+  - and closeness to user’s selected time (if applicable)
+
+OWL MASCOT (MUST IMPLEMENT, ORIGINAL ART)
+- Place Owl near the results header or in the corner of the main card.
+- Owl must be an inline SVG you create (simple shapes are fine; do not copy existing owl artwork).
+- Animations:
+  A) Idle:
+     - Slow blink every ~7–10 seconds (eyelids close then open)
+     - Gentle breathing (subtle scale/translate)
+  B) On selecting a bedtime/wake result:
+     - Head tilt (rotate a few degrees then return)
+     - Wing tuck (wing moves inward slightly)
+  C) When selecting bedtime (or when mode is bedtime-related):
+     - “zzz” bubble appears near beak, floats up and fades out over 1.5–2 seconds
+- Include “Fun mode 🦉” toggle:
+  - When OFF: Owl is static, no zzz.
+- Respect prefers-reduced-motion:
+  - If user prefers reduced motion, disable all animations by default and force Fun mode OFF (but allow manual ON with a warning text “Animations enabled”).
+
+ACCESSIBILITY
+- Buttons and inputs must have labels
+- Keyboard navigation: results selectable with Enter/Space
+- ARIA-live region for “copied!” feedback
+
+DESIGN
+- Original color palette (not sleepcalculator.com).
+- Clean typography, rounded cards, subtle shadows.
+- Provide short original explanatory text about sleep cycles and latency (do not copy wording).
+- Dark mode optional, but nice if easy (CSS prefers-color-scheme).
+
+DELIVERABLES
+- index.html: semantic structure with header, main, footer
+- styles.css: responsive styling + owl animations
+- script.js: all logic, utilities, event handlers
+- README in a comment at top of script.js explaining how to use and how the math works.
+
+OUTPUT REQUIREMENTS
+- Produce complete code for all three files.
+- Ensure it runs without errors in Replit.
+- Test with a few example times in comments.
+- Do not include copyrighted content or copy text from other sites.
