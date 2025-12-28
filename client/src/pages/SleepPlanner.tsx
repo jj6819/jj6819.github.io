@@ -63,6 +63,7 @@ const ScrollColumn = ({
 
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     const now = Date.now();
     const timeSinceLastWheel = now - lastWheelTimeRef.current;
     lastWheelTimeRef.current = now;
@@ -73,8 +74,8 @@ const ScrollColumn = ({
     // Accumulate velocity but require threshold
     scrollVelocityRef.current += rawDirection;
 
-    // Only change on significant accumulation (threshold = 2 for slower feel)
-    if (Math.abs(scrollVelocityRef.current) >= 2) {
+    // Only change on significant accumulation (threshold = 4 for much slower feel)
+    if (Math.abs(scrollVelocityRef.current) >= 4) {
       const direction = scrollVelocityRef.current > 0 ? 1 : -1;
       const newIndex = getNextIndex(direction);
       onChange(values[newIndex]);
@@ -102,7 +103,7 @@ const ScrollColumn = ({
       onTouchMove={handleTouchMove}
       onTouchEnd={() => (handleTouchStart.current = 0)}
       className="relative h-44 overflow-hidden rounded-lg bg-gradient-to-b from-slate-900/20 via-indigo-600/30 to-slate-900/20 dark:from-slate-700/40 dark:via-indigo-700/40 dark:to-slate-700/40 border border-indigo-400/30 dark:border-indigo-500/40 cursor-pointer"
-      style={{ perspective: '1000px' }}
+      style={{ perspective: '1000px', touchAction: 'none' }}
       data-testid={testId}
     >
       {/* Background glow */}
