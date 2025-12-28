@@ -101,7 +101,7 @@ const ScrollColumn = ({
       onTouchStart={(e) => (handleTouchStart.current = e.touches[0].clientY)}
       onTouchMove={handleTouchMove}
       onTouchEnd={() => (handleTouchStart.current = 0)}
-      className="relative h-56 overflow-hidden rounded-lg bg-gradient-to-b from-slate-900/20 via-indigo-600/30 to-slate-900/20 dark:from-slate-700/40 dark:via-indigo-700/40 dark:to-slate-700/40 border border-indigo-400/30 dark:border-indigo-500/40 cursor-pointer"
+      className="relative h-44 overflow-hidden rounded-lg bg-gradient-to-b from-slate-900/20 via-indigo-600/30 to-slate-900/20 dark:from-slate-700/40 dark:via-indigo-700/40 dark:to-slate-700/40 border border-indigo-400/30 dark:border-indigo-500/40 cursor-pointer"
       style={{ perspective: '1000px' }}
       data-testid={testId}
     >
