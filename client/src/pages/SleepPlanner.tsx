@@ -63,7 +63,6 @@ const ScrollColumn = ({
 
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
-    e.stopPropagation();
     const now = Date.now();
     const timeSinceLastWheel = now - lastWheelTimeRef.current;
     lastWheelTimeRef.current = now;
@@ -102,7 +101,7 @@ const ScrollColumn = ({
       onTouchStart={(e) => (handleTouchStart.current = e.touches[0].clientY)}
       onTouchMove={handleTouchMove}
       onTouchEnd={() => (handleTouchStart.current = 0)}
-      className="relative h-40 overflow-hidden rounded-lg bg-gradient-to-b from-slate-900/20 via-indigo-600/30 to-slate-900/20 dark:from-slate-700/40 dark:via-indigo-700/40 dark:to-slate-700/40 border border-indigo-400/30 dark:border-indigo-500/40 cursor-pointer"
+      className="relative h-56 overflow-hidden rounded-lg bg-gradient-to-b from-slate-900/20 via-indigo-600/30 to-slate-900/20 dark:from-slate-700/40 dark:via-indigo-700/40 dark:to-slate-700/40 border border-indigo-400/30 dark:border-indigo-500/40 cursor-pointer"
       style={{ perspective: '1000px' }}
       data-testid={testId}
     >
@@ -112,23 +111,23 @@ const ScrollColumn = ({
       {/* Scroll container */}
       <div className="relative h-full flex flex-col items-center justify-center">
         {/* Above numbers (faded) */}
-        <div className="absolute top-0 left-0 right-0 h-12 flex flex-col items-center justify-end pointer-events-none">
+        <div className="absolute top-0 left-0 right-0 h-20 flex flex-col items-center justify-end pointer-events-none">
           {selectedIndex > 0 || isContinuous ? (
-            <div className="text-sm font-semibold text-slate-500 dark:text-slate-400 opacity-40">
+            <div className="text-xl font-semibold text-slate-500 dark:text-slate-400 opacity-40">
               {isContinuous ? values[(selectedIndex - 1 + values.length) % values.length] : values[selectedIndex - 1]}
             </div>
           ) : null}
         </div>
 
         {/* Selected number (highlighted) */}
-        <div className="text-4xl font-bold text-indigo-100 dark:text-indigo-200 text-center drop-shadow-lg">
+        <div className="text-5xl font-bold text-indigo-100 dark:text-indigo-200 text-center drop-shadow-lg">
           {selected}
         </div>
 
         {/* Below numbers (faded) */}
-        <div className="absolute bottom-0 left-0 right-0 h-12 flex flex-col items-center justify-start pointer-events-none">
+        <div className="absolute bottom-0 left-0 right-0 h-20 flex flex-col items-center justify-start pointer-events-none">
           {selectedIndex < values.length - 1 || isContinuous ? (
-            <div className="text-sm font-semibold text-slate-500 dark:text-slate-400 opacity-40">
+            <div className="text-xl font-semibold text-slate-500 dark:text-slate-400 opacity-40">
               {isContinuous ? values[(selectedIndex + 1) % values.length] : values[selectedIndex + 1]}
             </div>
           ) : null}
