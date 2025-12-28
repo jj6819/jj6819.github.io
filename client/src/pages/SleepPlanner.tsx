@@ -37,6 +37,10 @@ const to24Hour = (time12: string): string => {
 
 // ScrollableTimePicker Component
 const ScrollableTimePicker = ({ value, onChange }: { value: string; onChange: (val: string) => void }) => {
+  useEffect(() => {
+    setTime12(formatTo12Hour(value));
+  }, [value]);
+  
   const [time12, setTime12] = useState(formatTo12Hour(value));
   const hoursRef = useRef<HTMLDivElement>(null);
   const minutesRef = useRef<HTMLDivElement>(null);
@@ -152,37 +156,45 @@ const ScrollableTimePicker = ({ value, onChange }: { value: string; onChange: (v
 
 const OwlMascot = ({ funMode, isAnimating }: { funMode: boolean; isAnimating: boolean }) => {
   return (
-    <svg width="120" height="120" viewBox="0 0 120 120" className="mx-auto mb-4">
+    <svg width="140" height="140" viewBox="0 0 140 140" className="mx-auto mb-4">
       <defs>
+        <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style={{ stopColor: '#6B3410', stopOpacity: 1 }} />
+          <stop offset="100%" style={{ stopColor: '#8B4513', stopOpacity: 1 }} />
+        </linearGradient>
+        <radialGradient id="faceGrad" cx="40%" cy="40%">
+          <stop offset="0%" style={{ stopColor: '#E8C4A0', stopOpacity: 1 }} />
+          <stop offset="100%" style={{ stopColor: '#D2B48C', stopOpacity: 1 }} />
+        </radialGradient>
         <style>{`
           @keyframes blink {
-            0%, 49%, 51%, 100% { d: path('M 45 50 Q 48 50 48 47 Q 48 50 51 50'); }
-            50% { d: path('M 45 50 Q 48 48 51 50'); }
+            0%, 49%, 51%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.2); }
           }
           @keyframes breathe {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+            50% { transform: scale(1.03); }
           }
           @keyframes tilt {
             0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(-5deg); }
+            50% { transform: rotate(-6deg); }
           }
           @keyframes wingTuck {
             0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(3px); }
+            50% { transform: translateX(4px); }
           }
           @keyframes floatZzz {
             0% { opacity: 1; transform: translateY(0) translateX(0); }
-            100% { opacity: 0; transform: translateY(-30px) translateX(20px); }
+            100% { opacity: 0; transform: translateY(-35px) translateX(25px); }
           }
           .owl-body {
             ${funMode ? 'animation: breathe 3s ease-in-out infinite;' : ''}
           }
-          .owl-eyes {
-            ${funMode && !isAnimating ? 'animation: blink 8s ease-in-out infinite;' : ''}
-          }
           .owl-head {
             ${isAnimating && funMode ? 'animation: tilt 0.6s ease-in-out;' : ''}
+          }
+          .owl-left-eye, .owl-right-eye {
+            ${funMode && !isAnimating ? 'animation: blink 8s ease-in-out infinite;' : ''}
           }
           .owl-wing {
             ${isAnimating && funMode ? 'animation: wingTuck 0.6s ease-in-out;' : ''}
@@ -191,51 +203,79 @@ const OwlMascot = ({ funMode, isAnimating }: { funMode: boolean; isAnimating: bo
             ${isAnimating && funMode ? 'animation: floatZzz 1.8s ease-out forwards;' : ''}
           }
           @media (prefers-reduced-motion: reduce) {
-            .owl-body, .owl-eyes, .owl-head, .owl-wing, .zzz {
+            .owl-body, .owl-left-eye, .owl-right-eye, .owl-head, .owl-wing, .zzz {
               animation: none !important;
             }
           }
         `}</style>
       </defs>
 
+      {/* Back wings (darker) */}
+      <ellipse cx="32" cy="80" rx="12" ry="26" fill="#5D2E0F" className="owl-wing" />
+      <ellipse cx="108" cy="80" rx="12" ry="26" fill="#5D2E0F" className="owl-wing" />
+
       {/* Body */}
-      <ellipse cx="60" cy="75" rx="28" ry="32" fill="#8B4513" className="owl-body" />
+      <ellipse cx="70" cy="85" rx="32" ry="36" fill="url(#bodyGrad)" className="owl-body" />
       
-      {/* Head */}
-      <circle cx="60" cy="45" r="22" fill="#A0522D" className="owl-head" />
-      
-      {/* Ear tufts */}
-      <polygon points="40,25 35,10 45,20" fill="#8B4513" />
-      <polygon points="80,25 85,10 75,20" fill="#8B4513" />
+      {/* Head circle */}
+      <circle cx="70" cy="48" r="25" fill="#6B4423" className="owl-head" />
       
       {/* Face */}
-      <circle cx="60" cy="45" r="18" fill="#D2B48C" />
+      <circle cx="70" cy="48" r="22" fill="url(#faceGrad)" />
       
-      {/* Eyes */}
-      <g className="owl-eyes">
-        {/* Left eye white */}
-        <circle cx="50" cy="42" r="6" fill="white" />
-        {/* Left eye pupil */}
-        <circle cx="50" cy="43" r="3.5" fill="black" />
-        {/* Right eye white */}
-        <circle cx="70" cy="42" r="6" fill="white" />
-        {/* Right eye pupil */}
-        <circle cx="70" cy="43" r="3.5" fill="black" />
+      {/* Ear tufts - more prominent */}
+      <polygon points="42,22 35,5 48,15" fill="#5D2E0F" />
+      <polygon points="98,22 105,5 92,15" fill="#5D2E0F" />
+      <polygon points="40,24 32,8 46,18" fill="#6B4423" />
+      <polygon points="100,24 108,8 94,18" fill="#6B4423" />
+      
+      {/* Eyebrows */}
+      <path d="M 50 32 Q 54 28 58 32" stroke="#5D2E0F" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 82 32 Q 86 28 90 32" stroke="#5D2E0F" strokeWidth="2" fill="none" strokeLinecap="round" />
+      
+      {/* Left Eye */}
+      <g>
+        <circle cx="54" cy="48" r="8" fill="white" />
+        <circle cx="54" cy="48" r="5.5" fill="#2C1810" className="owl-left-eye" />
+        <circle cx="55.5" cy="46" r="2" fill="white" />
+      </g>
+      
+      {/* Right Eye */}
+      <g>
+        <circle cx="86" cy="48" r="8" fill="white" />
+        <circle cx="86" cy="48" r="5.5" fill="#2C1810" className="owl-right-eye" />
+        <circle cx="87.5" cy="46" r="2" fill="white" />
       </g>
       
       {/* Beak */}
-      <polygon points="60,50 55,56 65,56" fill="#FF8C00" />
+      <polygon points="70,56 65,64 75,64" fill="#D97706" />
+      <polygon points="70,56 66,62 74,62" fill="#F59E0B" />
       
-      {/* Wings */}
-      <ellipse cx="35" cy="75" rx="10" ry="20" fill="#654321" className="owl-wing" />
-      <ellipse cx="85" cy="75" rx="10" ry="20" fill="#654321" className="owl-wing" />
+      {/* Front wings */}
+      <ellipse cx="40" cy="85" rx="13" ry="28" fill="#8B4513" className="owl-wing" />
+      <ellipse cx="100" cy="85" rx="13" ry="28" fill="#8B4513" className="owl-wing" />
       
-      {/* Belly */}
-      <ellipse cx="60" cy="80" rx="20" ry="24" fill="#F5DEB3" />
+      {/* Belly - lighter */}
+      <ellipse cx="70" cy="88" rx="24" ry="28" fill="#E8C4A0" />
       
-      {/* Feet */}
-      <circle cx="50" cy="107" r="3" fill="#FF8C00" />
-      <circle cx="70" cy="107" r="3" fill="#FF8C00" />
+      {/* Belly detail */}
+      <ellipse cx="70" cy="92" rx="18" ry="20" fill="#D2B48C" opacity="0.6" />
+      
+      {/* Feet - more detailed */}
+      <g>
+        {/* Left foot */}
+        <circle cx="55" cy="120" r="4" fill="#D97706" />
+        <line x1="52" y1="122" x2="48" y2="126" stroke="#D97706" strokeWidth="1.5" strokeLinecap="round" />
+        <line x1="55" y1="123" x2="55" y2="127" stroke="#D97706" strokeWidth="1.5" strokeLinecap="round" />
+        <line x1="58" y1="122" x2="62" y2="126" stroke="#D97706" strokeWidth="1.5" strokeLinecap="round" />
+      </g>
+      <g>
+        {/* Right foot */}
+        <circle cx="85" cy="120" r="4" fill="#D97706" />
+        <line x1="82" y1="122" x2="78" y2="126" stroke="#D97706" strokeWidth="1.5" strokeLinecap="round" />
+        <line x1="85" y1="123" x2="85" y2="127" stroke="#D97706" strokeWidth="1.5" strokeLinecap="round" />
+        <line x1="88" y1="122" x2="92" y2="126" stroke="#D97706" strokeWidth="1.5" strokeLinecap="round" />
+      </g>
 
       {/* ZZZ animation */}
       {isAnimating && funMode && (
@@ -434,7 +474,13 @@ export default function SleepPlanner() {
             Wake up at…
           </button>
           <button
-            onClick={() => setMode('bed')}
+            onClick={() => {
+              setMode('bed');
+              const now = new Date();
+              const hours = String(now.getHours()).padStart(2, '0');
+              const minutes = String(now.getMinutes()).padStart(2, '0');
+              setSelectedTime(`${hours}:${minutes}`);
+            }}
             className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
               mode === 'bed'
                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
@@ -557,31 +603,35 @@ export default function SleepPlanner() {
             <button
               key={idx}
               onClick={() => handleResultSelect(result)}
-              className={`w-full p-4 rounded-lg border-2 transition-all duration-200 text-left ${
+              className={`w-full p-5 rounded-xl border-2 transition-all duration-200 text-left font-medium ${
                 selectedResult?.time === result.time
-                  ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950/40 dark:border-indigo-500'
-                  : 'border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-700'
+                  ? 'border-indigo-600 bg-indigo-600 dark:bg-indigo-600 text-white shadow-lg shadow-indigo-600/40'
+                  : 'border-slate-200 dark:border-slate-700 hover:border-indigo-400 dark:hover:border-indigo-600 hover:bg-slate-50 dark:hover:bg-slate-700/50'
               } ${
                 result.isBest
-                  ? 'ring-2 ring-amber-400 dark:ring-amber-500 shadow-md'
+                  ? 'ring-2 ring-amber-400 dark:ring-amber-500 shadow-lg'
                   : ''
               }`}
               data-testid={`button-result-${idx}`}
             >
-              <div className="flex justify-between items-start mb-2">
+              <div className="flex justify-between items-start mb-3">
                 <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-indigo-600 dark:text-indigo-400">
+                  <div className={`text-3xl sm:text-4xl font-bold ${
+                    selectedResult?.time === result.time ? 'text-white' : 'text-indigo-600 dark:text-indigo-400'
+                  }`}>
                     {result.time}
                   </div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                  <div className={`text-sm mt-2 ${
+                    selectedResult?.time === result.time ? 'text-indigo-100' : 'text-slate-600 dark:text-slate-400'
+                  }`}>
                     {result.window}
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                <div className={`text-right ${selectedResult?.time === result.time ? 'text-indigo-50' : 'text-slate-700 dark:text-slate-300'}`}>
+                  <div className={`text-sm font-bold ${selectedResult?.time === result.time ? 'text-white' : 'text-slate-900 dark:text-slate-200'}`}>
                     {result.cycles} cycles
                   </div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400">
+                  <div className={`text-xs mt-1 ${selectedResult?.time === result.time ? 'text-indigo-100' : 'text-slate-500 dark:text-slate-400'}`}>
                     {result.timeInBed}
                   </div>
                 </div>
