@@ -35,103 +35,137 @@ const to24Hour = (time12: string): string => {
   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
 };
 
-// TimePicker Component - Single Line
+// Scrollable Column Component
+const ScrollColumn = ({ 
+  values, 
+  selected, 
+  onChange, 
+  testId 
+}: { 
+  values: string[]; 
+  selected: string; 
+  onChange: (val: string) => void;
+  testId: string;
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<number>(0);
+
+  const selectedIndex = values.indexOf(selected);
+  const itemHeight = 50; // Height of each item in pixels
+
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    const direction = e.deltaY > 0 ? 1 : -1;
+    const newIndex = Math.max(0, Math.min(values.length - 1, selectedIndex + direction));
+    onChange(values[newIndex]);
+  };
+
+  const handleTouchStart = useRef<number>(0);
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (handleTouchStart.current === 0) return;
+    const diff = e.touches[0].clientY - handleTouchStart.current;
+    if (Math.abs(diff) > 20) {
+      const direction = diff > 0 ? -1 : 1;
+      const newIndex = Math.max(0, Math.min(values.length - 1, selectedIndex + direction));
+      onChange(values[newIndex]);
+      handleTouchStart.current = e.touches[0].clientY;
+    }
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      onWheel={handleWheel}
+      onTouchStart={(e) => (handleTouchStart.current = e.touches[0].clientY)}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={() => (handleTouchStart.current = 0)}
+      className="relative h-56 overflow-hidden rounded-lg bg-gradient-to-b from-slate-900/20 via-indigo-600/30 to-slate-900/20 dark:from-slate-700/40 dark:via-indigo-700/40 dark:to-slate-700/40 border border-indigo-400/30 dark:border-indigo-500/40 cursor-pointer"
+      style={{ perspective: '1000px' }}
+      data-testid={testId}
+    >
+      {/* Background glow */}
+      <div className="absolute inset-0 pointer-events-none rounded-lg ring-1 ring-inset ring-indigo-300/20 dark:ring-indigo-400/20" />
+      
+      {/* Scroll container */}
+      <div className="relative h-full flex flex-col items-center justify-center">
+        {/* Above numbers (faded) */}
+        <div className="absolute top-0 left-0 right-0 h-20 flex flex-col items-center justify-end pointer-events-none">
+          {selectedIndex > 0 && (
+            <div className="text-xl font-semibold text-slate-500 dark:text-slate-400 opacity-40">
+              {values[selectedIndex - 1]}
+            </div>
+          )}
+        </div>
+
+        {/* Selected number (highlighted) */}
+        <div className="text-5xl font-bold text-indigo-100 dark:text-indigo-200 text-center drop-shadow-lg">
+          {selected}
+        </div>
+
+        {/* Below numbers (faded) */}
+        <div className="absolute bottom-0 left-0 right-0 h-20 flex flex-col items-center justify-start pointer-events-none">
+          {selectedIndex < values.length - 1 && (
+            <div className="text-xl font-semibold text-slate-500 dark:text-slate-400 opacity-40">
+              {values[selectedIndex + 1]}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Center highlight line */}
+      <div className="absolute top-1/2 left-0 right-0 h-16 -translate-y-1/2 border-y border-indigo-400/50 dark:border-indigo-300/50 pointer-events-none" />
+    </div>
+  );
+};
+
+// TimePicker Component - Wheel Picker
 const TimePicker = ({ value, onChange }: { value: string; onChange: (val: string) => void }) => {
   const time12 = formatTo12Hour(value);
   const hours = parseInt(time12.split(':')[0]);
   const minutes = parseInt(time12.split(':')[1]);
   const period = time12.includes('PM') ? 'PM' : 'AM';
 
-  const handleHourChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let h = parseInt(e.target.value) || 1;
-    h = Math.max(1, Math.min(12, h));
-    const newTime12 = `${String(h).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${period}`;
+  const hourValues = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
+  const minuteValues = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'));
+  const periodValues = ['AM', 'PM'];
+
+  const handleHourChange = (newHour: string) => {
+    const newTime12 = `${newHour}:${String(minutes).padStart(2, '0')} ${period}`;
     onChange(to24Hour(newTime12));
   };
 
-  const handleMinuteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let m = parseInt(e.target.value) || 0;
-    m = Math.max(0, Math.min(59, m));
-    const newTime12 = `${String(hours).padStart(2, '0')}:${String(m).padStart(2, '0')} ${period}`;
+  const handleMinuteChange = (newMinute: string) => {
+    const newTime12 = `${String(hours).padStart(2, '0')}:${newMinute} ${period}`;
     onChange(to24Hour(newTime12));
   };
 
-  const handlePeriodChange = (newPeriod: 'AM' | 'PM') => {
+  const handlePeriodChange = (newPeriod: string) => {
     const newTime12 = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${newPeriod}`;
     onChange(to24Hour(newTime12));
   };
 
-  const handleHourWheel = (e: React.WheelEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    let h = hours + (e.deltaY < 0 ? 1 : -1);
-    h = Math.max(1, Math.min(12, h));
-    const newTime12 = `${String(h).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${period}`;
-    onChange(to24Hour(newTime12));
-  };
-
-  const handleMinuteWheel = (e: React.WheelEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    let m = minutes + (e.deltaY < 0 ? 1 : -1);
-    m = Math.max(0, Math.min(59, m));
-    const newTime12 = `${String(hours).padStart(2, '0')}:${String(m).padStart(2, '0')} ${period}`;
-    onChange(to24Hour(newTime12));
-  };
-
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-600 p-6 flex items-center justify-center gap-6">
-      {/* Hour Input */}
-      <div className="flex items-center gap-3">
-        <input
-          type="number"
-          min="1"
-          max="12"
-          value={hours}
+    <div className="w-full bg-gradient-to-br from-slate-800 to-slate-900 dark:from-slate-900 dark:to-slate-950 rounded-2xl border border-indigo-400/30 dark:border-indigo-500/40 p-6 shadow-2xl">
+      <div className="flex gap-4 items-center justify-center">
+        <ScrollColumn
+          values={hourValues}
+          selected={String(hours).padStart(2, '0')}
           onChange={handleHourChange}
-          onWheel={handleHourWheel}
-          className="w-20 px-4 py-3 text-center text-2xl font-bold rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-600 cursor-pointer"
-          data-testid="input-hour"
+          testId="column-hour"
         />
-        <span className="text-3xl font-bold text-slate-600 dark:text-slate-400">:</span>
-      </div>
-
-      {/* Minute Input */}
-      <div className="flex items-center gap-3">
-        <input
-          type="number"
-          min="0"
-          max="59"
-          value={String(minutes).padStart(2, '0')}
+        <div className="text-4xl font-bold text-indigo-300 dark:text-indigo-200 mb-8">:</div>
+        <ScrollColumn
+          values={minuteValues}
+          selected={String(minutes).padStart(2, '0')}
           onChange={handleMinuteChange}
-          onWheel={handleMinuteWheel}
-          className="w-20 px-4 py-3 text-center text-2xl font-bold rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-600 cursor-pointer"
-          data-testid="input-minute"
+          testId="column-minute"
         />
-      </div>
-
-      {/* Period Buttons */}
-      <div className="flex gap-2 ml-2 border-l border-slate-300 dark:border-slate-600 pl-3">
-        <button
-          onClick={() => handlePeriodChange('AM')}
-          className={`px-4 py-2 rounded-lg font-bold transition-colors ${
-            period === 'AM'
-              ? 'bg-indigo-600 text-white shadow-md'
-              : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600'
-          }`}
-          data-testid="button-am"
-        >
-          AM
-        </button>
-        <button
-          onClick={() => handlePeriodChange('PM')}
-          className={`px-4 py-2 rounded-lg font-bold transition-colors ${
-            period === 'PM'
-              ? 'bg-indigo-600 text-white shadow-md'
-              : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600'
-          }`}
-          data-testid="button-pm"
-        >
-          PM
-        </button>
+        <ScrollColumn
+          values={periodValues}
+          selected={period}
+          onChange={handlePeriodChange}
+          testId="column-period"
+        />
       </div>
     </div>
   );
