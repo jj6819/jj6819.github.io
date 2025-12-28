@@ -61,20 +61,37 @@ const TimePicker = ({ value, onChange }: { value: string; onChange: (val: string
     onChange(to24Hour(newTime12));
   };
 
+  const handleHourWheel = (e: React.WheelEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    let h = hours + (e.deltaY < 0 ? 1 : -1);
+    h = Math.max(1, Math.min(12, h));
+    const newTime12 = `${String(h).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${period}`;
+    onChange(to24Hour(newTime12));
+  };
+
+  const handleMinuteWheel = (e: React.WheelEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    let m = minutes + (e.deltaY < 0 ? 1 : -1);
+    m = Math.max(0, Math.min(59, m));
+    const newTime12 = `${String(hours).padStart(2, '0')}:${String(m).padStart(2, '0')} ${period}`;
+    onChange(to24Hour(newTime12));
+  };
+
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-600 p-4 flex items-center justify-center gap-3">
+    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-600 p-6 flex items-center justify-center gap-6">
       {/* Hour Input */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-3">
         <input
           type="number"
           min="1"
           max="12"
           value={hours}
           onChange={handleHourChange}
-          className="w-16 px-3 py-2 text-center text-2xl font-bold rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-600"
+          onWheel={handleHourWheel}
+          className="w-20 px-4 py-3 text-center text-2xl font-bold rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-600 cursor-pointer"
           data-testid="input-hour"
         />
-        <span className="text-2xl font-bold text-slate-600 dark:text-slate-400">:</span>
+        <span className="text-3xl font-bold text-slate-600 dark:text-slate-400">:</span>
       </div>
 
       {/* Minute Input */}
@@ -85,7 +102,8 @@ const TimePicker = ({ value, onChange }: { value: string; onChange: (val: string
           max="59"
           value={String(minutes).padStart(2, '0')}
           onChange={handleMinuteChange}
-          className="w-16 px-3 py-2 text-center text-2xl font-bold rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-600"
+          onWheel={handleMinuteWheel}
+          className="w-20 px-4 py-3 text-center text-2xl font-bold rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-600 cursor-pointer"
           data-testid="input-minute"
         />
       </div>
