@@ -48,16 +48,38 @@ const ScrollColumn = ({
   testId: string;
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<number>(0);
+  const scrollVelocityRef = useRef<number>(0);
+  const lastWheelTimeRef = useRef<number>(0);
+  const isContinuous = values.length === 12 || values.length === 60; // Hours or Minutes
 
   const selectedIndex = values.indexOf(selected);
-  const itemHeight = 50; // Height of each item in pixels
+
+  const getNextIndex = (direction: number) => {
+    if (isContinuous) {
+      return (selectedIndex + direction + values.length) % values.length;
+    }
+    return Math.max(0, Math.min(values.length - 1, selectedIndex + direction));
+  };
 
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
-    const direction = e.deltaY > 0 ? 1 : -1;
-    const newIndex = Math.max(0, Math.min(values.length - 1, selectedIndex + direction));
-    onChange(values[newIndex]);
+    const now = Date.now();
+    const timeSinceLastWheel = now - lastWheelTimeRef.current;
+    lastWheelTimeRef.current = now;
+
+    // Dampen scroll velocity - only trigger on larger movements or slower scrolls
+    const rawDirection = e.deltaY > 0 ? 1 : -1;
+    
+    // Accumulate velocity but require threshold
+    scrollVelocityRef.current += rawDirection;
+
+    // Only change on significant accumulation (threshold = 2 for slower feel)
+    if (Math.abs(scrollVelocityRef.current) >= 2) {
+      const direction = scrollVelocityRef.current > 0 ? 1 : -1;
+      const newIndex = getNextIndex(direction);
+      onChange(values[newIndex]);
+      scrollVelocityRef.current = 0;
+    }
   };
 
   const handleTouchStart = useRef<number>(0);
@@ -66,7 +88,7 @@ const ScrollColumn = ({
     const diff = e.touches[0].clientY - handleTouchStart.current;
     if (Math.abs(diff) > 20) {
       const direction = diff > 0 ? -1 : 1;
-      const newIndex = Math.max(0, Math.min(values.length - 1, selectedIndex + direction));
+      const newIndex = getNextIndex(direction);
       onChange(values[newIndex]);
       handleTouchStart.current = e.touches[0].clientY;
     }
@@ -90,11 +112,11 @@ const ScrollColumn = ({
       <div className="relative h-full flex flex-col items-center justify-center">
         {/* Above numbers (faded) */}
         <div className="absolute top-0 left-0 right-0 h-20 flex flex-col items-center justify-end pointer-events-none">
-          {selectedIndex > 0 && (
+          {selectedIndex > 0 || isContinuous ? (
             <div className="text-xl font-semibold text-slate-500 dark:text-slate-400 opacity-40">
-              {values[selectedIndex - 1]}
+              {isContinuous ? values[(selectedIndex - 1 + values.length) % values.length] : values[selectedIndex - 1]}
             </div>
-          )}
+          ) : null}
         </div>
 
         {/* Selected number (highlighted) */}
@@ -104,11 +126,11 @@ const ScrollColumn = ({
 
         {/* Below numbers (faded) */}
         <div className="absolute bottom-0 left-0 right-0 h-20 flex flex-col items-center justify-start pointer-events-none">
-          {selectedIndex < values.length - 1 && (
+          {selectedIndex < values.length - 1 || isContinuous ? (
             <div className="text-xl font-semibold text-slate-500 dark:text-slate-400 opacity-40">
-              {values[selectedIndex + 1]}
+              {isContinuous ? values[(selectedIndex + 1) % values.length] : values[selectedIndex + 1]}
             </div>
-          )}
+          ) : null}
         </div>
       </div>
 
@@ -599,7 +621,7 @@ export default function SleepPlanner() {
 
         {/* Time Input */}
         <div className="mb-8">
-          <label className="block text-sm font-medium mb-3">
+          <label className="block text-lg font-semibold mb-4">
             {mode === 'wake' ? 'I want to wake up at…' : 'I\'m going to bed now'}
           </label>
           <TimePicker value={selectedTime} onChange={setSelectedTime} />
