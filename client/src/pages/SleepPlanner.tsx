@@ -35,120 +35,85 @@ const to24Hour = (time12: string): string => {
   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
 };
 
-// ScrollableTimePicker Component
-const ScrollableTimePicker = ({ value, onChange }: { value: string; onChange: (val: string) => void }) => {
-  useEffect(() => {
-    setTime12(formatTo12Hour(value));
-  }, [value]);
-  
-  const [time12, setTime12] = useState(formatTo12Hour(value));
-  const hoursRef = useRef<HTMLDivElement>(null);
-  const minutesRef = useRef<HTMLDivElement>(null);
-
+// TimePicker Component - Single Line
+const TimePicker = ({ value, onChange }: { value: string; onChange: (val: string) => void }) => {
+  const time12 = formatTo12Hour(value);
   const hours = parseInt(time12.split(':')[0]);
   const minutes = parseInt(time12.split(':')[1]);
   const period = time12.includes('PM') ? 'PM' : 'AM';
 
-  const handleHourChange = (e: React.UIEvent<HTMLDivElement>) => {
-    const div = e.currentTarget;
-    const scrollTop = div.scrollTop;
-    const itemHeight = 48;
-    const index = Math.round(scrollTop / itemHeight);
-    const hourArray = Array.from({length: 12}, (_, i) => i + 1);
-    const newHour = hourArray[Math.max(0, Math.min(index, 11))];
-    const newTime12 = `${String(newHour).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${period}`;
-    setTime12(newTime12);
+  const handleHourChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let h = parseInt(e.target.value) || 1;
+    h = Math.max(1, Math.min(12, h));
+    const newTime12 = `${String(h).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${period}`;
     onChange(to24Hour(newTime12));
   };
 
-  const handleMinuteChange = (e: React.UIEvent<HTMLDivElement>) => {
-    const div = e.currentTarget;
-    const scrollTop = div.scrollTop;
-    const itemHeight = 48;
-    const index = Math.round(scrollTop / itemHeight);
-    const minuteArray = Array.from({length: 60}, (_, i) => i);
-    const newMinute = minuteArray[Math.max(0, Math.min(index, 59))];
-    const newTime12 = `${String(hours).padStart(2, '0')}:${String(newMinute).padStart(2, '0')} ${period}`;
-    setTime12(newTime12);
+  const handleMinuteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let m = parseInt(e.target.value) || 0;
+    m = Math.max(0, Math.min(59, m));
+    const newTime12 = `${String(hours).padStart(2, '0')}:${String(m).padStart(2, '0')} ${period}`;
     onChange(to24Hour(newTime12));
   };
 
   const handlePeriodChange = (newPeriod: 'AM' | 'PM') => {
     const newTime12 = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${newPeriod}`;
-    setTime12(newTime12);
     onChange(to24Hour(newTime12));
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-600 p-6">
-      <div className="flex justify-center items-center gap-4">
-        {/* Hours */}
-        <div className="flex flex-col items-center">
-          <div ref={hoursRef} onScroll={handleHourChange} className="h-48 w-16 overflow-y-scroll snap-y snap-mandatory relative">
-            <div className="absolute inset-0 pointer-events-none flex items-center justify-center border-t-2 border-b-2 border-indigo-400 dark:border-indigo-600"></div>
-            {Array.from({length: 12}, (_, i) => i + 1).map((h) => (
-              <div
-                key={h}
-                className={`h-12 flex items-center justify-center text-lg font-semibold snap-center transition-colors ${
-                  h === hours
-                    ? 'text-indigo-600 dark:text-indigo-400'
-                    : 'text-slate-400 dark:text-slate-500'
-                }`}
-              >
-                {String(h).padStart(2, '0')}
-              </div>
-            ))}
-          </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">Hour</p>
-        </div>
+    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-600 p-4 flex items-center justify-center gap-3">
+      {/* Hour Input */}
+      <div className="flex items-center gap-1">
+        <input
+          type="number"
+          min="1"
+          max="12"
+          value={hours}
+          onChange={handleHourChange}
+          className="w-16 px-3 py-2 text-center text-2xl font-bold rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-600"
+          data-testid="input-hour"
+        />
+        <span className="text-2xl font-bold text-slate-600 dark:text-slate-400">:</span>
+      </div>
 
-        <div className="text-3xl font-bold text-slate-700 dark:text-slate-300">:</div>
+      {/* Minute Input */}
+      <div className="flex items-center gap-3">
+        <input
+          type="number"
+          min="0"
+          max="59"
+          value={String(minutes).padStart(2, '0')}
+          onChange={handleMinuteChange}
+          className="w-16 px-3 py-2 text-center text-2xl font-bold rounded-lg border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-600"
+          data-testid="input-minute"
+        />
+      </div>
 
-        {/* Minutes */}
-        <div className="flex flex-col items-center">
-          <div ref={minutesRef} onScroll={handleMinuteChange} className="h-48 w-16 overflow-y-scroll snap-y snap-mandatory relative">
-            <div className="absolute inset-0 pointer-events-none flex items-center justify-center border-t-2 border-b-2 border-indigo-400 dark:border-indigo-600"></div>
-            {Array.from({length: 60}, (_, i) => i).map((m) => (
-              <div
-                key={m}
-                className={`h-12 flex items-center justify-center text-lg font-semibold snap-center transition-colors ${
-                  m === minutes
-                    ? 'text-indigo-600 dark:text-indigo-400'
-                    : 'text-slate-400 dark:text-slate-500'
-                }`}
-              >
-                {String(m).padStart(2, '0')}
-              </div>
-            ))}
-          </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">Minute</p>
-        </div>
-
-        {/* Period */}
-        <div className="flex flex-col gap-2">
-          <button
-            onClick={() => handlePeriodChange('AM')}
-            className={`px-3 py-2 rounded-lg font-semibold transition-colors ${
-              period === 'AM'
-                ? 'bg-indigo-600 text-white'
-                : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
-            }`}
-            data-testid="button-am"
-          >
-            AM
-          </button>
-          <button
-            onClick={() => handlePeriodChange('PM')}
-            className={`px-3 py-2 rounded-lg font-semibold transition-colors ${
-              period === 'PM'
-                ? 'bg-indigo-600 text-white'
-                : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
-            }`}
-            data-testid="button-pm"
-          >
-            PM
-          </button>
-        </div>
+      {/* Period Buttons */}
+      <div className="flex gap-2 ml-2 border-l border-slate-300 dark:border-slate-600 pl-3">
+        <button
+          onClick={() => handlePeriodChange('AM')}
+          className={`px-4 py-2 rounded-lg font-bold transition-colors ${
+            period === 'AM'
+              ? 'bg-indigo-600 text-white shadow-md'
+              : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600'
+          }`}
+          data-testid="button-am"
+        >
+          AM
+        </button>
+        <button
+          onClick={() => handlePeriodChange('PM')}
+          className={`px-4 py-2 rounded-lg font-bold transition-colors ${
+            period === 'PM'
+              ? 'bg-indigo-600 text-white shadow-md'
+              : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600'
+          }`}
+          data-testid="button-pm"
+        >
+          PM
+        </button>
       </div>
     </div>
   );
@@ -585,7 +550,7 @@ export default function SleepPlanner() {
           <label className="block text-sm font-medium mb-3">
             {mode === 'wake' ? 'I want to wake up at…' : 'I\'m going to bed now'}
           </label>
-          <ScrollableTimePicker value={selectedTime} onChange={setSelectedTime} />
+          <TimePicker value={selectedTime} onChange={setSelectedTime} />
         </div>
 
         {/* Owl Mascot */}
