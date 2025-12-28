@@ -167,8 +167,16 @@ const TimePicker = ({ value, onChange }: { value: string; onChange: (val: string
     onChange(to24Hour(newTime12));
   };
 
+  const handleTimePickerWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   return (
-    <div className="w-full bg-gradient-to-br from-slate-800 to-slate-900 dark:from-slate-900 dark:to-slate-950 rounded-2xl border border-indigo-400/30 dark:border-indigo-500/40 p-6 shadow-2xl">
+    <div 
+      className="w-full bg-gradient-to-br from-slate-800 to-slate-900 dark:from-slate-900 dark:to-slate-950 rounded-2xl border border-indigo-400/30 dark:border-indigo-500/40 p-6 shadow-2xl"
+      onWheel={handleTimePickerWheel}
+    >
       <div className="flex gap-4 items-center justify-center">
         <ScrollColumn
           values={hourValues}
@@ -621,7 +629,7 @@ export default function SleepPlanner() {
         )}
 
         {/* Time Input */}
-        <div className="mb-8">
+        <div className="mb-8 overflow-hidden">
           <label className="block text-lg font-semibold mb-4">
             {mode === 'wake' ? 'I want to wake up at…' : 'I\'m going to bed now'}
           </label>
