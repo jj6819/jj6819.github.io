@@ -829,30 +829,34 @@
         const startTime = this.to24Hour(this.hour, this.minute, this.period);
         const results = [];
 
-        for (let cycles = 4; cycles <= 6; cycles++) {
-          const sleepDuration = this.settings.latency + cycles * this.settings.cycleLength;
-          let bedTime = startTime - sleepDuration;
-          if (bedTime < 0) bedTime += 24 * 60;
+        if (this.mode === 'wake') {
+          // Mode A: "Wake up at..." - generate bedtime recommendations
+          for (let cycles = 4; cycles <= 6; cycles++) {
+            const sleepDuration = this.settings.latency + cycles * this.settings.cycleLength;
+            let bedTime = startTime - sleepDuration;
+            if (bedTime < 0) bedTime += 24 * 60;
 
-          const wakeWindowStart = bedTime + sleepDuration;
-          const wakeWindowEnd = wakeWindowStart + this.settings.wakeWindow;
+            // Bedtime window: bedTime to bedTime + wakeWindow
+            const bedWindowEnd = (bedTime + this.settings.wakeWindow) % (24 * 60);
 
-          results.push({
-            cycles: cycles,
-            bedTime: bedTime,
-            bedTimeStr: this.formatTime(bedTime),
-            wakeTime: startTime,
-            wakeWindowStr: `${this.formatTime(wakeWindowStart)} - ${this.formatTime(wakeWindowEnd)}`,
-            duration: `${(sleepDuration / 60).toFixed(1)} hrs`
-          });
-        }
-
-        if (this.mode === 'sleep') {
+            results.push({
+              cycles: cycles,
+              bedTime: bedTime,
+              bedTimeStr: this.formatTime(bedTime),
+              wakeTime: startTime,
+              wakeWindowStr: `${this.formatTime(bedTime)} - ${this.formatTime(bedWindowEnd)}`,
+              duration: `${(sleepDuration / 60).toFixed(1)} hrs`
+            });
+          }
+        } else {
+          // Mode B: "Bedtime now" - generate wake-up recommendations
           const bedTime = startTime;
           for (let cycles = 4; cycles <= 6; cycles++) {
             const sleepDuration = this.settings.latency + cycles * this.settings.cycleLength;
             const wakeTime = bedTime + sleepDuration;
-            const wakeWindowEnd = wakeTime + this.settings.wakeWindow;
+
+            // Wake window: wakeTime to wakeTime + wakeWindow
+            const wakeWindowEnd = (wakeTime + this.settings.wakeWindow) % (24 * 60);
 
             results[cycles - 4] = {
               cycles: cycles,
