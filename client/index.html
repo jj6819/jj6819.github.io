@@ -662,6 +662,21 @@
       },
 
       setTimeFormat(format) {
+        if (this.timeFormat === '12' && format === '24') {
+          // Converting from 12h to 24h
+          let hour24 = this.hour;
+          if (this.period === 'PM' && this.hour !== 12) hour24 += 12;
+          if (this.period === 'AM' && this.hour === 12) hour24 = 0;
+          this.hour = hour24;
+          this.period = 'AM'; // Clear period in 24h mode
+        } else if (this.timeFormat === '24' && format === '12') {
+          // Converting from 24h to 12h
+          const period = this.hour >= 12 ? 'PM' : 'AM';
+          const hour12 = this.hour % 12 || 12;
+          this.hour = hour12;
+          this.period = period;
+        }
+        
         this.timeFormat = format;
         document.querySelectorAll('.toggle-option').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.format === format);
