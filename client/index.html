@@ -650,13 +650,15 @@
       },
 
       updateOwlEyes() {
+        const leftEye = document.getElementById('leftPupil');
+        const rightEye = document.getElementById('rightPupil');
+        
+        if (!leftEye || !rightEye) return;
+        
         const minVal = this.minute;
         const maxVal = 59;
         const range = maxVal - 0;
         const percent = (minVal / range) * 100;
-        
-        const leftEye = document.getElementById('leftPupil');
-        const rightEye = document.getElementById('rightPupil');
         
         const xOffset = (percent / 100 - 0.5) * 4;
         const yOffset = (minVal % 12) / 12 * 2 - 1;
