@@ -1,26 +1,818 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  
+  <meta property="og:title" content="NightOwl Sleep Planner" />
+  <meta property="og:description" content="Calculate the perfect bedtime and wake time based on sleep cycles. Plan your sleep for better rest and easier mornings." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://replit.com/public/images/opengraph.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@replit" />
+  <meta name="twitter:title" content="NightOwl Sleep Planner" />
+  <meta name="twitter:description" content="Calculate the perfect bedtime and wake time based on sleep cycles. Plan your sleep for better rest and easier mornings." />
+  <meta name="twitter:image" content="https://replit.com/public/images/opengraph.png" />
 
-    <meta property="og:title" content="NightOwl Sleep Planner" />
-    <meta property="og:description" content="Calculate the perfect bedtime and wake time based on sleep cycles. Plan your sleep for better rest and easier mornings." />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://replit.com/public/images/opengraph.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@replit" />
-    <meta name="twitter:title" content="NightOwl Sleep Planner" />
-    <meta name="twitter:description" content="Calculate the perfect bedtime and wake time based on sleep cycles. Plan your sleep for better rest and easier mornings." />
-    <meta name="twitter:image" content="https://replit.com/public/images/opengraph.png" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&display=swap" rel="stylesheet">
 
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fira+Code:wght@300..700&family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400..700;1,400..700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@100..900&family=Oxanium:wght@200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-top: 20px;
+    }
+
+    .logo {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #e0e7ff;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .ad-space {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 30px;
+      font-size: 13px;
+    }
+
+    .mode-tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+      background: rgba(30, 41, 59, 0.6);
+      padding: 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: #94a3b8;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .mode-btn.active {
+      background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    }
+
+    .mode-btn:hover:not(.active) {
+      color: #cbd5e1;
+      background: rgba(99, 102, 241, 0.1);
+    }
+
+    .main-content {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.8) 100%);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 16px;
+      padding: 32px;
+      backdrop-filter: blur(10px);
+    }
+
+    .label {
+      display: block;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #f1f5f9;
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 32px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .settings-grid.show {
+      max-height: 500px;
+    }
+
+    .setting-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .setting-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .setting-value {
+      font-size: 20px;
+      font-weight: 600;
+      color: #4f46e5;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(99, 102, 241, 0.2);
+      outline: none;
+      accent-color: #4f46e5;
+      cursor: pointer;
+    }
+
+    .time-picker-container {
+      position: relative;
+      margin-bottom: 32px;
+    }
+
+    .time-picker-wrapper {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .time-picker {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(51, 65, 85, 0.8) 0%, rgba(30, 41, 59, 0.8) 100%);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      border-radius: 14px;
+      padding: 24px;
+      touch-action: none;
+      position: relative;
+      min-height: 180px;
+    }
+
+    .time-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      flex: 0 0 auto;
+      height: 180px;
+      overflow: hidden;
+    }
+
+    .time-column-faded {
+      font-size: 18px;
+      color: rgba(148, 163, 184, 0.3);
+      font-weight: 500;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .time-column-selected {
+      font-size: 56px;
+      font-weight: 700;
+      color: #e0e7ff;
+      text-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+      font-family: 'Poppins', monospace;
+      letter-spacing: 0.5px;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .time-column-separator {
+      font-size: 48px;
+      font-weight: 700;
+      color: #4f46e5;
+      margin: 0 4px;
+    }
+
+    .time-column-highlight {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 64px;
+      transform: translateY(-50%);
+      border-top: 1px solid rgba(99, 102, 241, 0.5);
+      border-bottom: 1px solid rgba(99, 102, 241, 0.5);
+      pointer-events: none;
+    }
+
+    .owl-perch {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      width: 80px;
+      height: 80px;
+      z-index: 10;
+    }
+
+    .owl {
+      width: 100%;
+      height: 100%;
+    }
+
+    .results {
+      margin-top: 32px;
+    }
+
+    .results-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #f1f5f9;
+    }
+
+    .results-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .result-card {
+      background: rgba(30, 41, 59, 0.6);
+      border: 2px solid rgba(148, 163, 184, 0.2);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: left;
+    }
+
+    .result-card:hover {
+      border-color: rgba(99, 102, 241, 0.6);
+      background: rgba(51, 65, 85, 0.8);
+    }
+
+    .result-card.selected {
+      background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+      border-color: #4f46e5;
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
+    }
+
+    .result-card.best::before {
+      content: '★ Best Option';
+      display: block;
+      font-size: 11px;
+      color: #fbbf24;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .result-time {
+      font-size: 28px;
+      font-weight: 700;
+      font-family: 'Poppins', monospace;
+      margin-bottom: 6px;
+    }
+
+    .result-card.selected .result-time {
+      color: white;
+    }
+
+    .result-card:not(.selected) .result-time {
+      color: #4f46e5;
+    }
+
+    .result-details {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .result-detail {
+      color: #94a3b8;
+    }
+
+    .result-card.selected .result-detail {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .settings-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    .settings-toggle-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s ease;
+    }
+
+    .settings-toggle-btn:hover {
+      color: #cbd5e1;
+    }
+
+    .settings-toggle-btn::after {
+      content: '⚙️';
+      font-size: 18px;
+    }
+
+    @media (max-width: 480px) {
+      .title {
+        font-size: 28px;
+      }
+
+      .main-content {
+        padding: 20px;
+      }
+
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .time-picker {
+        padding: 20px 16px;
+      }
+
+      .time-column-selected {
+        font-size: 48px;
+      }
+
+      .result-card {
+        padding: 12px;
+      }
+
+      .result-time {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">🌙</div>
+      <h1 class="title">NightOwl</h1>
+      <p class="subtitle">Sleep Cycle Calculator</p>
+    </header>
+
+    <div class="ad-space">Advertisement Space</div>
+
+    <div class="mode-tabs">
+      <button class="mode-btn active" data-mode="wake">
+        <span>⏰</span> Wake up at...
+      </button>
+      <button class="mode-btn" data-mode="sleep">
+        <span>🛏️</span> Bedtime now
+      </button>
+    </div>
+
+    <div class="main-content">
+      <div class="settings-toggle">
+        <button class="settings-toggle-btn" id="toggleSettings">Settings</button>
+      </div>
+
+      <div class="settings-grid" id="settingsGrid">
+        <div class="setting-group">
+          <label class="setting-label">Sleep Latency</label>
+          <input type="range" id="latency" min="0" max="60" value="10">
+          <div class="setting-value"><span id="latencyValue">10</span> min</div>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Cycle Length</label>
+          <input type="range" id="cycleLength" min="80" max="110" value="90">
+          <div class="setting-value"><span id="cycleLengthValue">90</span> min</div>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Wake Window</label>
+          <input type="range" id="wakeWindow" min="0" max="30" value="10">
+          <div class="setting-value"><span id="wakeWindowValue">10</span> min</div>
+        </div>
+      </div>
+
+      <label class="label" id="timeLabel">I want to wake up at...</label>
+
+      <div class="time-picker-container">
+        <div class="time-picker" id="timePicker">
+          <div class="time-column" id="hourColumn">
+            <div class="time-column-faded" id="hourAbove">12</div>
+            <div class="time-column-selected" id="hourSelected">01</div>
+            <div class="time-column-faded" id="hourBelow">02</div>
+            <div class="time-column-highlight"></div>
+          </div>
+          
+          <div class="time-column-separator">:</div>
+          
+          <div class="time-column" id="minuteColumn">
+            <div class="time-column-faded" id="minuteAbove">59</div>
+            <div class="time-column-selected" id="minuteSelected">00</div>
+            <div class="time-column-faded" id="minuteBelow">01</div>
+            <div class="time-column-highlight"></div>
+          </div>
+          
+          <div class="time-column" id="periodColumn">
+            <div class="time-column-faded" id="periodAbove">PM</div>
+            <div class="time-column-selected" id="periodSelected">AM</div>
+            <div class="time-column-faded" id="periodBelow">PM</div>
+            <div class="time-column-highlight"></div>
+          </div>
+
+          <!-- Owl Perch -->
+          <div class="owl-perch">
+            <svg class="owl" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+              <!-- Body -->
+              <ellipse cx="60" cy="70" rx="28" ry="35" fill="#8B6F47" opacity="0.9"/>
+              
+              <!-- Head -->
+              <circle cx="60" cy="40" r="32" fill="#A0826D"/>
+              
+              <!-- Ears/Tufts -->
+              <ellipse cx="35" cy="15" rx="8" ry="14" fill="#8B6F47" transform="rotate(-25 35 15)"/>
+              <ellipse cx="85" cy="15" rx="8" ry="14" fill="#8B6F47" transform="rotate(25 85 15)"/>
+              
+              <!-- Face Disc -->
+              <circle cx="60" cy="40" r="26" fill="#D4A574"/>
+              
+              <!-- Left Eye Outer -->
+              <circle cx="43" cy="35" r="10" fill="white"/>
+              <circle cx="43" cy="35" r="9" fill="#2c2c2c"/>
+              
+              <!-- Right Eye Outer -->
+              <circle cx="77" cy="35" r="10" fill="white"/>
+              <circle cx="77" cy="35" r="9" fill="#2c2c2c"/>
+              
+              <!-- Left Pupil -->
+              <circle class="owl-eye" id="leftPupil" cx="43" cy="35" r="5" fill="#f4d03f"/>
+              
+              <!-- Right Pupil -->
+              <circle class="owl-eye" id="rightPupil" cx="77" cy="35" r="5" fill="#f4d03f"/>
+              
+              <!-- Beak -->
+              <path d="M 60 45 L 55 52 L 65 52 Z" fill="#D4A574"/>
+              
+              <!-- Wings -->
+              <ellipse cx="32" cy="70" rx="12" ry="28" fill="#6B5344"/>
+              <ellipse cx="88" cy="70" rx="12" ry="28" fill="#6B5344"/>
+              
+              <!-- Feet -->
+              <line x1="50" y1="105" x2="50" y2="112" stroke="#8B4513" stroke-width="2"/>
+              <line x1="70" y1="105" x2="70" y2="112" stroke="#8B4513" stroke-width="2"/>
+              
+              <!-- Talons -->
+              <path d="M 50 112 L 47 115 M 50 112 L 50 115 M 50 112 L 53 115" stroke="#8B4513" stroke-width="1.5" fill="none"/>
+              <path d="M 70 112 L 67 115 M 70 112 L 70 115 M 70 112 L 73 115" stroke="#8B4513" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="results" id="results">
+        <div class="results-label" id="resultsLabel">Go to bed at...</div>
+        <div class="results-list" id="resultsList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const app = {
+      mode: 'wake',
+      hour: 1,
+      minute: 0,
+      period: 'AM',
+      settings: {
+        latency: 10,
+        cycleLength: 90,
+        wakeWindow: 10
+      },
+      selectedResult: null,
+      scrollVelocity: 0,
+      lastWheelTime: 0,
+
+      init() {
+        this.setupEventListeners();
+        this.loadSettings();
+        this.calculate();
+        this.updateOwlEyes();
+      },
+
+      setupEventListeners() {
+        // Mode tabs
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => this.setMode(e.target.closest('.mode-btn').dataset.mode));
+        });
+
+        // Settings toggle
+        document.getElementById('toggleSettings').addEventListener('click', () => {
+          document.getElementById('settingsGrid').classList.toggle('show');
+        });
+
+        // Settings sliders
+        document.getElementById('latency').addEventListener('input', (e) => {
+          this.settings.latency = parseInt(e.target.value);
+          document.getElementById('latencyValue').textContent = this.settings.latency;
+          this.saveSettings();
+          this.calculate();
+        });
+
+        document.getElementById('cycleLength').addEventListener('input', (e) => {
+          this.settings.cycleLength = parseInt(e.target.value);
+          document.getElementById('cycleLengthValue').textContent = this.settings.cycleLength;
+          this.saveSettings();
+          this.calculate();
+        });
+
+        document.getElementById('wakeWindow').addEventListener('input', (e) => {
+          this.settings.wakeWindow = parseInt(e.target.value);
+          document.getElementById('wakeWindowValue').textContent = this.settings.wakeWindow;
+          this.saveSettings();
+          this.calculate();
+        });
+
+        // Time picker scroll
+        ['hourColumn', 'minuteColumn', 'periodColumn'].forEach(id => {
+          const col = document.getElementById(id);
+          col.addEventListener('wheel', (e) => this.handleTimeScroll(e, id));
+          col.addEventListener('touchstart', (e) => this.handleTouchStart(e, id));
+          col.addEventListener('touchmove', (e) => this.handleTouchMove(e, id));
+        });
+
+        document.getElementById('timePicker').addEventListener('wheel', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+      },
+
+      setMode(mode) {
+        this.mode = mode;
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.mode === mode);
+        });
+
+        if (mode === 'sleep') {
+          const now = new Date();
+          this.hour = now.getHours() % 12 || 12;
+          this.minute = now.getMinutes();
+          this.period = now.getHours() >= 12 ? 'PM' : 'AM';
+          document.getElementById('timeLabel').textContent = "I'm going to bed now";
+        } else {
+          document.getElementById('timeLabel').textContent = 'I want to wake up at...';
+        }
+
+        this.updateTimePicker();
+        this.calculate();
+      },
+
+      handleTimeScroll(e, columnId) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const direction = e.deltaY > 0 ? 1 : -1;
+        this.scrollVelocity += direction;
+
+        if (Math.abs(this.scrollVelocity) >= 4) {
+          if (columnId === 'hourColumn') {
+            this.hour = ((this.hour - 1 + (this.scrollVelocity > 0 ? 1 : -1) + 12) % 12) + 1;
+          } else if (columnId === 'minuteColumn') {
+            this.minute = (this.minute + (this.scrollVelocity > 0 ? 1 : -1) + 60) % 60;
+          } else if (columnId === 'periodColumn') {
+            this.period = this.period === 'AM' ? 'PM' : 'AM';
+          }
+          this.scrollVelocity = 0;
+          this.updateTimePicker();
+          this.calculate();
+          this.updateOwlEyes();
+        }
+      },
+
+      handleTouchStart(e, columnId) {
+        e.currentTarget.touchStartY = e.touches[0].clientY;
+      },
+
+      handleTouchMove(e, columnId) {
+        if (!e.currentTarget.touchStartY) return;
+        const diff = e.touches[0].clientY - e.currentTarget.touchStartY;
+        if (Math.abs(diff) > 20) {
+          const direction = diff > 0 ? -1 : 1;
+          if (columnId === 'hourColumn') {
+            this.hour = ((this.hour - 1 + direction + 12) % 12) + 1;
+          } else if (columnId === 'minuteColumn') {
+            this.minute = (this.minute + direction + 60) % 60;
+          } else if (columnId === 'periodColumn') {
+            this.period = this.period === 'AM' ? 'PM' : 'AM';
+          }
+          e.currentTarget.touchStartY = e.touches[0].clientY;
+          this.updateTimePicker();
+          this.calculate();
+          this.updateOwlEyes();
+        }
+      },
+
+      updateTimePicker() {
+        document.getElementById('hourSelected').textContent = String(this.hour).padStart(2, '0');
+        document.getElementById('hourAbove').textContent = String(((this.hour - 2 + 12) % 12) + 1).padStart(2, '0');
+        document.getElementById('hourBelow').textContent = String((this.hour % 12) + 1).padStart(2, '0');
+
+        document.getElementById('minuteSelected').textContent = String(this.minute).padStart(2, '0');
+        document.getElementById('minuteAbove').textContent = String((this.minute - 1 + 60) % 60).padStart(2, '0');
+        document.getElementById('minuteBelow').textContent = String((this.minute + 1) % 60).padStart(2, '0');
+
+        document.getElementById('periodSelected').textContent = this.period;
+        document.getElementById('periodAbove').textContent = this.period === 'AM' ? 'PM' : 'AM';
+        document.getElementById('periodBelow').textContent = this.period === 'AM' ? 'PM' : 'AM';
+      },
+
+      updateOwlEyes() {
+        const minVal = this.minute;
+        const maxVal = 59;
+        const range = maxVal - 0;
+        const percent = (minVal / range) * 100;
+        
+        const leftEye = document.getElementById('leftPupil');
+        const rightEye = document.getElementById('rightPupil');
+        
+        const xOffset = (percent / 100 - 0.5) * 4;
+        const yOffset = (minVal % 12) / 12 * 2 - 1;
+        
+        leftEye.setAttribute('cx', 43 + xOffset);
+        leftEye.setAttribute('cy', 35 + yOffset);
+        
+        rightEye.setAttribute('cx', 77 + xOffset);
+        rightEye.setAttribute('cy', 35 + yOffset);
+      },
+
+      to24Hour(hour, minute, period) {
+        let h = hour;
+        if (period === 'PM' && hour !== 12) h += 12;
+        if (period === 'AM' && hour === 12) h = 0;
+        return h * 60 + minute;
+      },
+
+      formatTime(totalMinutes) {
+        totalMinutes = totalMinutes % (24 * 60);
+        if (totalMinutes < 0) totalMinutes += 24 * 60;
+        const h = Math.floor(totalMinutes / 60);
+        const m = totalMinutes % 60;
+        const period = h >= 12 ? 'PM' : 'AM';
+        const hour12 = h % 12 || 12;
+        return `${String(hour12).padStart(2, '0')}:${String(m).padStart(2, '0')} ${period}`;
+      },
+
+      calculate() {
+        const startTime = this.to24Hour(this.hour, this.minute, this.period);
+        const results = [];
+
+        for (let cycles = 4; cycles <= 6; cycles++) {
+          const sleepDuration = this.settings.latency + cycles * this.settings.cycleLength;
+          let bedTime = startTime - sleepDuration;
+          if (bedTime < 0) bedTime += 24 * 60;
+
+          const wakeWindowStart = bedTime + sleepDuration;
+          const wakeWindowEnd = wakeWindowStart + this.settings.wakeWindow;
+
+          results.push({
+            cycles: cycles,
+            bedTime: bedTime,
+            bedTimeStr: this.formatTime(bedTime),
+            wakeTime: startTime,
+            wakeWindowStr: `${this.formatTime(wakeWindowStart)} - ${this.formatTime(wakeWindowEnd)}`,
+            duration: `${(sleepDuration / 60).toFixed(1)} hrs`
+          });
+        }
+
+        if (this.mode === 'sleep') {
+          const bedTime = startTime;
+          for (let cycles = 4; cycles <= 6; cycles++) {
+            const sleepDuration = this.settings.latency + cycles * this.settings.cycleLength;
+            const wakeTime = bedTime + sleepDuration;
+            const wakeWindowEnd = wakeTime + this.settings.wakeWindow;
+
+            results[cycles - 4] = {
+              cycles: cycles,
+              wakeTime: wakeTime % (24 * 60),
+              wakeTimeStr: this.formatTime(wakeTime),
+              bedTime: bedTime,
+              wakeWindowStr: `${this.formatTime(wakeTime)} - ${this.formatTime(wakeWindowEnd)}`,
+              duration: `${(sleepDuration / 60).toFixed(1)} hrs`
+            };
+          }
+        }
+
+        this.renderResults(results);
+      },
+
+      renderResults(results) {
+        const listHtml = results.map((r, i) => {
+          const isBest = Math.abs(r.cycles - 5) === 0;
+          const resultTime = this.mode === 'wake' ? r.bedTimeStr : r.wakeTimeStr;
+          const isSelected = this.selectedResult === i;
+
+          return `
+            <button class="result-card ${isSelected ? 'selected' : ''} ${isBest ? 'best' : ''}" data-index="${i}">
+              <div class="result-time">${resultTime}</div>
+              <div class="result-details">
+                <span class="result-detail">${r.cycles} cycles</span>
+                <span class="result-detail">${r.duration}</span>
+              </div>
+            </button>
+          `;
+        }).join('');
+
+        document.getElementById('resultsList').innerHTML = listHtml;
+
+        document.querySelectorAll('.result-card').forEach(card => {
+          card.addEventListener('click', () => {
+            const index = card.dataset.index;
+            document.querySelectorAll('.result-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            this.selectedResult = index;
+          });
+        });
+
+        document.getElementById('resultsLabel').textContent = this.mode === 'wake' ? 'Go to bed at...' : 'Wake up at...';
+      },
+
+      saveSettings() {
+        localStorage.setItem('sleepSettings', JSON.stringify(this.settings));
+      },
+
+      loadSettings() {
+        const saved = localStorage.getItem('sleepSettings');
+        if (saved) {
+          this.settings = JSON.parse(saved);
+          document.getElementById('latencyValue').textContent = this.settings.latency;
+          document.getElementById('cycleLengthValue').textContent = this.settings.cycleLength;
+          document.getElementById('wakeWindowValue').textContent = this.settings.wakeWindow;
+          document.getElementById('latency').value = this.settings.latency;
+          document.getElementById('cycleLength').value = this.settings.cycleLength;
+          document.getElementById('wakeWindow').value = this.settings.wakeWindow;
+        }
+      }
+    };
+
+    app.init();
+  </script>
+</body>
 </html>
