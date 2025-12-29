@@ -381,6 +381,29 @@
       font-size: 18px;
     }
 
+    .share-btn {
+      background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 16px;
+      display: inline-block;
+    }
+
+    .share-btn:hover {
+      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .share-btn:active {
+      transform: translateY(0);
+    }
+
     .info-section {
       background: rgba(99, 102, 241, 0.1);
       border: 1px solid rgba(99, 102, 241, 0.2);
@@ -605,6 +628,8 @@
       <div class="info-section">
         <strong>How it works:</strong> Your body completes a sleep cycle roughly every 90 minutes. Waking between cycles leaves you groggier, while waking at the end of a cycle gives you better rest. We account for sleep latency (time to fall asleep) and a brief wake window (15-30 min before rising) for the smoothest morning.
       </div>
+
+      <button class="share-btn" id="shareBtn" data-testid="button-share-link">Share Link</button>
     </div>
   </div>
 
@@ -626,6 +651,7 @@
       init() {
         this.setupEventListeners();
         this.loadSettings();
+        this.loadFromUrl();
         this.calculate();
       },
 
@@ -634,6 +660,9 @@
         document.querySelectorAll('.mode-btn').forEach(btn => {
           btn.addEventListener('click', (e) => this.setMode(e.target.closest('.mode-btn').dataset.mode));
         });
+
+        // Share link button
+        document.getElementById('shareBtn').addEventListener('click', () => this.shareLink());
 
         // Settings toggle
         document.getElementById('toggleSettings').addEventListener('click', () => {
@@ -862,6 +891,41 @@
 
       saveSettings() {
         localStorage.setItem('sleepSettings', JSON.stringify(this.settings));
+      },
+
+      loadFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('mode')) {
+          const mode = params.get('mode');
+          if (mode === 'wake' || mode === 'sleep') this.setMode(mode);
+        }
+        if (params.has('hour')) this.hour = Math.max(1, Math.min(12, parseInt(params.get('hour')) || 1));
+        if (params.has('minute')) this.minute = Math.max(0, Math.min(59, parseInt(params.get('minute')) || 0));
+        if (params.has('period')) {
+          const period = params.get('period');
+          if (period === 'AM' || period === 'PM') this.period = period;
+        }
+        if (params.has('latency')) this.settings.latency = Math.max(0, Math.min(60, parseInt(params.get('latency')) || 10));
+        if (params.has('cycleLength')) this.settings.cycleLength = Math.max(80, Math.min(110, parseInt(params.get('cycleLength')) || 90));
+        this.updateTimePicker();
+      },
+
+      shareLink() {
+        const params = new URLSearchParams({
+          mode: this.mode,
+          hour: this.hour,
+          minute: this.minute,
+          period: this.period,
+          latency: this.settings.latency,
+          cycleLength: this.settings.cycleLength
+        });
+        const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          const btn = document.getElementById('shareBtn');
+          const originalText = btn.textContent;
+          btn.textContent = 'Link copied!';
+          setTimeout(() => { btn.textContent = originalText; }, 2000);
+        }).catch(() => { alert('Could not copy link. URL: ' + shareUrl); });
       },
 
       loadSettings() {
