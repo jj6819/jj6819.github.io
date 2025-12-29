@@ -373,6 +373,13 @@
       color: #a5b4fc;
     }
 
+    .result-window {
+      font-size: 13px;
+      color: #a5b4fc;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
     .result-details {
       display: flex;
       justify-content: space-between;
@@ -866,10 +873,13 @@
           const isBest = Math.abs(r.cycles - 5) === 0;
           const resultTime = this.mode === 'wake' ? r.bedTimeStr : r.wakeTimeStr;
           const isSelected = this.selectedResult === i;
+          const windowLabel = this.mode === 'wake' ? 'Go to bed between:' : 'Wake between:';
+          const showWindow = this.settings.wakeWindow > 0;
 
           return `
             <button class="result-card ${isSelected ? 'selected' : ''} ${isBest ? 'best' : ''}" data-index="${i}">
               <div class="result-time">${resultTime}</div>
+              ${showWindow ? `<div class="result-window">${windowLabel} ${r.wakeWindowStr}</div>` : ''}
               <div class="result-details">
                 <span class="result-detail">${r.cycles} cycles</span>
                 <span class="result-detail">${r.duration}</span>
