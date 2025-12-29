@@ -181,6 +181,45 @@
       cursor: pointer;
     }
 
+    .time-format-toggle {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle-switch {
+      display: flex;
+      background: rgba(99, 102, 241, 0.2);
+      border-radius: 20px;
+      padding: 4px;
+      width: 80px;
+      cursor: pointer;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .toggle-switch.active {
+      background: rgba(99, 102, 241, 0.4);
+      border-color: rgba(99, 102, 241, 0.6);
+    }
+
+    .toggle-option {
+      flex: 1;
+      padding: 6px 12px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #94a3b8;
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .toggle-option.active {
+      background: #4f46e5;
+      color: white;
+    }
+
     .time-picker-container {
       position: relative;
       margin-bottom: 32px;
@@ -587,6 +626,15 @@
           <input type="range" id="wakeWindow" min="0" max="30" value="10">
           <div class="setting-value"><span id="wakeWindowValue">10</span> min</div>
         </div>
+        <div class="setting-group">
+          <label class="setting-label">Time Format</label>
+          <div class="time-format-toggle">
+            <div class="toggle-switch active" id="timeFormatToggle">
+              <div class="toggle-option active" data-format="12">12h</div>
+              <div class="toggle-option" data-format="24">24h</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <label class="label" id="timeLabel">I want to wake up at...</label>
@@ -640,6 +688,7 @@
       hour: 1,
       minute: 0,
       period: 'AM',
+      timeFormat: '12',
       settings: {
         latency: 10,
         cycleLength: 90,
@@ -692,6 +741,11 @@
           this.calculate();
         });
 
+        // Time format toggle
+        document.querySelectorAll('.toggle-option').forEach(btn => {
+          btn.addEventListener('click', (e) => this.setTimeFormat(e.target.dataset.format));
+        });
+
         // Time picker scroll
         ['hourColumn', 'minuteColumn', 'periodColumn'].forEach(id => {
           const col = document.getElementById(id);
@@ -704,6 +758,16 @@
           e.preventDefault();
           e.stopPropagation();
         });
+      },
+
+      setTimeFormat(format) {
+        this.timeFormat = format;
+        document.querySelectorAll('.toggle-option').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.format === format);
+        });
+        document.getElementById('timeFormatToggle').classList.toggle('active', format === '24');
+        this.updateTimePicker();
+        this.saveSettings();
       },
 
       setMode(mode) {
@@ -730,23 +794,31 @@
         e.preventDefault();
         e.stopPropagation();
 
-        if (columnId === 'periodColumn') {
-          // Period scrolls up/down
+        if (columnId === 'periodColumn' && this.timeFormat === '12') {
           const direction = e.deltaY > 0 ? 1 : -1;
           this.period = direction > 0 ? 'PM' : 'AM';
           this.updateTimePicker();
           this.calculate();
-        } else {
-          // Hours and minutes use scroll velocity
+        } else if (columnId === 'hourColumn') {
           const direction = e.deltaY > 0 ? 1 : -1;
           this.scrollVelocity += direction;
 
           if (Math.abs(this.scrollVelocity) >= 4) {
-            if (columnId === 'hourColumn') {
+            if (this.timeFormat === '12') {
               this.hour = ((this.hour - 1 + (this.scrollVelocity > 0 ? 1 : -1) + 12) % 12) + 1;
-            } else if (columnId === 'minuteColumn') {
-              this.minute = (this.minute + (this.scrollVelocity > 0 ? 1 : -1) + 60) % 60;
+            } else {
+              this.hour = (this.hour + (this.scrollVelocity > 0 ? 1 : -1) + 24) % 24;
             }
+            this.scrollVelocity = 0;
+            this.updateTimePicker();
+            this.calculate();
+          }
+        } else if (columnId === 'minuteColumn') {
+          const direction = e.deltaY > 0 ? 1 : -1;
+          this.scrollVelocity += direction;
+
+          if (Math.abs(this.scrollVelocity) >= 4) {
+            this.minute = (this.minute + (this.scrollVelocity > 0 ? 1 : -1) + 60) % 60;
             this.scrollVelocity = 0;
             this.updateTimePicker();
             this.calculate();
@@ -762,21 +834,23 @@
         if (!e.currentTarget.touchStartY) return;
         const diff = e.touches[0].clientY - e.currentTarget.touchStartY;
         if (Math.abs(diff) > 20) {
-          if (columnId === 'periodColumn') {
-            // Period scrolls up/down on touch
-            const direction = diff > 0 ? -1 : 1;
+          const direction = diff > 0 ? -1 : 1;
+          if (columnId === 'periodColumn' && this.timeFormat === '12') {
             this.period = direction > 0 ? 'PM' : 'AM';
             e.currentTarget.touchStartY = e.touches[0].clientY;
             this.updateTimePicker();
             this.calculate();
-          } else {
-            // Hours and minutes use direction
-            const direction = diff > 0 ? -1 : 1;
-            if (columnId === 'hourColumn') {
+          } else if (columnId === 'hourColumn') {
+            if (this.timeFormat === '12') {
               this.hour = ((this.hour - 1 + direction + 12) % 12) + 1;
-            } else if (columnId === 'minuteColumn') {
-              this.minute = (this.minute + direction + 60) % 60;
+            } else {
+              this.hour = (this.hour + direction + 24) % 24;
             }
+            e.currentTarget.touchStartY = e.touches[0].clientY;
+            this.updateTimePicker();
+            this.calculate();
+          } else if (columnId === 'minuteColumn') {
+            this.minute = (this.minute + direction + 60) % 60;
             e.currentTarget.touchStartY = e.touches[0].clientY;
             this.updateTimePicker();
             this.calculate();
@@ -785,17 +859,25 @@
       },
 
       updateTimePicker() {
-        document.getElementById('hourSelected').textContent = String(this.hour).padStart(2, '0');
-        document.getElementById('hourAbove').textContent = String(((this.hour - 2 + 12) % 12) + 1).padStart(2, '0');
-        document.getElementById('hourBelow').textContent = String((this.hour % 12) + 1).padStart(2, '0');
+        if (this.timeFormat === '12') {
+          document.getElementById('hourSelected').textContent = String(this.hour).padStart(2, '0');
+          document.getElementById('hourAbove').textContent = String(((this.hour - 2 + 12) % 12) + 1).padStart(2, '0');
+          document.getElementById('hourBelow').textContent = String((this.hour % 12) + 1).padStart(2, '0');
+          document.getElementById('periodSelected').textContent = this.period;
+          document.getElementById('periodAbove').textContent = this.period === 'AM' ? 'PM' : 'AM';
+          document.getElementById('periodBelow').textContent = this.period === 'AM' ? 'PM' : 'AM';
+          document.getElementById('periodColumn').style.display = 'flex';
+        } else {
+          const hour24 = this.period === 'AM' ? this.hour === 12 ? 0 : this.hour : this.hour === 12 ? 12 : this.hour + 12;
+          document.getElementById('hourSelected').textContent = String(hour24).padStart(2, '0');
+          document.getElementById('hourAbove').textContent = String((hour24 - 1 + 24) % 24).padStart(2, '0');
+          document.getElementById('hourBelow').textContent = String((hour24 + 1) % 24).padStart(2, '0');
+          document.getElementById('periodColumn').style.display = 'none';
+        }
 
         document.getElementById('minuteSelected').textContent = String(this.minute).padStart(2, '0');
         document.getElementById('minuteAbove').textContent = String((this.minute - 1 + 60) % 60).padStart(2, '0');
         document.getElementById('minuteBelow').textContent = String((this.minute + 1) % 60).padStart(2, '0');
-
-        document.getElementById('periodSelected').textContent = this.period;
-        document.getElementById('periodAbove').textContent = this.period === 'AM' ? 'PM' : 'AM';
-        document.getElementById('periodBelow').textContent = this.period === 'AM' ? 'PM' : 'AM';
       },
 
 
@@ -811,9 +893,13 @@
         if (totalMinutes < 0) totalMinutes += 24 * 60;
         const h = Math.floor(totalMinutes / 60);
         const m = totalMinutes % 60;
-        const period = h >= 12 ? 'PM' : 'AM';
-        const hour12 = h % 12 || 12;
-        return `${String(hour12).padStart(2, '0')}:${String(m).padStart(2, '0')} ${period}`;
+        if (this.timeFormat === '12') {
+          const period = h >= 12 ? 'PM' : 'AM';
+          const hour12 = h % 12 || 12;
+          return `${String(hour12).padStart(2, '0')}:${String(m).padStart(2, '0')} ${period}`;
+        } else {
+          return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+        }
       },
 
       calculate() {
@@ -932,14 +1018,24 @@
       loadSettings() {
         const saved = localStorage.getItem('sleepSettings');
         if (saved) {
-          this.settings = JSON.parse(saved);
+          const data = JSON.parse(saved);
+          this.settings = data.settings || this.settings;
+          this.timeFormat = data.timeFormat || '12';
           document.getElementById('latencyValue').textContent = this.settings.latency;
           document.getElementById('cycleLengthValue').textContent = this.settings.cycleLength;
           document.getElementById('wakeWindowValue').textContent = this.settings.wakeWindow;
           document.getElementById('latency').value = this.settings.latency;
           document.getElementById('cycleLength').value = this.settings.cycleLength;
           document.getElementById('wakeWindow').value = this.settings.wakeWindow;
+          document.querySelectorAll('.toggle-option').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.format === this.timeFormat);
+          });
+          document.getElementById('timeFormatToggle').classList.toggle('active', this.timeFormat === '24');
         }
+      },
+
+      saveSettings() {
+        localStorage.setItem('sleepSettings', JSON.stringify({ settings: this.settings, timeFormat: this.timeFormat }));
       }
     };
 
