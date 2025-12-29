@@ -256,10 +256,12 @@
 
     .owl-perch {
       position: absolute;
-      top: -50px;
-      right: 16px;
-      font-size: 60px;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 180px;
       z-index: 10;
+      line-height: 1;
     }
 
     .results {
@@ -474,8 +476,8 @@
             <div class="time-column-highlight"></div>
           </div>
 
-          <!-- Owl Emoji -->
-          <div class="owl-perch">🦉</div>
+          <!-- Cute Emoji -->
+          <div class="owl-perch">😴</div>
         </div>
       </div>
 
@@ -579,8 +581,9 @@
         e.stopPropagation();
 
         if (columnId === 'periodColumn') {
-          // Period just toggles, no scroll accumulation
-          this.period = this.period === 'AM' ? 'PM' : 'AM';
+          // Period scrolls up/down
+          const direction = e.deltaY > 0 ? 1 : -1;
+          this.period = direction > 0 ? 'PM' : 'AM';
           this.updateTimePicker();
           this.calculate();
         } else {
@@ -610,8 +613,9 @@
         const diff = e.touches[0].clientY - e.currentTarget.touchStartY;
         if (Math.abs(diff) > 20) {
           if (columnId === 'periodColumn') {
-            // Period just toggles on any significant touch movement
-            this.period = this.period === 'AM' ? 'PM' : 'AM';
+            // Period scrolls up/down on touch
+            const direction = diff > 0 ? -1 : 1;
+            this.period = direction > 0 ? 'PM' : 'AM';
             e.currentTarget.touchStartY = e.touches[0].clientY;
             this.updateTimePicker();
             this.calculate();
