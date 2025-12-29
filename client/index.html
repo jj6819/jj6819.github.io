@@ -35,6 +35,11 @@
       padding: 20px;
     }
 
+    html.light-mode body {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      color: #1e293b;
+    }
+
     .container {
       max-width: 600px;
       margin: 0 auto;
@@ -420,6 +425,23 @@
       font-size: 18px;
     }
 
+    .theme-toggle-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+    }
+
+    .theme-toggle-btn:hover {
+      opacity: 1;
+    }
+
     .share-btn {
       background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
       color: white;
@@ -586,6 +608,7 @@
   </style>
 </head>
 <body>
+  <button class="theme-toggle-btn" id="themeToggle" title="Toggle light/dark mode">🌙</button>
   <div class="container">
     <header>
       <div>
@@ -699,6 +722,7 @@
       lastWheelTime: 0,
 
       init() {
+        this.loadTheme();
         this.setupEventListeners();
         this.loadSettings();
         this.loadFromUrl();
@@ -706,6 +730,9 @@
       },
 
       setupEventListeners() {
+        // Theme toggle
+        document.getElementById('themeToggle').addEventListener('click', () => this.toggleTheme());
+
         // Mode tabs
         document.querySelectorAll('.mode-btn').forEach(btn => {
           btn.addEventListener('click', (e) => this.setMode(e.target.closest('.mode-btn').dataset.mode));
@@ -758,6 +785,22 @@
           e.preventDefault();
           e.stopPropagation();
         });
+      },
+
+      toggleTheme() {
+        const html = document.documentElement;
+        html.classList.toggle('light-mode');
+        const isLightMode = html.classList.contains('light-mode');
+        localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+        document.getElementById('themeToggle').textContent = isLightMode ? '☀️' : '🌙';
+      },
+
+      loadTheme() {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light') {
+          document.documentElement.classList.add('light-mode');
+          document.getElementById('themeToggle').textContent = '☀️';
+        }
       },
 
       setTimeFormat(format) {
