@@ -373,23 +373,6 @@
       color: #a5b4fc;
     }
 
-    .result-badge {
-      font-size: 12px;
-      font-weight: 600;
-      color: #fbbf24;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
-    }
-
-    .result-card.best .result-badge {
-      color: #fbbf24;
-    }
-
-    .result-card.selected .result-badge {
-      color: #fbbf24;
-    }
-
     .result-window {
       font-size: 15px;
       color: #a5b4fc;
@@ -889,49 +872,16 @@
         this.renderResults(results);
       },
 
-      getBestCyclesBadge(cycles, duration) {
-        const timeInBedMinutes = this.settings.latency + cycles * this.settings.cycleLength;
-        const timeInBedHours = timeInBedMinutes / 60;
-        
-        // Scoring rule: prefer 6 if reasonable, otherwise 5, fallback to closest
-        if (cycles === 6 && timeInBedHours <= 9.5) {
-          return '⭐ Best option';
-        } else if (cycles === 5) {
-          return '⭐ Best option';
-        } else if (cycles === 5 || cycles === 6) {
-          return 'Recommended';
-        }
-        return null;
-      },
-
       renderResults(results) {
-        // Determine best option based on scoring rule
-        let bestIndex = -1;
-        for (let i = 0; i < results.length; i++) {
-          const r = results[i];
-          const timeInBedMinutes = this.settings.latency + r.cycles * this.settings.cycleLength;
-          const timeInBedHours = timeInBedMinutes / 60;
-          
-          // Prefer 6 cycles if time-in-bed is reasonable
-          if (r.cycles === 6 && timeInBedHours <= 9.5) {
-            bestIndex = i;
-            break;
-          } else if (r.cycles === 5) {
-            bestIndex = i;
-          }
-        }
-
         const listHtml = results.map((r, i) => {
+          const isBest = Math.abs(r.cycles - 5) === 0;
           const resultTime = this.mode === 'wake' ? r.bedTimeStr : r.wakeTimeStr;
           const isSelected = this.selectedResult === i;
           const windowLabel = this.mode === 'wake' ? 'Go to bed between:' : 'Wake between:';
           const showWindow = this.settings.wakeWindow > 0;
-          const isBest = bestIndex === i;
-          const badge = this.getBestCyclesBadge(r.cycles, r.duration);
 
           return `
             <button class="result-card ${isSelected ? 'selected' : ''} ${isBest ? 'best' : ''}" data-index="${i}">
-              ${badge ? `<div class="result-badge">${badge}</div>` : ''}
               <div class="result-time">${resultTime}</div>
               ${showWindow ? `<div class="result-window">${windowLabel} ${r.wakeWindowStr}</div>` : ''}
               <div class="result-details">
