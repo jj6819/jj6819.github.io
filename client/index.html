@@ -35,15 +35,6 @@
       padding: 20px;
     }
 
-    html.light-mode body {
-      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-      color: #1e293b;
-    }
-
-    html.light-mode .title {
-      color: #334155;
-    }
-
     .container {
       max-width: 600px;
       margin: 0 auto;
@@ -429,23 +420,6 @@
       font-size: 18px;
     }
 
-    .theme-toggle-btn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      opacity: 0.6;
-      transition: opacity 0.3s ease;
-      z-index: 100;
-    }
-
-    .theme-toggle-btn:hover {
-      opacity: 1;
-    }
-
     .share-btn {
       background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
       color: white;
@@ -481,105 +455,6 @@
       color: #cbd5e1;
     }
 
-    @media (prefers-color-scheme: light) {
-      body {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        color: #1e293b;
-      }
-
-      .title {
-        color: #334155;
-      }
-
-      .subtitle {
-        color: #475569;
-      }
-
-      .main-content {
-        background: linear-gradient(135deg, rgba(241, 245, 249, 0.8) 0%, rgba(248, 250, 252, 0.8) 100%);
-        border-color: rgba(99, 102, 241, 0.2);
-      }
-
-      .mode-tabs {
-        background: rgba(241, 245, 249, 0.6);
-        border-color: rgba(99, 102, 241, 0.2);
-      }
-
-      .mode-btn {
-        color: #475569;
-      }
-
-      .mode-btn.active {
-        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
-        color: white;
-      }
-
-      .time-picker {
-        background: linear-gradient(135deg, rgba(226, 232, 240, 0.8) 0%, rgba(241, 245, 249, 0.8) 100%);
-        border-color: rgba(99, 102, 241, 0.3);
-      }
-
-      .time-column-faded {
-        color: rgba(71, 85, 105, 0.3);
-      }
-
-      .time-column-selected {
-        color: #0f172a;
-        text-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
-      }
-
-      .label {
-        color: #0f172a;
-      }
-
-      .result-card {
-        background: rgba(226, 232, 240, 0.4);
-        border-color: rgba(148, 163, 184, 0.3);
-      }
-
-      .result-card:hover {
-        border-color: rgba(99, 102, 241, 0.5);
-        background: rgba(226, 232, 240, 0.6);
-      }
-
-      .result-card.selected {
-        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
-        color: white;
-      }
-
-      .result-time {
-        color: #4f46e5;
-      }
-
-      .result-card.selected .result-time {
-        color: white;
-      }
-
-      .result-details {
-        color: #475569;
-      }
-
-      .result-detail {
-        color: #64748b;
-      }
-
-      .result-card.selected .result-detail {
-        color: rgba(255, 255, 255, 0.8);
-      }
-
-      .info-section {
-        background: rgba(99, 102, 241, 0.08);
-        border-color: rgba(99, 102, 241, 0.2);
-        color: #334155;
-      }
-
-      .ad-space {
-        background: rgba(248, 250, 252, 0.5);
-        border-color: rgba(99, 102, 241, 0.2);
-        color: #94a3b8;
-      }
-    }
-
     @media (max-width: 480px) {
       .title {
         font-size: 28px;
@@ -612,7 +487,6 @@
   </style>
 </head>
 <body>
-  <button class="theme-toggle-btn" id="themeToggle" title="Toggle light/dark mode">🌙</button>
   <div class="container">
     <header>
       <div>
@@ -726,7 +600,6 @@
       lastWheelTime: 0,
 
       init() {
-        this.loadTheme();
         this.setupEventListeners();
         this.loadSettings();
         this.loadFromUrl();
@@ -734,9 +607,6 @@
       },
 
       setupEventListeners() {
-        // Theme toggle
-        document.getElementById('themeToggle').addEventListener('click', () => this.toggleTheme());
-
         // Mode tabs
         document.querySelectorAll('.mode-btn').forEach(btn => {
           btn.addEventListener('click', (e) => this.setMode(e.target.closest('.mode-btn').dataset.mode));
@@ -789,22 +659,6 @@
           e.preventDefault();
           e.stopPropagation();
         });
-      },
-
-      toggleTheme() {
-        const html = document.documentElement;
-        html.classList.toggle('light-mode');
-        const isLightMode = html.classList.contains('light-mode');
-        localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
-        document.getElementById('themeToggle').textContent = isLightMode ? '☀️' : '🌙';
-      },
-
-      loadTheme() {
-        const theme = localStorage.getItem('theme');
-        if (theme === 'light') {
-          document.documentElement.classList.add('light-mode');
-          document.getElementById('themeToggle').textContent = '☀️';
-        }
       },
 
       setTimeFormat(format) {
