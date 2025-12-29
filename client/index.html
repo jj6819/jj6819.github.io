@@ -803,7 +803,7 @@
           const direction = e.deltaY > 0 ? 1 : -1;
           this.scrollVelocity += direction;
 
-          if (Math.abs(this.scrollVelocity) >= 4) {
+          if (Math.abs(this.scrollVelocity) >= 6) {
             if (this.timeFormat === '12') {
               this.hour = ((this.hour - 1 + (this.scrollVelocity > 0 ? 1 : -1) + 12) % 12) + 1;
             } else {
@@ -817,7 +817,7 @@
           const direction = e.deltaY > 0 ? 1 : -1;
           this.scrollVelocity += direction;
 
-          if (Math.abs(this.scrollVelocity) >= 4) {
+          if (Math.abs(this.scrollVelocity) >= 6) {
             this.minute = (this.minute + (this.scrollVelocity > 0 ? 1 : -1) + 60) % 60;
             this.scrollVelocity = 0;
             this.updateTimePicker();
