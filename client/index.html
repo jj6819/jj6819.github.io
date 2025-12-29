@@ -623,21 +623,24 @@
 
     <div class="ad-space">Advertisement Space</div>
 
-    <div class="mode-tabs">
-      <button class="mode-btn active" data-mode="wake">
-        <span>⏰</span> Wake up at...
-      </button>
-      <button class="mode-btn" data-mode="sleep">
-        <span>🛏️</span> Bedtime now
-      </button>
-    </div>
-
     <div class="main-content">
       <div class="settings-toggle">
         <button class="settings-toggle-btn" id="toggleSettings">Settings</button>
       </div>
 
       <div class="settings-grid" id="settingsGrid">
+        <div class="setting-group">
+          <label class="setting-label">Mode</label>
+          <div class="mode-tabs">
+            <button class="mode-btn active" data-mode="wake">
+              <span>⏰</span> Wake up at...
+            </button>
+            <button class="mode-btn" data-mode="sleep">
+              <span>🛏️</span> Bedtime now
+            </button>
+          </div>
+        </div>
+
         <div class="setting-group">
           <label class="setting-label">Sleep Latency</label>
           <input type="range" id="latency" min="0" max="60" value="10">
