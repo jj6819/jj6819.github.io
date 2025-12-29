@@ -505,7 +505,6 @@
         this.setupEventListeners();
         this.loadSettings();
         this.calculate();
-        this.updateOwlEyes();
       },
 
       setupEventListeners() {
@@ -584,7 +583,6 @@
           this.period = this.period === 'AM' ? 'PM' : 'AM';
           this.updateTimePicker();
           this.calculate();
-          this.updateOwlEyes();
         } else {
           // Hours and minutes use scroll velocity
           const direction = e.deltaY > 0 ? 1 : -1;
@@ -599,7 +597,6 @@
             this.scrollVelocity = 0;
             this.updateTimePicker();
             this.calculate();
-            this.updateOwlEyes();
           }
         }
       },
@@ -618,7 +615,6 @@
             e.currentTarget.touchStartY = e.touches[0].clientY;
             this.updateTimePicker();
             this.calculate();
-            this.updateOwlEyes();
           } else {
             // Hours and minutes use direction
             const direction = diff > 0 ? -1 : 1;
@@ -630,7 +626,6 @@
             e.currentTarget.touchStartY = e.touches[0].clientY;
             this.updateTimePicker();
             this.calculate();
-            this.updateOwlEyes();
           }
         }
       },
@@ -649,26 +644,6 @@
         document.getElementById('periodBelow').textContent = this.period === 'AM' ? 'PM' : 'AM';
       },
 
-      updateOwlEyes() {
-        const leftEye = document.getElementById('leftPupil');
-        const rightEye = document.getElementById('rightPupil');
-        
-        if (!leftEye || !rightEye) return;
-        
-        const minVal = this.minute;
-        const maxVal = 59;
-        const range = maxVal - 0;
-        const percent = (minVal / range) * 100;
-        
-        const xOffset = (percent / 100 - 0.5) * 4;
-        const yOffset = (minVal % 12) / 12 * 2 - 1;
-        
-        leftEye.setAttribute('cx', 43 + xOffset);
-        leftEye.setAttribute('cy', 35 + yOffset);
-        
-        rightEye.setAttribute('cx', 77 + xOffset);
-        rightEye.setAttribute('cy', 35 + yOffset);
-      },
 
       to24Hour(hour, minute, period) {
         let h = hour;
