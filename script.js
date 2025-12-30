@@ -27,6 +27,16 @@ const app = {
         const infoSection = document.getElementById(`infoSection${i === 1 ? '' : i}`);
         const infoToggle = document.getElementById(`infoToggle${i === 1 ? '' : i}`);
         const isExpanded = infoSection.style.display !== 'none';
+        
+        // Close all other panels
+        for (let j = 1; j <= 6; j++) {
+          const otherSection = document.getElementById(`infoSection${j === 1 ? '' : j}`);
+          const otherToggle = document.getElementById(`infoToggle${j === 1 ? '' : j}`);
+          otherSection.style.display = 'none';
+          otherToggle.classList.remove('expanded');
+        }
+        
+        // Toggle current panel
         infoSection.style.display = isExpanded ? 'none' : 'block';
         infoToggle.classList.toggle('expanded');
       });
