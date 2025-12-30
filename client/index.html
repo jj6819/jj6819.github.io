@@ -690,6 +690,7 @@
         });
         document.getElementById('timeFormatToggle').classList.toggle('active', format === '24');
         this.updateTimePicker();
+        this.calculate();
         this.saveSettings();
       },
 
