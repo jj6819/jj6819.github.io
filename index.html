@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="description" content="Free sleep cycle calculator with adjustable sleep latency, 90-minute cycles, and a wake window. Find the best time to go to bed or wake up feeling refreshed." />
+  
+  <meta property="og:title" content="NightOwl Sleep Cycle Calculator" />
+  <meta property="og:description" content="Calculate the perfect bedtime and wake time based on sleep cycles. Plan your sleep for better rest and easier mornings." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://replit.com/public/images/opengraph.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@replit" />
+  <meta name="twitter:title" content="NightOwl Sleep Cycle Calculator" />
+  <meta name="twitter:description" content="Calculate the perfect bedtime and wake time based on sleep cycles. Plan your sleep for better rest and easier mornings." />
+  <meta name="twitter:image" content="https://replit.com/public/images/opengraph.png" />
+
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "#website",
+        "url": "https://nightowlsleepcalc.com/",
+        "name": "NightOwl Sleep Calc",
+        "description": "Sleep cycle calculator with adjustable sleep latency and a wake window to help you find better bedtimes and wake-up times.",
+        "inLanguage": "en"
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "#app",
+        "name": "NightOwl Sleep Cycle Calculator",
+        "url": "https://nightowlsleepcalc.com/",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Any",
+        "isAccessibleForFree": true,
+        "browserRequirements": "Requires JavaScript",
+        "description": "A free sleep cycle calculator that suggests bedtimes or wake-up times using 90-minute sleep cycles, adjustable sleep latency, and an optional wake window.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "NightOwl Sleep Calc",
+          "url": "https://nightowlsleepcalc.com/"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How many sleep cycles do I need?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Most adults feel best with about 5–6 full sleep cycles, which is roughly 7.5–9 hours of sleep time (plus the time it takes to fall asleep). Your ideal number can vary based on your schedule, recent sleep debt, and how you feel in the morning."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why does the calculator use 90-minute cycles?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A full sleep cycle (light sleep → deeper sleep → REM) often averages around 90 minutes, but it can be shorter or longer depending on the person and the night. This calculator lets you adjust cycle length so you can match what works best for you."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What's a normal sleep latency?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sleep latency is how long it takes you to fall asleep after you get in bed. Many people are around 10–20 minutes, but stress, caffeine, and screens can push it longer. If you often take 30+ minutes, try increasing the latency setting to make the recommendations more accurate."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is it better to wake at the end of a sleep cycle?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Waking near the end of a cycle may reduce sleep inertia (that groggy feeling), because you're less likely to wake from deep sleep. It's not perfect—sleep stages aren't a stopwatch—but cycle-based planning is a useful starting point."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is a wake window?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A wake window is a small time range (like 10–15 minutes) around your target bedtime or wake time. It adds flexibility so you can aim for a window instead of a single exact minute, while keeping the overall cycle timing similar."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">🌙</div><span class="brand-name">NightOwl</span>
+      </div>
+      <h1 class="title">Sleep Cycle Calculator</h1>
+      <p class="subtitle">Bedtimes + wake windows based on 90-minute cycles</p>
+    </header>
+
+    <div class="ad-space">Advertisement Space</div>
+
+    <div class="mode-tabs">
+      <button class="mode-btn active" data-mode="wake">
+        <span>⏰</span> Wake up at...
+      </button>
+      <button class="mode-btn" data-mode="sleep">
+        <span>🛏️</span> Bedtime now
+      </button>
+    </div>
+
+    <div class="main-content">
+      <div class="settings-toggle">
+        <button class="settings-toggle-btn" id="toggleSettings">Settings</button>
+      </div>
+
+      <div class="settings-grid" id="settingsGrid">
+        <div class="setting-group">
+          <label class="setting-label">Sleep Latency</label>
+          <input type="range" id="latency" min="0" max="60" value="10">
+          <div class="setting-value"><span id="latencyValue">10</span> min</div>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Cycle Length</label>
+          <input type="range" id="cycleLength" min="80" max="110" value="90">
+          <div class="setting-value"><span id="cycleLengthValue">90</span> min</div>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Wake Window</label>
+          <input type="range" id="wakeWindow" min="0" max="30" value="10">
+          <div class="setting-value"><span id="wakeWindowValue">10</span> min</div>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Time Format</label>
+          <div class="time-format-toggle">
+            <div class="toggle-switch active" id="timeFormatToggle">
+              <div class="toggle-option active" data-format="12">12h</div>
+              <div class="toggle-option" data-format="24">24h</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <label class="label" id="timeLabel">I want to wake up at...</label>
+
+      <div class="time-picker-container">
+        <div class="time-picker" id="timePicker">
+          <div class="time-column" id="hourColumn">
+            <div class="time-column-faded" id="hourAbove">12</div>
+            <div class="time-column-selected" id="hourSelected">01</div>
+            <div class="time-column-faded" id="hourBelow">02</div>
+            <div class="time-column-highlight"></div>
+          </div>
+          
+          <div class="time-column-separator">:</div>
+          
+          <div class="time-column" id="minuteColumn">
+            <div class="time-column-faded" id="minuteAbove">59</div>
+            <div class="time-column-selected" id="minuteSelected">00</div>
+            <div class="time-column-faded" id="minuteBelow">01</div>
+            <div class="time-column-highlight"></div>
+          </div>
+          
+          <div class="time-column" id="periodColumn">
+            <div class="time-column-faded" id="periodAbove">PM</div>
+            <div class="time-column-selected" id="periodSelected">AM</div>
+            <div class="time-column-faded" id="periodBelow">PM</div>
+            <div class="time-column-highlight"></div>
+          </div>
+
+          <div class="owl-perch">🦉</div>
+        </div>
+      </div>
+
+      <div class="results" id="results">
+        <div class="results-label" id="resultsLabel">Go to bed at...</div>
+        <div class="results-list" id="resultsList"></div>
+      </div>
+
+      <button class="info-toggle" id="infoToggle">
+        <span class="info-title">How this sleep cycle calculator works</span>
+        <span class="info-arrow">▼</span>
+      </button>
+      <div class="info-section" id="infoSection" style="display: none;">
+        <p>NightOwl Sleep Calc helps you choose bedtimes and wake-up times by counting full sleep cycles. A sleep cycle is the pattern your brain repeats through the night as you move through lighter sleep, deeper sleep, and REM. Many people average about a 90-minute cycle, which is why the calculator starts there—but everyone is different, so you can adjust the cycle length if you know you run shorter or longer.</p>
+        <p>The calculator also includes sleep latency, which is the time it typically takes you to fall asleep after you get into bed. If you usually drift off quickly, a lower latency may fit you better. If it often takes you longer—because of stress, caffeine, or screens—raise the latency setting so the recommendations match real life.</p>
+        <p>To use the tool, pick either "Wake up at…" to find the best time to go to bed, or "Bedtime now" to see when you might wake up feeling more refreshed. Each option shows a wake window: a flexible range (like 10 minutes) around the suggested time. That window makes planning easier, because you can aim for a range instead of a single exact minute while still staying close to an end-of-cycle wake-up.</p>
+      </div>
+
+      <button class="info-toggle" id="infoToggle2">
+        <span class="info-title">How many sleep cycles do I need?</span>
+        <span class="info-arrow">▼</span>
+      </button>
+      <div class="info-section" id="infoSection2" style="display: none;">
+        <p>Many adults feel best with about 5–6 cycles, which is roughly 7.5–9 hours of sleep time (plus sleep latency). If you're catching up on sleep, 6–7 cycles may feel better; if you're short on time, 4 cycles can be a workable minimum.</p>
+      </div>
+
+      <button class="info-toggle" id="infoToggle3">
+        <span class="info-title">Why 90 minutes?</span>
+        <span class="info-arrow">▼</span>
+      </button>
+      <div class="info-section" id="infoSection3" style="display: none;">
+        <p>A full sleep cycle often averages around 90 minutes, but it can vary across people and across nights. That's why the cycle length setting is adjustable—use the default as a starting point, then tweak it if the results consistently feel early or late for you.</p>
+      </div>
+
+      <button class="info-toggle" id="infoToggle4">
+        <span class="info-title">What's a normal sleep latency?</span>
+        <span class="info-arrow">▼</span>
+      </button>
+      <div class="info-section" id="infoSection4" style="display: none;">
+        <p>Sleep latency is how long it takes to fall asleep after you lie down. A common range is about 10–20 minutes, but it can be longer with stress, late caffeine, or bright screens. Set your latency to what's typical for you to keep the timing realistic.</p>
+      </div>
+
+      <button class="info-toggle" id="infoToggle5">
+        <span class="info-title">Is it better to wake at the end of a cycle?</span>
+        <span class="info-arrow">▼</span>
+      </button>
+      <div class="info-section" id="infoSection5" style="display: none;">
+        <p>Waking near the end of a cycle may reduce sleep inertia (the heavy, foggy feeling), since you're less likely to wake from deep sleep. Sleep isn't perfectly predictable, but cycle-based timing is a simple way to improve your odds.</p>
+      </div>
+
+      <button class="info-toggle" id="infoToggle6">
+        <span class="info-title">What is a wake window?</span>
+        <span class="info-arrow">▼</span>
+      </button>
+      <div class="info-section" id="infoSection6" style="display: none;">
+        <p>A wake window is a small range around a recommended bedtime or wake time, like 10–15 minutes. It gives you flexibility without changing the overall cycle timing much, so you can choose what fits your routine while staying close to the plan.</p>
+      </div>
+
+      <button class="share-btn" id="shareBtn" data-testid="button-share-link">Share Link</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-copyright">NightOwl Sleep Calc. All rights reserved.</div>
+    <div class="footer-disclaimer">Educational tool only — not medical advice.</div>
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>
