@@ -633,6 +633,46 @@
         <p>To use the tool, pick either "Wake up at…" to find the best time to go to bed, or "Bedtime now" to see when you might wake up feeling more refreshed. Each option shows a wake window: a flexible range (like 10 minutes) around the suggested time. That window makes planning easier, because you can aim for a range instead of a single exact minute while still staying close to an end-of-cycle wake-up.</p>
       </div>
 
+      <button class="info-toggle" id="infoToggle2">
+        <span class="info-title">How many sleep cycles do I need?</span>
+        <span class="info-arrow">▼</span>
+      </button>
+      <div class="info-section" id="infoSection2" style="display: none;">
+        <p>Many adults feel best with about 5–6 cycles, which is roughly 7.5–9 hours of sleep time (plus sleep latency). If you're catching up on sleep, 6–7 cycles may feel better; if you're short on time, 4 cycles can be a workable minimum.</p>
+      </div>
+
+      <button class="info-toggle" id="infoToggle3">
+        <span class="info-title">Why 90 minutes?</span>
+        <span class="info-arrow">▼</span>
+      </button>
+      <div class="info-section" id="infoSection3" style="display: none;">
+        <p>A full sleep cycle often averages around 90 minutes, but it can vary across people and across nights. That's why the cycle length setting is adjustable—use the default as a starting point, then tweak it if the results consistently feel early or late for you.</p>
+      </div>
+
+      <button class="info-toggle" id="infoToggle4">
+        <span class="info-title">What's a normal sleep latency?</span>
+        <span class="info-arrow">▼</span>
+      </button>
+      <div class="info-section" id="infoSection4" style="display: none;">
+        <p>Sleep latency is how long it takes to fall asleep after you lie down. A common range is about 10–20 minutes, but it can be longer with stress, late caffeine, or bright screens. Set your latency to what's typical for you to keep the timing realistic.</p>
+      </div>
+
+      <button class="info-toggle" id="infoToggle5">
+        <span class="info-title">Is it better to wake at the end of a cycle?</span>
+        <span class="info-arrow">▼</span>
+      </button>
+      <div class="info-section" id="infoSection5" style="display: none;">
+        <p>Waking near the end of a cycle may reduce sleep inertia (the heavy, foggy feeling), since you're less likely to wake from deep sleep. Sleep isn't perfectly predictable, but cycle-based timing is a simple way to improve your odds.</p>
+      </div>
+
+      <button class="info-toggle" id="infoToggle6">
+        <span class="info-title">What is a wake window?</span>
+        <span class="info-arrow">▼</span>
+      </button>
+      <div class="info-section" id="infoSection6" style="display: none;">
+        <p>A wake window is a small range around a recommended bedtime or wake time, like 10–15 minutes. It gives you flexibility without changing the overall cycle timing much, so you can choose what fits your routine while staying close to the plan.</p>
+      </div>
+
       <button class="share-btn" id="shareBtn" data-testid="button-share-link">Share Link</button>
     </div>
   </div>
@@ -661,14 +701,16 @@
       },
 
       setupEventListeners() {
-        // Info toggle
-        document.getElementById('infoToggle').addEventListener('click', () => {
-          const infoSection = document.getElementById('infoSection');
-          const infoToggle = document.getElementById('infoToggle');
-          const isExpanded = infoSection.style.display !== 'none';
-          infoSection.style.display = isExpanded ? 'none' : 'block';
-          infoToggle.classList.toggle('expanded');
-        });
+        // Info toggles - create event listeners for all expandable sections
+        for (let i = 1; i <= 6; i++) {
+          document.getElementById(`infoToggle${i === 1 ? '' : i}`).addEventListener('click', () => {
+            const infoSection = document.getElementById(`infoSection${i === 1 ? '' : i}`);
+            const infoToggle = document.getElementById(`infoToggle${i === 1 ? '' : i}`);
+            const isExpanded = infoSection.style.display !== 'none';
+            infoSection.style.display = isExpanded ? 'none' : 'block';
+            infoToggle.classList.toggle('expanded');
+          });
+        }
 
         // Mode tabs
         document.querySelectorAll('.mode-btn').forEach(btn => {
