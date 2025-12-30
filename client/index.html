@@ -47,11 +47,22 @@
       padding-top: 20px;
     }
 
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
     .logo {
-      font-size: 28px;
-      margin-right: 12px;
-      display: inline-block;
-      vertical-align: middle;
+      font-size: 24px;
+    }
+
+    .brand-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #cbd5e1;
     }
 
     .title {
@@ -61,8 +72,6 @@
       color: #ffffff;
       margin-bottom: 8px;
       letter-spacing: -0.5px;
-      display: inline-block;
-      vertical-align: middle;
     }
 
     .subtitle {
@@ -649,10 +658,11 @@
 <body>
   <div class="container">
     <header>
-      <div>
-        <div class="logo">🌙</div><h1 class="title">NightOwl</h1>
+      <div class="brand">
+        <div class="logo">🌙</div><span class="brand-name">NightOwl</span>
       </div>
-      <p class="subtitle">Sleep Cycle Calculator</p>
+      <h1 class="title">Sleep Cycle Calculator</h1>
+      <p class="subtitle">Bedtimes + wake windows based on 90-minute cycles</p>
     </header>
 
     <div class="ad-space">Advertisement Space</div>
