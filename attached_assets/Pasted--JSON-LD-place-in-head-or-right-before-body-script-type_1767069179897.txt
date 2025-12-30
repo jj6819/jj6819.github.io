@@ -1,0 +1,83 @@
+<!-- JSON-LD (place in <head> or right before </body>) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://nightowlsleepcalc.com/#website",
+      "url": "https://nightowlsleepcalc.com/",
+      "name": "NightOwl Sleep Calc",
+      "description": "Sleep cycle calculator with adjustable sleep latency and a wake window to help you find better bedtimes and wake-up times.",
+      "inLanguage": "en"
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://nightowlsleepcalc.com/#app",
+      "name": "NightOwl Sleep Cycle Calculator",
+      "url": "https://nightowlsleepcalc.com/",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Any",
+      "isAccessibleForFree": true,
+      "browserRequirements": "Requires JavaScript",
+      "description": "A free sleep cycle calculator that suggests bedtimes or wake-up times using 90-minute sleep cycles, adjustable sleep latency, and an optional wake window.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "NightOwl Sleep Calc",
+        "url": "https://nightowlsleepcalc.com/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://nightowlsleepcalc.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How many sleep cycles do I need?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most adults feel best with about 5–6 full sleep cycles, which is roughly 7.5–9 hours of sleep time (plus the time it takes to fall asleep). Your ideal number can vary based on your schedule, recent sleep debt, and how you feel in the morning."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does the calculator use 90-minute cycles?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A full sleep cycle (light sleep → deeper sleep → REM) often averages around 90 minutes, but it can be shorter or longer depending on the person and the night. This calculator lets you adjust cycle length so you can match what works best for you."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What’s a normal sleep latency?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sleep latency is how long it takes you to fall asleep after you get in bed. Many people are around 10–20 minutes, but stress, caffeine, and screens can push it longer. If you often take 30+ minutes, try increasing the latency setting to make the recommendations more accurate."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it better to wake at the end of a sleep cycle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Waking near the end of a cycle may reduce sleep inertia (that groggy feeling), because you’re less likely to wake from deep sleep. It’s not perfect—sleep stages aren’t a stopwatch—but cycle-based planning is a useful starting point."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a wake window?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A wake window is a small time range (like 10–15 minutes) around your target bedtime or wake time. It adds flexibility so you can aim for a window instead of a single exact minute, while keeping the overall cycle timing similar."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
