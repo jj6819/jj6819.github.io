@@ -110,6 +110,24 @@ const app = {
     });
     const newLabel = newMode === 'wake' ? 'I want to wake up at...' : 'I want to go to bed...';
     document.getElementById('timeLabel').textContent = newLabel;
+    
+    // Set timer to current time when switching to "Bedtime now" mode
+    if (newMode === 'sleep') {
+      const now = new Date();
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+      
+      if (this.timeFormat === '12') {
+        this.period = currentHour >= 12 ? 'PM' : 'AM';
+        this.hour = currentHour % 12 || 12;
+      } else {
+        this.hour = currentHour;
+        this.period = 'AM';
+      }
+      this.minute = currentMinute;
+      this.updateTimePicker();
+    }
+    
     this.calculate();
   },
 
