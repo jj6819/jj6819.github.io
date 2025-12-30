@@ -18,6 +18,7 @@ const app = {
     this.loadSettings();
     this.loadFromUrl();
     this.calculate();
+    document.getElementById('year').textContent = new Date().getFullYear();
   },
 
   setupEventListeners() {
