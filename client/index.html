@@ -513,6 +513,25 @@
       margin-bottom: 0;
     }
 
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      padding: 24px 20px;
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.8;
+      border-top: 1px solid rgba(99, 102, 241, 0.15);
+    }
+
+    footer .footer-copyright {
+      margin-bottom: 8px;
+    }
+
+    footer .footer-disclaimer {
+      font-size: 11px;
+      color: #475569;
+    }
+
     @media (max-width: 480px) {
       .title {
         font-size: 28px;
@@ -769,6 +788,11 @@
       <button class="share-btn" id="shareBtn" data-testid="button-share-link">Share Link</button>
     </div>
   </div>
+
+  <footer>
+    <div class="footer-copyright">NightOwl Sleep Calc. All rights reserved.</div>
+    <div class="footer-disclaimer">Educational tool only — not medical advice.</div>
+  </footer>
 
   <script>
     const app = {
