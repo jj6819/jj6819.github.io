@@ -85,6 +85,10 @@ const app = {
       col.addEventListener('keydown', (e) => this.handleTimeKeydown(e, id));
     });
 
+    document.getElementById('hourSelected').addEventListener('dblclick', () => this.startTimeEdit('hour'));
+    document.getElementById('minuteSelected').addEventListener('dblclick', () => this.startTimeEdit('minute'));
+    document.getElementById('periodSelected').addEventListener('dblclick', () => this.startTimeEdit('period'));
+
     document.getElementById('timePicker').addEventListener('wheel', (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -216,6 +220,62 @@ const app = {
       e.preventDefault();
       this.handleTimeScroll({ deltaY: 1, preventDefault: () => {}, stopPropagation: () => {} }, columnId);
     }
+  },
+
+  startTimeEdit(type) {
+    const elementId = type === 'hour' ? 'hourSelected' : type === 'minute' ? 'minuteSelected' : 'periodSelected';
+    const element = document.getElementById(elementId);
+    const currentValue = element.textContent;
+    
+    const input = document.createElement('input');
+    input.type = type === 'period' ? 'text' : 'number';
+    input.value = currentValue;
+    input.style.cssText = 'font-size: 56px; font-weight: 700; width: 100%; text-align: center; background: rgba(30, 41, 59, 0.9); color: #e0e7ff; border: 2px solid #4f46e5; border-radius: 8px; font-family: Poppins, monospace; padding: 8px;';
+    
+    if (type === 'hour') {
+      input.min = this.timeFormat === '12' ? '1' : '0';
+      input.max = this.timeFormat === '12' ? '12' : '23';
+    } else if (type === 'minute') {
+      input.min = '0';
+      input.max = '59';
+    }
+    
+    element.replaceWith(input);
+    input.focus();
+    input.select();
+    
+    const finalize = () => {
+      if (type === 'hour') {
+        let newVal = parseInt(input.value);
+        if (this.timeFormat === '12') {
+          newVal = Math.max(1, Math.min(12, newVal || this.hour));
+        } else {
+          newVal = Math.max(0, Math.min(23, newVal || this.hour));
+        }
+        this.hour = newVal;
+      } else if (type === 'minute') {
+        const newVal = Math.max(0, Math.min(59, parseInt(input.value) || this.minute));
+        this.minute = newVal;
+      } else if (type === 'period') {
+        const newVal = input.value.toUpperCase();
+        if (newVal === 'AM' || newVal === 'PM') {
+          this.period = newVal;
+        }
+      }
+      this.updateTimePicker();
+      this.calculate();
+    };
+    
+    input.addEventListener('blur', finalize);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        finalize();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        this.updateTimePicker();
+      }
+    });
   },
 
   updateTimePicker() {
