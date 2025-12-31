@@ -102,6 +102,22 @@ header {
   box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
 }
 
+.mode-btn.mode-switched {
+  animation: modeFlash 0.6s ease-out;
+}
+
+@keyframes modeFlash {
+  0% {
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3), 0 0 0 0 rgba(79, 70, 229, 0.8);
+  }
+  50% {
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3), 0 0 20px 8px rgba(79, 70, 229, 0.4);
+  }
+  100% {
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3), 0 0 0 0 rgba(79, 70, 229, 0);
+  }
+}
+
 .mode-btn:hover:not(.active) {
   color: #cbd5e1;
   background: rgba(99, 102, 241, 0.1);

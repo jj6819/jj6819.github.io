@@ -88,6 +88,8 @@ const app = {
       e.preventDefault();
       e.stopPropagation();
     });
+
+    document.getElementById('timePicker').addEventListener('keydown', (e) => this.handleTimeKeydown(e));
   },
 
   setTimeFormat(format) {
@@ -118,6 +120,14 @@ const app = {
     document.querySelectorAll('.mode-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.mode === newMode);
     });
+    
+    // Add visual feedback animation
+    const activeBtn = document.querySelector('.mode-btn.active');
+    if (activeBtn) {
+      activeBtn.classList.add('mode-switched');
+      setTimeout(() => activeBtn.classList.remove('mode-switched'), 600);
+    }
+    
     const newLabel = newMode === 'wake' ? 'I want to wake up at...' : 'I want to go to bed...';
     document.getElementById('timeLabel').textContent = newLabel;
     
@@ -196,6 +206,19 @@ const app = {
         this.updateTimePicker();
         this.calculate();
       }
+    }
+  },
+
+  handleTimeKeydown(e) {
+    const target = e.target.closest('.time-column');
+    if (!target) return;
+    
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      this.handleTimeScroll({ deltaY: -1, preventDefault: () => {}, stopPropagation: () => {} }, target.id);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      this.handleTimeScroll({ deltaY: 1, preventDefault: () => {}, stopPropagation: () => {} }, target.id);
     }
   },
 
