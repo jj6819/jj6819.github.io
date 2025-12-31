@@ -367,23 +367,33 @@ const app = {
 
   copyResult(index) {
     const r = document.querySelectorAll('.result-card')[index];
+    if (!r) return;
     const time = r.querySelector('.result-time').textContent;
-    const window = r.querySelector('.result-window')?.textContent || '';
+    const windowText = r.querySelector('.result-window')?.textContent || '';
     const details = Array.from(r.querySelectorAll('.result-detail')).map(d => d.textContent).join(' | ');
     
-    const baseUrl = window.location.href.split('?')[0];
-    const text = `NightOwl Sleep Plan:
-Time: ${time}
-${window ? `${window}\n` : ''}${details}
-Plan your sleep at: ${baseUrl}?mode=${this.mode}&hour=${this.hour}&minute=${this.minute}&period=${this.period}&latency=${this.settings.latency}&cycleLength=${this.settings.cycleLength}&selectedResult=${index}`;
+    const params = new URLSearchParams({
+      mode: this.mode,
+      hour: this.hour,
+      minute: this.minute,
+      period: this.period,
+      latency: this.settings.latency,
+      cycleLength: this.settings.cycleLength,
+      selectedResult: index
+    });
+
+    const shareUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?${params.toString()}`;
+    const text = `NightOwl Sleep Plan:\nTime: ${time}\n${windowText ? `${windowText}\n` : ''}${details}\nPlan your sleep at: ${shareUrl}`;
 
     navigator.clipboard.writeText(text).then(() => {
       const copyBtn = r.querySelector('.copy-btn');
-      const originalIcon = copyBtn.textContent;
-      copyBtn.textContent = '✅';
-      setTimeout(() => {
-        copyBtn.textContent = originalIcon;
-      }, 1500);
+      if (copyBtn) {
+        const originalIcon = copyBtn.textContent;
+        copyBtn.textContent = '✅';
+        setTimeout(() => {
+          copyBtn.textContent = originalIcon;
+        }, 1500);
+      }
     });
   },
 
