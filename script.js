@@ -145,7 +145,7 @@ const app = {
     e.preventDefault();
     e.stopPropagation();
     const now = Date.now();
-    if (now - this.lastWheelTime < 100) return;
+    if (now - this.lastWheelTime < 150) return;
     this.lastWheelTime = now;
     const direction = e.deltaY > 0 ? 1 : -1;
     if (columnId === 'periodColumn' && this.timeFormat === '12') {
