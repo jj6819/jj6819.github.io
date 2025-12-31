@@ -557,32 +557,422 @@ footer .footer-disclaimer {
   color: #475569;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+  body {
+    padding: 16px;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  header {
+    margin-bottom: 32px;
+    padding-top: 12px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .brand-name {
+    font-size: 18px;
+  }
+
   .title {
-    font-size: 28px;
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+  }
+
+  .ad-space {
+    padding: 16px;
+    margin-bottom: 24px;
+    font-size: 12px;
+  }
+
+  .mode-tabs {
+    gap: 10px;
+    padding: 6px;
+    margin-bottom: 24px;
+  }
+
+  .mode-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+    gap: 6px;
   }
 
   .main-content {
-    padding: 20px;
+    padding: 24px;
+    border-radius: 12px;
+  }
+
+  .label {
+    font-size: 16px;
+    margin-bottom: 12px;
   }
 
   .settings-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .setting-label {
+    font-size: 11px;
+  }
+
+  .setting-value {
+    font-size: 18px;
+  }
+
+  .time-picker-container {
+    margin-bottom: 24px;
   }
 
   .time-picker {
     padding: 20px 16px;
+    min-height: 160px;
+    gap: 6px;
+    border-radius: 12px;
+  }
+
+  .time-column {
+    height: 160px;
+    gap: 10px;
+  }
+
+  .time-column-faded {
+    font-size: 16px;
+    min-height: 36px;
   }
 
   .time-column-selected {
     font-size: 48px;
+    min-height: 60px;
+  }
+
+  .time-column-separator {
+    font-size: 40px;
+    margin: 0 2px;
+  }
+
+  .time-column-highlight {
+    height: 56px;
+  }
+
+  .owl-perch {
+    font-size: 80px;
+    top: -70px;
+    right: -4px;
+  }
+
+  .results {
+    margin-top: 24px;
+  }
+
+  .results-label {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .results-list {
+    gap: 10px;
   }
 
   .result-card {
-    padding: 12px;
+    padding: 14px;
+    border-radius: 10px;
   }
 
   .result-time {
     font-size: 24px;
+    margin-bottom: 4px;
+  }
+
+  .result-window {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .result-details {
+    font-size: 13px;
+    margin-top: 6px;
+  }
+
+  .result-card.best::before {
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+
+  .settings-toggle {
+    margin-bottom: 20px;
+    padding-top: 20px;
+  }
+
+  .settings-toggle-btn {
+    font-size: 13px;
+  }
+
+  .share-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+    margin-top: 12px;
+  }
+
+  .info-toggle {
+    padding: 14px;
+    font-size: 14px;
+    margin-top: 0;
+  }
+
+  .info-toggle:first-of-type {
+    margin-top: 28px;
+  }
+
+  .info-section {
+    padding: 14px;
+    font-size: 13px;
+  }
+
+  .info-section p {
+    margin-bottom: 12px;
+  }
+
+  footer {
+    margin-top: 48px;
+    padding: 16px;
+    font-size: 11px;
+  }
+
+  footer .footer-disclaimer {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+  }
+
+  header {
+    margin-bottom: 24px;
+    padding-top: 8px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .brand-name {
+    font-size: 16px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+
+  .ad-space {
+    padding: 12px;
+    margin-bottom: 16px;
+    font-size: 11px;
+    border-radius: 8px;
+  }
+
+  .mode-tabs {
+    gap: 8px;
+    padding: 4px;
+    margin-bottom: 16px;
+    border-radius: 10px;
+  }
+
+  .mode-btn {
+    padding: 9px 12px;
+    font-size: 12px;
+    gap: 4px;
+    border-radius: 6px;
+  }
+
+  .main-content {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .label {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .settings-grid {
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .setting-label {
+    font-size: 10px;
+  }
+
+  .setting-value {
+    font-size: 16px;
+  }
+
+  .toggle-switch {
+    width: 100px;
+  }
+
+  .time-picker-container {
+    margin-bottom: 16px;
+  }
+
+  .time-picker {
+    padding: 16px 12px;
+    min-height: 140px;
+    gap: 4px;
+    border-radius: 10px;
+  }
+
+  .time-column {
+    height: 140px;
+    gap: 8px;
+  }
+
+  .time-column-faded {
+    font-size: 14px;
+    min-height: 32px;
+  }
+
+  .time-column-selected {
+    font-size: 40px;
+    min-height: 52px;
+    text-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+  }
+
+  .time-column-separator {
+    font-size: 32px;
+    margin: 0;
+  }
+
+  .time-column-highlight {
+    height: 48px;
+  }
+
+  .owl-perch {
+    display: none;
+  }
+
+  .results {
+    margin-top: 16px;
+  }
+
+  .results-label {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .results-list {
+    gap: 8px;
+  }
+
+  .result-card {
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .result-time {
+    font-size: 20px;
+    margin-bottom: 3px;
+  }
+
+  .result-window {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .result-details {
+    font-size: 12px;
+    margin-top: 4px;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .result-detail {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .result-card.best::before {
+    font-size: 9px;
+    margin-bottom: 4px;
+  }
+
+  .settings-toggle {
+    margin-bottom: 16px;
+    padding-top: 16px;
+  }
+
+  .settings-toggle-btn {
+    font-size: 12px;
+  }
+
+  .settings-toggle-btn::after {
+    font-size: 16px;
+  }
+
+  .share-btn {
+    padding: 9px 16px;
+    font-size: 12px;
+    margin-top: 8px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .info-toggle {
+    padding: 12px;
+    font-size: 13px;
+    margin-top: 0;
+    border-radius: 0;
+  }
+
+  .info-toggle:first-of-type {
+    margin-top: 20px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .info-section {
+    padding: 12px;
+    font-size: 12px;
+    border-radius: 0;
+  }
+
+  .info-section:last-of-type {
+    border-radius: 0 0 8px 8px;
+  }
+
+  .info-section p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+
+  footer {
+    margin-top: 32px;
+    padding: 12px;
+    font-size: 10px;
+  }
+
+  footer .footer-copyright {
+    margin-bottom: 6px;
+  }
+
+  footer .footer-disclaimer {
+    font-size: 9px;
   }
 }
