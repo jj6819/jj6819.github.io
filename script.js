@@ -342,6 +342,15 @@ const app = {
       });
     });
 
+    // If a result was loaded from URL, trigger glow animation on it
+    if (this.selectedResult !== null) {
+      const selectedCard = document.querySelector(`.result-card[data-index="${this.selectedResult}"]`);
+      if (selectedCard) {
+        selectedCard.classList.add('glow');
+        setTimeout(() => selectedCard.classList.remove('glow'), 600);
+      }
+    }
+
     document.getElementById('resultsLabel').textContent = this.mode === 'wake' ? 'Go to bed at...' : 'Wake up at...';
   },
 
@@ -363,6 +372,12 @@ const app = {
     }
     if (params.has('latency')) this.settings.latency = Math.max(0, Math.min(60, parseInt(params.get('latency')) || 10));
     if (params.has('cycleLength')) this.settings.cycleLength = Math.max(80, Math.min(110, parseInt(params.get('cycleLength')) || 90));
+    if (params.has('selectedResult')) {
+      const selectedIdx = parseInt(params.get('selectedResult'));
+      if (selectedIdx >= 0 && selectedIdx <= 2) {
+        this.selectedResult = selectedIdx;
+      }
+    }
     this.updateTimePicker();
   },
 
@@ -375,6 +390,9 @@ const app = {
       latency: this.settings.latency,
       cycleLength: this.settings.cycleLength
     });
+    if (this.selectedResult !== null) {
+      params.append('selectedResult', this.selectedResult);
+    }
     const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
     navigator.clipboard.writeText(shareUrl).then(() => {
       const btn = document.getElementById('shareBtn');
