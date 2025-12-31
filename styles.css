@@ -502,6 +502,13 @@ input[type="range"] {
   font-size: 12px;
 }
 
+.info-toggle.expanded {
+  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+  color: white;
+  border-color: #4f46e5;
+  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+}
+
 .info-toggle.expanded .info-arrow {
   transform: rotate(180deg);
 }
