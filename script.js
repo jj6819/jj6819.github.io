@@ -262,6 +262,13 @@ const app = {
           this.period = newVal;
         }
       }
+      
+      // Restore the original element before updating
+      const newElement = document.createElement('div');
+      newElement.id = elementId;
+      newElement.className = 'time-column-selected';
+      input.replaceWith(newElement);
+      
       this.updateTimePicker();
       this.calculate();
     };
@@ -273,7 +280,7 @@ const app = {
         finalize();
       } else if (e.key === 'Escape') {
         e.preventDefault();
-        this.updateTimePicker();
+        input.replaceWith(element);
       }
     });
   },
