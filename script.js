@@ -79,10 +79,12 @@ const app = {
 
     ['hourColumn', 'minuteColumn', 'periodColumn'].forEach(id => {
       const col = document.getElementById(id);
-      col.addEventListener('wheel', (e) => this.handleTimeScroll(e, id));
-      col.addEventListener('touchstart', (e) => this.handleTouchStart(e, id));
-      col.addEventListener('touchmove', (e) => this.handleTouchMove(e, id));
-      col.addEventListener('keydown', (e) => this.handleTimeKeydown(e, id));
+      if (col) {
+        col.addEventListener('wheel', (e) => this.handleTimeScroll(e, id));
+        col.addEventListener('touchstart', (e) => this.handleTouchStart(e, id));
+        col.addEventListener('touchmove', (e) => this.handleTouchMove(e, id));
+        col.addEventListener('keydown', (e) => this.handleTimeKeydown(e, id));
+      }
     });
 
     document.getElementById('timePicker').addEventListener('wheel', (e) => {
