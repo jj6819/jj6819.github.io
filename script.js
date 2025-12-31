@@ -374,7 +374,7 @@ const app = {
     const text = `NightOwl Sleep Plan:
 Time: ${time}
 ${window ? `${window}\n` : ''}${details}
-Plan your sleep at: ${window.location.origin}${window.location.pathname}?mode=${this.mode}&hour=${this.hour}&minute=${this.minute}&period=${this.period}&latency=${this.settings.latency}&cycleLength=${this.settings.cycleLength}&selectedResult=${index}`;
+Plan your sleep at: ${window.location.href.split('?')[0]}?mode=${this.mode}&hour=${this.hour}&minute=${this.minute}&period=${this.period}&latency=${this.settings.latency}&cycleLength=${this.settings.cycleLength}&selectedResult=${index}`;
 
     navigator.clipboard.writeText(text).then(() => {
       const copyBtn = r.querySelector('.copy-btn');
