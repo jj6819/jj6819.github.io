@@ -317,6 +317,7 @@ const app = {
 
       return `
         <button class="result-card ${isSelected ? 'selected' : ''} ${isBest ? 'best' : ''}" data-index="${i}">
+          <div class="copy-btn" title="Copy to clipboard" data-index="${i}">📋</div>
           <div class="result-time">${resultTime}</div>
           ${showWindow ? `<div class="result-window">${windowLabel} ${r.wakeWindowStr}</div>` : ''}
           <div class="result-details">
@@ -333,7 +334,13 @@ const app = {
     document.getElementById('resultsList').innerHTML = listHtml;
 
     document.querySelectorAll('.result-card').forEach(card => {
-      card.addEventListener('click', () => {
+      card.addEventListener('click', (e) => {
+        // If clicking copy button, don't trigger selection
+        if (e.target.classList.contains('copy-btn')) {
+          this.copyResult(e.target.dataset.index);
+          return;
+        }
+
         const index = card.dataset.index;
         document.querySelectorAll('.result-card').forEach(c => {
           c.classList.remove('selected');
@@ -356,6 +363,27 @@ const app = {
     }
 
     document.getElementById('resultsLabel').textContent = this.mode === 'wake' ? 'Go to bed at...' : 'Wake up at...';
+  },
+
+  copyResult(index) {
+    const r = document.querySelectorAll('.result-card')[index];
+    const time = r.querySelector('.result-time').textContent;
+    const window = r.querySelector('.result-window')?.textContent || '';
+    const details = Array.from(r.querySelectorAll('.result-detail')).map(d => d.textContent).join(' | ');
+    
+    const text = `NightOwl Sleep Plan:
+Time: ${time}
+${window ? `${window}\n` : ''}${details}
+Plan your sleep at: ${window.location.origin}${window.location.pathname}?mode=${this.mode}&hour=${this.hour}&minute=${this.minute}&period=${this.period}&latency=${this.settings.latency}&cycleLength=${this.settings.cycleLength}&selectedResult=${index}`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      const copyBtn = r.querySelector('.copy-btn');
+      const originalIcon = copyBtn.textContent;
+      copyBtn.textContent = '✅';
+      setTimeout(() => {
+        copyBtn.textContent = originalIcon;
+      }, 1500);
+    });
   },
 
   saveSettings() {
