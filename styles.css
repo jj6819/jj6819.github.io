@@ -344,6 +344,28 @@ input[type="range"] {
   background: rgba(51, 65, 85, 0.8);
 }
 
+.result-explanation {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-style: italic;
+  display: block;
+}
+
+.result-card.selected .result-explanation {
+  color: rgba(255, 255, 255, 0.7);
+  border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 480px) {
+  .result-explanation {
+    font-size: 10px;
+    margin-top: 8px;
+  }
+}
+
 .result-card.selected {
   background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
   border-color: #4f46e5;

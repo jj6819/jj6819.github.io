@@ -323,6 +323,9 @@ const app = {
             <span class="result-detail">${r.cycles} cycles</span>
             <span class="result-detail">${r.duration}</span>
           </div>
+          <div class="result-explanation">
+            ${this.mode === 'wake' ? `(${this.settings.latency}m latency + ${r.cycles} cycles × ${this.settings.cycleLength}m)` : `(${this.settings.latency}m latency + ${r.cycles} cycles × ${this.settings.cycleLength}m)`}
+          </div>
         </button>
       `;
     }).join('');
