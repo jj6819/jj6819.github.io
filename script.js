@@ -82,14 +82,13 @@ const app = {
       col.addEventListener('wheel', (e) => this.handleTimeScroll(e, id));
       col.addEventListener('touchstart', (e) => this.handleTouchStart(e, id));
       col.addEventListener('touchmove', (e) => this.handleTouchMove(e, id));
+      col.addEventListener('keydown', (e) => this.handleTimeKeydown(e, id));
     });
 
     document.getElementById('timePicker').addEventListener('wheel', (e) => {
       e.preventDefault();
       e.stopPropagation();
     });
-
-    document.getElementById('timePicker').addEventListener('keydown', (e) => this.handleTimeKeydown(e));
   },
 
   setTimeFormat(format) {
@@ -209,16 +208,13 @@ const app = {
     }
   },
 
-  handleTimeKeydown(e) {
-    const target = e.target.closest('.time-column');
-    if (!target) return;
-    
+  handleTimeKeydown(e, columnId) {
     if (e.key === 'ArrowUp') {
       e.preventDefault();
-      this.handleTimeScroll({ deltaY: -1, preventDefault: () => {}, stopPropagation: () => {} }, target.id);
+      this.handleTimeScroll({ deltaY: -1, preventDefault: () => {}, stopPropagation: () => {} }, columnId);
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
-      this.handleTimeScroll({ deltaY: 1, preventDefault: () => {}, stopPropagation: () => {} }, target.id);
+      this.handleTimeScroll({ deltaY: 1, preventDefault: () => {}, stopPropagation: () => {} }, columnId);
     }
   },
 
