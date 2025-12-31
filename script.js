@@ -30,6 +30,7 @@ const app = {
         
         // Close all other panels
         for (let j = 1; j <= 6; j++) {
+          if (j === i) continue; // Skip the current panel
           const otherSection = document.getElementById(`infoSection${j === 1 ? '' : j}`);
           const otherToggle = document.getElementById(`infoToggle${j === 1 ? '' : j}`);
           otherSection.style.display = 'none';
