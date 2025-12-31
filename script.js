@@ -371,10 +371,11 @@ const app = {
     const window = r.querySelector('.result-window')?.textContent || '';
     const details = Array.from(r.querySelectorAll('.result-detail')).map(d => d.textContent).join(' | ');
     
+    const baseUrl = window.location.href.split('?')[0];
     const text = `NightOwl Sleep Plan:
 Time: ${time}
 ${window ? `${window}\n` : ''}${details}
-Plan your sleep at: ${window.location.href.split('?')[0]}?mode=${this.mode}&hour=${this.hour}&minute=${this.minute}&period=${this.period}&latency=${this.settings.latency}&cycleLength=${this.settings.cycleLength}&selectedResult=${index}`;
+Plan your sleep at: ${baseUrl}?mode=${this.mode}&hour=${this.hour}&minute=${this.minute}&period=${this.period}&latency=${this.settings.latency}&cycleLength=${this.settings.cycleLength}&selectedResult=${index}`;
 
     navigator.clipboard.writeText(text).then(() => {
       const copyBtn = r.querySelector('.copy-btn');
