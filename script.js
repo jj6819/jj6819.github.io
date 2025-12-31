@@ -331,8 +331,13 @@ const app = {
     document.querySelectorAll('.result-card').forEach(card => {
       card.addEventListener('click', () => {
         const index = card.dataset.index;
-        document.querySelectorAll('.result-card').forEach(c => c.classList.remove('selected'));
+        document.querySelectorAll('.result-card').forEach(c => {
+          c.classList.remove('selected');
+          c.classList.remove('glow');
+        });
         card.classList.add('selected');
+        card.classList.add('glow');
+        setTimeout(() => card.classList.remove('glow'), 600);
         this.selectedResult = index;
       });
     });
