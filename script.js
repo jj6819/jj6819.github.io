@@ -218,7 +218,6 @@ const app = {
     }
   },
 
-
   updateTimePicker() {
     if (this.timeFormat === '12') {
       document.getElementById('hourSelected').textContent = String(this.hour).padStart(2, '0');
