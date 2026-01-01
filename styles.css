@@ -32,10 +32,8 @@ header {
   margin-bottom: 16px;
 }
 
-.logo-img {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
+.logo {
+  font-size: 24px;
 }
 
 .brand-name {
