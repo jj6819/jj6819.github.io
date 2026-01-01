@@ -553,4 +553,22 @@ const app = {
   }
 };
 
+function createStars() {
+  const container = document.getElementById('starsContainer');
+  if (!container) return;
+  const starCount = 100;
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = Math.random() * 2 + 1;
+    star.style.width = `${size}px`;
+    star.style.height = `${size}px`;
+    star.style.left = `${Math.random() * 100}%`;
+    star.style.top = `${Math.random() * 100}%`;
+    star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+    star.style.animationDelay = `${Math.random() * 5}s`;
+    container.appendChild(star);
+  }
+}
+
 app.init();
