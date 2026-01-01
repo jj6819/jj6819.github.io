@@ -304,37 +304,12 @@ input[type="range"] {
 
 .owl-perch {
   position: absolute;
-  top: -120px;
-  right: -20px;
+  top: -100px;
+  right: -8px;
+  font-size: 120px;
   z-index: 10;
-  pointer-events: none;
-}
-
-.owl-img {
-  width: 140px;
-  height: auto;
-  display: block;
-}
-
-@media (max-width: 768px) {
-  .owl-perch {
-    top: -90px;
-    right: -10px;
-  }
-  .owl-img {
-    width: 100px;
-  }
-}
-
-@media (max-width: 480px) {
-  .owl-perch {
-    display: block; /* Show on mobile since it's an image now */
-    top: -70px;
-    right: -5px;
-  }
-  .owl-img {
-    width: 80px;
-  }
+  line-height: 1;
+  transform: scaleX(-1);
 }
 
 .zzz-container {
