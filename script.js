@@ -471,6 +471,35 @@ const app = {
       params.append('selectedResult', this.selectedResult);
     }
     const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    
+    // Show share card preview
+    const shareCard = document.getElementById('shareCard');
+    const shareCardBody = document.getElementById('shareCardBody');
+    const shareCardTitle = document.getElementById('shareCardTitle');
+    
+    if (shareCard && shareCardBody) {
+      let previewText = '';
+      if (this.selectedResult !== null) {
+        const r = document.querySelectorAll('.result-card')[this.selectedResult];
+        const time = r.querySelector('.result-time').textContent;
+        const windowText = r.querySelector('.result-window')?.textContent || '';
+        
+        if (this.mode === 'wake') {
+          shareCardTitle.textContent = "Tonight's Sleep Plan";
+          previewText = `Go to bed: ${windowText.replace('Go to bed between:', '').trim() || time} • Wake up: ${this.formatTime(this.to24Hour(this.hour, this.minute, this.period))}`;
+        } else {
+          shareCardTitle.textContent = "Wake up Plan";
+          previewText = `Bedtime: Now • Wake up: ${windowText.replace('Wake between:', '').trim() || time}`;
+        }
+      } else {
+        shareCardTitle.textContent = "NightOwl Sleep Calc";
+        previewText = "Find your perfect sleep cycles and wake up refreshed.";
+      }
+      
+      shareCardBody.textContent = previewText;
+      shareCard.style.display = 'block';
+    }
+
     navigator.clipboard.writeText(shareUrl).then(() => {
       const btn = document.getElementById('shareBtn');
       const originalText = btn.textContent;
