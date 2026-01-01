@@ -129,6 +129,9 @@ const app = {
       activeBtn.classList.add('mode-switched');
       setTimeout(() => activeBtn.classList.remove('mode-switched'), 600);
     }
+
+    // Immediately update owl image and zzz on mode switch for better responsiveness
+    this.updateZzz();
     
     const newLabel = newMode === 'wake' ? 'I want to wake up at...' : 'I want to go to bed...';
     document.getElementById('timeLabel').textContent = newLabel;
