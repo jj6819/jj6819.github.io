@@ -654,6 +654,17 @@ input[type="range"] {
   margin-bottom: 0;
 }
 
+.share-btn.error-shake {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
 .share-card-preview {
   margin-top: 24px;
   background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);

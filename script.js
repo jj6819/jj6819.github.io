@@ -477,6 +477,18 @@ const app = {
     const shareCardBody = document.getElementById('shareCardBody');
     const shareCardTitle = document.getElementById('shareCardTitle');
     
+    if (this.selectedResult === null) {
+      const btn = document.getElementById('shareBtn');
+      const originalText = btn.textContent;
+      btn.textContent = 'Select a result first!';
+      btn.classList.add('error-shake');
+      setTimeout(() => { 
+        btn.textContent = originalText; 
+        btn.classList.remove('error-shake');
+      }, 2000);
+      return;
+    }
+
     if (shareCard && shareCardBody) {
       let previewText = '';
       if (this.selectedResult !== null) {
