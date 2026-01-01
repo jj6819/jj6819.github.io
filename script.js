@@ -129,6 +129,10 @@ const app = {
       activeBtn.classList.add('mode-switched');
       setTimeout(() => activeBtn.classList.remove('mode-switched'), 600);
     }
+
+    if (newMode === 'sleep') {
+      this.triggerOwlSleep();
+    }
     
     const newLabel = newMode === 'wake' ? 'I want to wake up at...' : 'I want to go to bed...';
     document.getElementById('timeLabel').textContent = newLabel;
@@ -324,6 +328,15 @@ const app = {
     } else {
       if (existing) existing.remove();
     }
+  },
+
+  triggerOwlSleep() {
+    const owlWrap = document.getElementById('owlWrap');
+    if (!owlWrap) return;
+    
+    owlWrap.classList.remove('is-sleeping');
+    void owlWrap.offsetWidth; // force reflow
+    owlWrap.classList.add('is-sleeping');
   },
 
   renderResults(results) {

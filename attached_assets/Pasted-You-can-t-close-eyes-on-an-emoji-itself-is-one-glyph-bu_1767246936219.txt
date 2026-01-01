@@ -1,0 +1,147 @@
+You can’t “close eyes” on an emoji itself (🦉 is one glyph), but you *can* fake it convincingly by putting **two little “eyelids” overlays** on top of the owl element and animating them **only when “Bedtime now” is clicked** (same moment you show the floating `zzz`).
+
+Below is a clean vanilla **overlay-eyelids blink/sleep** approach.
+
+---
+
+## 1) HTML: wrap your owl and add eyelids
+
+Replace your current owl perch content with this structure:
+
+```html
+<div class="owl-perch" id="owlWrap" aria-hidden="true">
+  <span class="owl-emoji" id="owl">🦉</span>
+
+  <!-- eyelids (positioned over the emoji) -->
+  <span class="owl-eyelid left"></span>
+  <span class="owl-eyelid right"></span>
+
+  <!-- your existing zzz -->
+  <span class="owl-zzz" id="owlZzz">zzz</span>
+</div>
+```
+
+> Works with emoji. If you’re using an owl *image*, keep the same eyelid spans—same idea.
+
+---
+
+## 2) CSS: eyelids that “drop” over the eyes
+
+Add this to `styles.css`:
+
+```css
+.owl-perch{
+  position: absolute; /* or relative based on your layout */
+  right: 14px;
+  top: 14px;
+  width: 64px;       /* tweak until it fits your owl */
+  height: 64px;
+}
+
+.owl-emoji{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 56px;   /* tweak */
+  transform-origin: 50% 70%;
+}
+
+/* eyelids: two rounded bars that scale down to “close” */
+.owl-eyelid{
+  position: absolute;
+  width: 18px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(14, 20, 40, 0.95);  /* match your card/bg; tweak */
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06);
+  transform: scaleY(0);
+  transform-origin: 50% 0%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Position eyelids over where the emoji eyes usually sit.
+   You WILL tweak these 4 values once and you’re done. */
+.owl-eyelid.left  { left: 16px; top: 22px; }
+.owl-eyelid.right { left: 34px; top: 22px; }
+
+/* Sleep animation: lids drop and stay closed briefly */
+@keyframes owlSleepClose {
+  0%   { transform: scaleY(0); opacity: 0; }
+  15%  { transform: scaleY(1); opacity: 1; }
+  70%  { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(0); opacity: 0; }
+}
+
+/* When bedtime now is clicked */
+.owl-perch.is-sleeping .owl-eyelid{
+  animation: owlSleepClose 1200ms ease-in-out 1;
+}
+
+/* Optional: make owl “sink” slightly when sleeping */
+.owl-perch.is-sleeping .owl-emoji{
+  transform: translateY(1px) scale(0.99);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .owl-eyelid, .owl-perch.is-sleeping .owl-eyelid{ animation: none !important; }
+  .owl-perch.is-sleeping .owl-emoji{ transform: none !important; }
+}
+```
+
+**Tip:** the only “art tuning” is the eyelid positions:
+
+* `top: 22px; left: 16px / 34px`
+  Adjust those until the lids sit right over the eyes.
+
+---
+
+## 3) JS: trigger eyelids + zzz together on “Bedtime now”
+
+In `script.js`, add:
+
+```js
+const owlWrap = document.getElementById("owlWrap");
+const owlZzz  = document.getElementById("owlZzz");
+
+function owlSleepMoment() {
+  if (!owlWrap) return;
+
+  // eyelids
+  owlWrap.classList.remove("is-sleeping");
+  void owlWrap.offsetWidth; // reflow to retrigger animation
+  owlWrap.classList.add("is-sleeping");
+
+  // zzz (if you already do this elsewhere, keep yours)
+  if (owlZzz) {
+    owlZzz.classList.remove("is-show");
+    void owlZzz.offsetWidth;
+    owlZzz.classList.add("is-show");
+  }
+
+  // cleanup class so it can retrigger next time
+  setTimeout(() => owlWrap.classList.remove("is-sleeping"), 1300);
+}
+```
+
+Now call it when the **Bedtime now** tab is clicked. Example:
+
+```js
+document.querySelector('[data-mode="sleep"]')?.addEventListener("click", () => {
+  owlSleepMoment();
+});
+```
+
+---
+
+## If you’re using a PNG owl (like your screenshot)
+
+Same exact eyelid trick works, but you’ll set:
+
+* `.owl-perch { width/height }` to match image size
+* eyelid `left/top` values to match the real eye positions
+* eyelid `background` to match the owl’s face color (tan), not the page
+
+If you paste the HTML for your `.owl-perch` and tell me whether the owl is **emoji** or an **<img>**, I’ll give you the exact tuned `left/top/size` values for your current layout.
