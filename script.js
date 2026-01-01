@@ -310,7 +310,9 @@ const app = {
 
   updateZzz() {
     const existing = document.querySelector('.zzz-container');
+    const owl = document.querySelector('.owl-perch');
     if (this.mode === 'sleep') {
+      if (owl) owl.textContent = '😴';
       if (!existing) {
         const container = document.createElement('div');
         container.className = 'zzz-container';
@@ -322,6 +324,7 @@ const app = {
         document.getElementById('timePicker').appendChild(container);
       }
     } else {
+      if (owl) owl.textContent = '🦉';
       if (existing) existing.remove();
     }
   },
