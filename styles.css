@@ -347,7 +347,7 @@ input[type="range"] {
     opacity: 0.8;
   }
   100% {
-    transform: translate(-20px, -60px) scale(1.2);
+    transform: translate(40px, -60px) scale(1.2);
     opacity: 0;
   }
 }
