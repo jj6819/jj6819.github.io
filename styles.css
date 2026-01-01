@@ -304,36 +304,32 @@ input[type="range"] {
 
 .owl-perch {
   position: absolute;
-  top: -120px;
-  right: -20px;
+  top: -100px;
+  right: -8px;
   z-index: 10;
   pointer-events: none;
 }
 
 .owl-img {
-  width: 140px;
+  width: 120px;
   height: auto;
   display: block;
+  transform: scaleX(-1);
 }
 
 @media (max-width: 768px) {
   .owl-perch {
-    top: -90px;
-    right: -10px;
+    top: -70px;
+    right: -4px;
   }
   .owl-img {
-    width: 100px;
+    width: 80px;
   }
 }
 
 @media (max-width: 480px) {
   .owl-perch {
-    display: block; /* Show on mobile since it's an image now */
-    top: -70px;
-    right: -5px;
-  }
-  .owl-img {
-    width: 80px;
+    display: none; /* Revert to hiding on very small screens as before */
   }
 }
 
