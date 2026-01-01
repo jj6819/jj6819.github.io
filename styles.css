@@ -310,7 +310,25 @@ input[type="range"] {
   z-index: 10;
   line-height: 1;
   transform: scaleX(-1);
+  transition: all 0.5s ease;
 }
+
+.owl-perch.sleeping {
+  filter: grayscale(0.2) brightness(0.8);
+}
+
+.owl-perch.sleeping::after {
+  content: '〰️';
+  position: absolute;
+  top: 42px;
+  left: 30px;
+  font-size: 24px;
+  letter-spacing: 12px;
+  color: rgba(0,0,0,0.6);
+  filter: blur(0.5px);
+  pointer-events: none;
+}
+
 
 .zzz-container {
   position: absolute;

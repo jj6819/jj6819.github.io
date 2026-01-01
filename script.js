@@ -312,7 +312,9 @@ const app = {
     const existing = document.querySelector('.zzz-container');
     const owlElement = document.querySelector('.owl-perch');
     if (this.mode === 'sleep') {
-      if (owlElement) owlElement.textContent = '😴';
+      if (owlElement) {
+        owlElement.classList.add('sleeping');
+      }
       if (!existing) {
         const container = document.createElement('div');
         container.className = 'zzz-container';
@@ -324,7 +326,9 @@ const app = {
         document.getElementById('timePicker').appendChild(container);
       }
     } else {
-      if (owlElement) owlElement.textContent = '🦉';
+      if (owlElement) {
+        owlElement.classList.remove('sleeping');
+      }
       if (existing) existing.remove();
     }
   },
