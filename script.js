@@ -398,69 +398,37 @@ const app = {
   },
 
   saveSettings() {
-    localStorage.setItem('sleepSettings', JSON.stringify(this.settings));
-  },
-
-  loadFromUrl() {
-    const params = new URLSearchParams(window.location.search);
-    if (params.has('mode')) {
-      const mode = params.get('mode');
-      if (mode === 'wake' || mode === 'sleep') this.setMode(mode);
-    }
-    if (params.has('hour')) this.hour = Math.max(1, Math.min(12, parseInt(params.get('hour')) || 1));
-    if (params.has('minute')) this.minute = Math.max(0, Math.min(59, parseInt(params.get('minute')) || 0));
-    if (params.has('period')) {
-      const period = params.get('period');
-      if (period === 'AM' || period === 'PM') this.period = period;
-    }
-    if (params.has('latency')) this.settings.latency = Math.max(0, Math.min(60, parseInt(params.get('latency')) || 10));
-    if (params.has('cycleLength')) this.settings.cycleLength = Math.max(80, Math.min(110, parseInt(params.get('cycleLength')) || 90));
-    if (params.has('selectedResult')) {
-      const selectedIdx = parseInt(params.get('selectedResult'));
-      if (selectedIdx >= 0 && selectedIdx <= 2) {
-        this.selectedResult = selectedIdx;
-      }
-    }
-    this.updateTimePicker();
-  },
-
-  shareLink() {
-    const params = new URLSearchParams({
-      mode: this.mode,
-      hour: this.hour,
-      minute: this.minute,
-      period: this.period,
-      latency: this.settings.latency,
-      cycleLength: this.settings.cycleLength
-    });
-    if (this.selectedResult !== null) {
-      params.append('selectedResult', this.selectedResult);
-    }
-    const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-    navigator.clipboard.writeText(shareUrl).then(() => {
-      const btn = document.getElementById('shareBtn');
-      const originalText = btn.textContent;
-      btn.textContent = 'Link copied!';
-      setTimeout(() => { btn.textContent = originalText; }, 2000);
-    }).catch(() => { alert('Could not copy link. URL: ' + shareUrl); });
+    localStorage.setItem('sleepSettings', JSON.stringify({
+      settings: this.settings,
+      timeFormat: this.timeFormat
+    }));
   },
 
   loadSettings() {
     const saved = localStorage.getItem('sleepSettings');
     if (saved) {
-      const data = JSON.parse(saved);
-      this.settings = data.settings || this.settings;
-      this.timeFormat = data.timeFormat || '12';
-      document.getElementById('latencyValue').textContent = this.settings.latency;
-      document.getElementById('cycleLengthValue').textContent = this.settings.cycleLength;
-      document.getElementById('wakeWindowValue').textContent = this.settings.wakeWindow;
-      document.getElementById('latency').value = this.settings.latency;
-      document.getElementById('cycleLength').value = this.settings.cycleLength;
-      document.getElementById('wakeWindow').value = this.settings.wakeWindow;
-      document.querySelectorAll('.toggle-option').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.format === this.timeFormat);
-      });
-      document.getElementById('timeFormatToggle').classList.toggle('active', this.timeFormat === '24');
+      try {
+        const data = JSON.parse(saved);
+        if (data.settings) {
+          this.settings = { ...this.settings, ...data.settings };
+        }
+        this.timeFormat = data.timeFormat || '12';
+        
+        // Update UI
+        document.getElementById('latencyValue').textContent = this.settings.latency;
+        document.getElementById('cycleLengthValue').textContent = this.settings.cycleLength;
+        document.getElementById('wakeWindowValue').textContent = this.settings.wakeWindow;
+        document.getElementById('latency').value = this.settings.latency;
+        document.getElementById('cycleLength').value = this.settings.cycleLength;
+        document.getElementById('wakeWindow').value = this.settings.wakeWindow;
+        
+        document.querySelectorAll('.toggle-option').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.format === this.timeFormat);
+        });
+        document.getElementById('timeFormatToggle').classList.toggle('active', this.timeFormat === '24');
+      } catch (e) {
+        console.error('Error loading settings:', e);
+      }
     }
   }
 };
