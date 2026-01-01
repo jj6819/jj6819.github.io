@@ -312,6 +312,46 @@ input[type="range"] {
   transform: scaleX(-1);
 }
 
+.zzz-container {
+  position: absolute;
+  top: -80px;
+  right: 40px;
+  pointer-events: none;
+}
+
+.zzz {
+  position: absolute;
+  color: #a5b4fc;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  opacity: 0;
+  animation: zzzFloat 3s infinite;
+}
+
+.zzz:nth-child(2) {
+  animation-delay: 1s;
+  font-size: 18px;
+}
+
+.zzz:nth-child(3) {
+  animation-delay: 2s;
+  font-size: 24px;
+}
+
+@keyframes zzzFloat {
+  0% {
+    transform: translate(0, 0) scale(0.5);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-20px, -60px) scale(1.2);
+    opacity: 0;
+  }
+}
+
 .results {
   margin-top: 32px;
 }

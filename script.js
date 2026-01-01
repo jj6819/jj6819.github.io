@@ -305,6 +305,25 @@ const app = {
     }
 
     this.renderResults(results);
+    this.updateZzz();
+  },
+
+  updateZzz() {
+    const existing = document.querySelector('.zzz-container');
+    if (this.mode === 'sleep') {
+      if (!existing) {
+        const container = document.createElement('div');
+        container.className = 'zzz-container';
+        container.innerHTML = `
+          <span class="zzz" style="font-size: 14px;">z</span>
+          <span class="zzz">z</span>
+          <span class="zzz">z</span>
+        `;
+        document.getElementById('timePicker').appendChild(container);
+      }
+    } else {
+      if (existing) existing.remove();
+    }
   },
 
   renderResults(results) {
