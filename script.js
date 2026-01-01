@@ -310,7 +310,10 @@ const app = {
 
   updateZzz() {
     const existing = document.querySelector('.zzz-container');
+    const owlImg = document.getElementById('owlImage');
+    
     if (this.mode === 'sleep') {
+      if (owlImg) owlImg.src = 'attached_assets/owl2_1767300228662.png';
       if (!existing) {
         const container = document.createElement('div');
         container.className = 'zzz-container';
@@ -322,6 +325,7 @@ const app = {
         document.getElementById('timePicker').appendChild(container);
       }
     } else {
+      if (owlImg) owlImg.src = 'attached_assets/owl1_1767300228662.png';
       if (existing) existing.remove();
     }
   },
