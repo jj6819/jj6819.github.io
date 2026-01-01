@@ -153,6 +153,10 @@ const app = {
       this.updateTimePicker();
     }
     
+    this.selectedResult = null;
+    const shareCard = document.getElementById('shareCard');
+    if (shareCard) shareCard.style.display = 'none';
+
     this.calculate();
   },
 
