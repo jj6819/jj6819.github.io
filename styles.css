@@ -104,9 +104,17 @@ header {
 }
 
 .ad-space ins.adsbygoogle {
+  display: block;
   width: 100%;
   height: auto;
-  min-width: 250px;
+}
+
+@media (max-width: 480px) {
+  .ad-space {
+    min-height: 60px;
+    padding: 8px;
+    margin-bottom: 20px;
+  }
 }
 
 .mode-tabs {
