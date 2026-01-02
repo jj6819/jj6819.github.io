@@ -656,6 +656,17 @@ input[type="range"] {
   display: inline-block;
 }
 
+.content-list {
+  padding-left: 32px !important;
+  margin-bottom: 16px;
+  list-style-position: outside !important;
+}
+
+.content-list li {
+  margin-bottom: 12px;
+  padding-left: 8px !important;
+}
+
 .share-btn:hover {
   box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
   transform: translateY(-2px);
