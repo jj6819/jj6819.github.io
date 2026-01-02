@@ -476,6 +476,13 @@ const app = {
     }
     const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
     
+    // Update OpenGraph tags dynamically for better social sharing
+    document.title = previewText || "NightOwl Sleep Plan";
+    const metaTitle = document.querySelector('meta[property="og:title"]');
+    if (metaTitle) metaTitle.setAttribute('content', previewText || "NightOwl Sleep Plan");
+    const metaDesc = document.querySelector('meta[property="og:description"]');
+    if (metaDesc) metaDesc.setAttribute('content', `Check out my NightOwl sleep plan: ${previewText}`);
+    
     // Show share card preview
     const shareCard = document.getElementById('shareCard');
     const shareCardBody = document.getElementById('shareCardBody');
