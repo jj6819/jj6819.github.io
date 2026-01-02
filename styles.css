@@ -656,6 +656,14 @@ input[type="range"] {
   margin-bottom: 16px;
 }
 
+.faq-item h4 {
+  margin-top: 16px;
+}
+
+.faq-item h4:first-of-type {
+  margin-top: 0;
+}
+
 .faq-item strong {
   display: block;
   color: #a5b4fc;
