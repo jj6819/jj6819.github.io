@@ -636,15 +636,15 @@ input[type="range"] {
 }
 
 .example-item h4 {
-  font-size: 13px;
+  font-size: 15px;
   color: #a5b4fc;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .example-item p {
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 0 !important;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .faq-item {
