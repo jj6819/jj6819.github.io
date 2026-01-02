@@ -103,9 +103,13 @@ const app = {
 
   setMemeMode(status) {
     this.memeMode = status === 'on';
-    document.querySelectorAll('.toggle-option[data-meme]').forEach(btn => {
-      btn.classList.toggle('active', (btn.dataset.meme === 'on') === this.memeMode);
+    
+    // Update active class for the toggle options
+    document.querySelectorAll('[data-meme]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.meme === status);
     });
+    
+    // Update active class for the container
     document.getElementById('memeModeToggle').classList.toggle('active', this.memeMode);
     
     // Always default to 12hr when switching Meme Mode
@@ -693,9 +697,8 @@ const app = {
         document.getElementById('timeFormatToggle').classList.toggle('active', this.timeFormat === '24');
 
         // Match time format toggle behavior: highlight selected option in blue
-        document.querySelectorAll('.toggle-option[data-meme]').forEach(btn => {
-          const isBtnOn = btn.dataset.meme === 'on';
-          btn.classList.toggle('active', isBtnOn === this.memeMode);
+        document.querySelectorAll('[data-meme]').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.meme === (this.memeMode ? 'on' : 'off'));
         });
         document.getElementById('memeModeToggle').classList.toggle('active', this.memeMode);
         this.updateMemeUI();
