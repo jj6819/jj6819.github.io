@@ -14,9 +14,12 @@ const app = {
   lastWheelTime: 0,
 
   init() {
+    this.memeMode = false;
+    this.timeFormat = '12';
     this.setupEventListeners();
     this.loadSettings();
     this.loadFromUrl();
+    this.updateMemeUI();
     this.calculate();
     document.getElementById('year').textContent = new Date().getFullYear();
   },
@@ -105,6 +108,9 @@ const app = {
     });
     document.getElementById('memeModeToggle').classList.toggle('active', this.memeMode);
     
+    // Always default to 12hr when switching Meme Mode
+    this.setTimeFormat('12');
+    
     this.updateMemeUI();
     this.calculate();
     this.saveSettings();
@@ -113,19 +119,31 @@ const app = {
   updateMemeUI() {
     const isMeme = this.memeMode;
     
+    // Randomize meme variants
+    const memeVariants = [
+      "Bedtimes + wake windows for people who hate mornings",
+      "Sleep math for the chronically sleepy",
+      "Plan your cycles. Avoid the zombie mode",
+      "You can’t out-hustle sleep. Try timing it",
+      "Helping you wake up like a person, not a cryptid"
+    ];
+    
     // Header
-    const headerTitle = "Sleep Cycle Calculator";
     const headerSub = isMeme 
-      ? "Sleep math for the chronically sleepy." 
+      ? memeVariants[Math.floor(Math.random() * memeVariants.length)]
       : "Bedtimes + wake windows based on 90-minute cycles";
     document.querySelector('.subtitle').textContent = headerSub;
 
     // Mode Buttons
     const wakeBtn = document.querySelector('[data-mode="wake"]');
     const sleepBtn = document.querySelector('[data-mode="sleep"]');
+    
+    const wakeMemeOptions = ["I need to be human by...", "I must awaken by...", "Alarm time:", "Wake me up at..."];
+    const sleepMemeOptions = ["I’m going to bed (for real).", "Put me in sleep mode.", "Initiate bedtime.", "It’s sleep o’clock."];
+
     if (isMeme) {
-      wakeBtn.innerHTML = `<span>⏰</span> I need to be human by...`;
-      sleepBtn.innerHTML = `<span>🛏️</span> Put me in sleep mode.`;
+      wakeBtn.innerHTML = `<span>⏰</span> ${wakeMemeOptions[Math.floor(Math.random() * wakeMemeOptions.length)]}`;
+      sleepBtn.innerHTML = `<span>🛏️</span> ${sleepMemeOptions[Math.floor(Math.random() * sleepMemeOptions.length)]}`;
     } else {
       wakeBtn.innerHTML = `<span>⏰</span> Wake up at...`;
       sleepBtn.innerHTML = `<span>🛏️</span> Bedtime now`;
@@ -145,28 +163,39 @@ const app = {
 
     // Time Label
     const timeLabel = document.getElementById('timeLabel');
+    const wakeTimeMeme = ["I want to wake up at... (no promises)", "Wake time (please don’t judge me):", "Target wake time:"];
+    const sleepTimeMeme = ["I want to go to bed at... (for real this time)", "Bedtime (yes, I said it):", "When I intend to sleep:"];
+
     if (this.mode === 'wake') {
-      timeLabel.textContent = isMeme ? "Wake time (please don’t judge me):" : "I want to wake up at...";
+      timeLabel.textContent = isMeme ? wakeTimeMeme[Math.floor(Math.random() * wakeTimeMeme.length)] : "I want to wake up at...";
     } else {
-      timeLabel.textContent = isMeme ? "Bedtime (yes, I said it):" : "I want to go to bed...";
+      timeLabel.textContent = isMeme ? sleepTimeMeme[Math.floor(Math.random() * sleepTimeMeme.length)] : "I want to go to bed...";
     }
 
     // Results Label
     const resLabel = document.getElementById('resultsLabel');
+    const resultMeme = [
+      "Best times to sleep so you’re less cursed tomorrow",
+      "Your ‘don’t be groggy’ options",
+      "Here’s the least painful schedule",
+      "Sleep windows (pick your destiny)"
+    ];
     if (isMeme) {
-      resLabel.textContent = "Your ‘don’t be groggy’ options";
+      resLabel.textContent = resultMeme[Math.floor(Math.random() * resultMeme.length)];
     } else {
       resLabel.textContent = this.mode === 'wake' ? 'Go to bed at...' : 'Wake up at...';
     }
 
     // Share Button
+    const shareMeme = ["Copy my sleep plan", "Share this wisdom", "Send to a friend who’s tired", "Export bedtime propaganda"];
     const shareBtn = document.getElementById('shareBtn');
-    shareBtn.textContent = isMeme ? "Export bedtime propaganda" : "Share Link";
+    shareBtn.textContent = isMeme ? shareMeme[Math.floor(Math.random() * shareMeme.length)] : "Share Link";
 
     // Footer
     const disclaimer = document.querySelector('.footer-disclaimer');
+    const disclaimerMeme = ["Educational tool only — not medical advice (sadly).", "Not a doctor, just an owl with opinions."];
     disclaimer.textContent = isMeme 
-      ? "Not a doctor, just an owl with opinions." 
+      ? disclaimerMeme[Math.floor(Math.random() * disclaimerMeme.length)]
       : "Educational tool only — not medical advice.";
   },
 
