@@ -265,10 +265,11 @@ input[type="range"] {
 }
 
 .toggle-option.active,
-[data-meme].active,
-[data-format].active {
+#memeModeToggle .toggle-option.active,
+#timeFormatToggle .toggle-option.active {
   background: #4f46e5 !important;
   color: white !important;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.4);
 }
 
 .time-picker-container {

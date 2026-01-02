@@ -104,18 +104,19 @@ const app = {
   setMemeMode(status) {
     this.memeMode = status === 'on';
     
-    // Explicitly update highlighting to match time format toggle
-    document.querySelectorAll('[data-meme]').forEach(opt => {
-      if (opt.getAttribute('data-meme') === status) {
-        opt.classList.add('active');
-      } else {
-        opt.classList.remove('active');
-      }
-    });
+    // Using simple ID-based direct class manipulation for maximum reliability
+    const offBtn = document.querySelector('[data-meme="off"]');
+    const onBtn = document.querySelector('[data-meme="on"]');
     
-    // Always default to 12hr when switching Meme Mode
+    if (status === 'on') {
+      onBtn.classList.add('active');
+      offBtn.classList.remove('active');
+    } else {
+      offBtn.classList.add('active');
+      onBtn.classList.remove('active');
+    }
+    
     this.setTimeFormat('12');
-    
     this.updateMemeUI();
     this.calculate();
     this.saveSettings();
@@ -698,16 +699,13 @@ const app = {
         });
         document.getElementById('timeFormatToggle').classList.toggle('active', this.timeFormat === '24');
 
-        // Apply consistent highlighting pattern from time format toggle
-        const memeToggle = document.getElementById('memeModeToggle');
-        const memeOptions = memeToggle.querySelectorAll('[data-meme]');
-        memeOptions.forEach(opt => {
-          if (opt.getAttribute('data-meme') === 'off') {
-            opt.classList.add('active');
-          } else {
-            opt.classList.remove('active');
-          }
-        });
+        // Forcing a hard reset of classes on load to ensure "Off" is the only one active
+        const offBtn = document.querySelector('[data-meme="off"]');
+        const onBtn = document.querySelector('[data-meme="on"]');
+        if (offBtn && onBtn) {
+          offBtn.classList.add('active');
+          onBtn.classList.remove('active');
+        }
         
         this.updateMemeUI();
       } catch (e) {
