@@ -25,25 +25,30 @@ const app = {
   },
 
   setupEventListeners() {
-    for (let i = 1; i <= 6; i++) {
-      document.getElementById(`infoToggle${i === 1 ? '' : i}`).addEventListener('click', () => {
-        const infoSection = document.getElementById(`infoSection${i === 1 ? '' : i}`);
-        const infoToggle = document.getElementById(`infoToggle${i === 1 ? '' : i}`);
-        const isExpanded = infoSection.style.display !== 'none';
-        
-        // Close all other panels
-        for (let j = 1; j <= 6; j++) {
-          if (j === i) continue; // Skip the current panel
-          const otherSection = document.getElementById(`infoSection${j === 1 ? '' : j}`);
-          const otherToggle = document.getElementById(`infoToggle${j === 1 ? '' : j}`);
-          otherSection.style.display = 'none';
-          otherToggle.classList.remove('expanded');
-        }
-        
-        // Toggle current panel
-        infoSection.style.display = isExpanded ? 'none' : 'block';
-        infoToggle.classList.toggle('expanded');
-      });
+    for (let i = 1; i <= 4; i++) {
+      const toggleId = `infoToggle${i === 1 ? '' : i}`;
+      const sectionId = `infoSection${i === 1 ? '' : i}`;
+      const toggleEl = document.getElementById(toggleId);
+      
+      if (toggleEl) {
+        toggleEl.addEventListener('click', () => {
+          const infoSection = document.getElementById(sectionId);
+          const isExpanded = infoSection.style.display !== 'none';
+          
+          // Close all other panels
+          for (let j = 1; j <= 4; j++) {
+            if (j === i) continue;
+            const otherSection = document.getElementById(`infoSection${j === 1 ? '' : j}`);
+            const otherToggle = document.getElementById(`infoToggle${j === 1 ? '' : j}`);
+            if (otherSection) otherSection.style.display = 'none';
+            if (otherToggle) otherToggle.classList.remove('expanded');
+          }
+          
+          // Toggle current panel
+          infoSection.style.display = isExpanded ? 'none' : 'block';
+          toggleEl.classList.toggle('expanded');
+        });
+      }
     }
 
     document.querySelectorAll('.mode-btn').forEach(btn => {

@@ -1,0 +1,128 @@
+<section id="sleep-calculator-guide" class="seo-block">
+  <h2>Sleep Calculator: find the best time to go to bed or wake up</h2>
+  <p>
+    NightOwl Sleep Calc is a free sleep calculator that helps you plan bedtimes and wake-up times using sleep cycles,
+    sleep latency (how long it takes you to fall asleep), and a wake window (a small flexible range instead of one exact minute).
+    If you’ve ever woken up groggy even after “enough” hours of sleep, timing your wake-up closer to the end of a cycle can help.
+  </p>
+  <p>
+    This isn’t a medical tool—just practical sleep math. Pick a wake-up time to get recommended bedtimes, or choose “Bedtime now”
+    to see the best wake-up windows based on your settings. Adjust the sliders to match your real-life routine, and use the wake window
+    to give yourself a little breathing room.
+  </p>
+
+  <h2 id="how-to-use">How to use this sleep calculator</h2>
+  <ol>
+    <li><strong>Choose a mode:</strong> “Wake up at…” for bedtime suggestions, or “Bedtime now” for wake-up suggestions.</li>
+    <li><strong>Set your sleep latency:</strong> how long you usually take to fall asleep (many people are around 10–20 minutes).</li>
+    <li><strong>Set cycle length:</strong> 90 minutes is typical, but you can adjust if you tend to run shorter or longer.</li>
+    <li><strong>Pick a wake window:</strong> a small range (like 10–15 minutes) so you can aim for a window, not a single exact time.</li>
+    <li><strong>Pick an option:</strong> choose the cycle count that fits your schedule, then copy or share the plan.</li>
+  </ol>
+
+  <h2 id="examples">Examples</h2>
+  <p>
+    These common scenarios show how a sleep calculator can help you plan around real life. Your results may differ based on settings,
+    but the idea is the same: plan sleep in full cycles and account for the time it takes to fall asleep.
+  </p>
+
+  <div class="example-grid">
+    <div class="example-card">
+      <h3>If you need to wake up early</h3>
+      <p>
+        Select your wake-up time in “Wake up at…” mode. The calculator will suggest multiple bedtimes (4–7 cycles).
+        Most people feel best with about <strong>5–6 cycles</strong>, but if you’re short on time, 4 cycles can be a workable minimum.
+      </p>
+    </div>
+
+    <div class="example-card">
+      <h3>If you’re going to bed now</h3>
+      <p>
+        Tap “Bedtime now” to use the current time, then choose a wake-up option.
+        Picking a wake time near the end of a cycle can reduce <strong>sleep inertia</strong>—that heavy, foggy feeling after waking.
+      </p>
+    </div>
+
+    <div class="example-card">
+      <h3>If you only have limited time</h3>
+      <p>
+        Choose a lower cycle count that fits your schedule. Even if you can’t get a full night, waking closer to a cycle boundary
+        may feel better than waking from deep sleep. Use the wake window so you can pick what’s realistic.
+      </p>
+    </div>
+
+    <div class="example-card">
+      <h3>If you’re always “in bed” longer than planned</h3>
+      <p>
+        Increase sleep latency to match how long it usually takes you to fall asleep. This makes bedtime and wake-up recommendations
+        more realistic, especially if you tend to lie awake or wind down for a while.
+      </p>
+    </div>
+  </div>
+
+  <h2 id="sleep-cycles">Sleep cycles, sleep latency, and wake windows explained</h2>
+  <h3>What is a sleep cycle?</h3>
+  <p>
+    Sleep isn’t one steady state—your brain moves through repeating stages, including lighter sleep, deeper sleep, and REM.
+    A full sleep cycle often averages around <strong>90 minutes</strong>, though it varies by person and by night. This calculator uses cycle timing
+    to suggest bedtimes or wake-up times that may reduce grogginess.
+  </p>
+
+  <h3>What is sleep latency?</h3>
+  <p>
+    Sleep latency is the time it takes to fall asleep after you get into bed. Many people are around 10–20 minutes, but stress, caffeine,
+    late screens, or irregular schedules can increase it. Setting an accurate latency helps the calculator match your real routine.
+  </p>
+
+  <h3>What is a wake window?</h3>
+  <p>
+    A wake window is a small flexible range around a recommended time (for example, 10–15 minutes). It makes planning easier because you can aim
+    for a window rather than a single exact minute, while staying close to an end-of-cycle wake-up.
+  </p>
+</section>
+
+<section id="faq" class="seo-block">
+  <h2>Sleep Calculator FAQ</h2>
+
+  <h3>How many sleep cycles do I need?</h3>
+  <p>
+    Many adults feel best with about 5–6 full cycles, which is roughly 7.5–9 hours of sleep time (plus sleep latency).
+    If you’re catching up on sleep, 6–7 cycles may help; if you’re short on time, 4 cycles can be a workable minimum.
+  </p>
+
+  <h3>Why does the calculator use 90-minute cycles?</h3>
+  <p>
+    A full sleep cycle often averages around 90 minutes, but it can be shorter or longer depending on the person and the night.
+    If your results consistently feel early or late, try adjusting cycle length by a few minutes and see what matches your mornings.
+  </p>
+
+  <h3>What’s a normal sleep latency?</h3>
+  <p>
+    Sleep latency is how long it takes to fall asleep once you’re in bed. A common range is 10–20 minutes, but it varies with stress,
+    caffeine, exercise, and screens. If you often take 30+ minutes, increase the latency setting so recommendations stay realistic.
+  </p>
+
+  <h3>Is it better to wake at the end of a sleep cycle?</h3>
+  <p>
+    Waking near the end of a cycle may reduce sleep inertia because you’re less likely to wake from deep sleep.
+    Sleep stages aren’t perfectly predictable, but cycle-based timing is a practical way to improve your odds.
+  </p>
+
+  <h3>What is sleep inertia?</h3>
+  <p>
+    Sleep inertia is the groggy, heavy feeling some people get after waking—especially when waking from deep sleep.
+    Timing your alarm closer to a lighter stage (often near a cycle boundary) can make waking feel smoother.
+  </p>
+
+  <h3>What is a wake window?</h3>
+  <p>
+    A wake window is a small range around a recommended bedtime or wake-up time, like 10–15 minutes.
+    It adds flexibility so you can pick a time that fits your routine while staying close to the cycle-based plan.
+  </p>
+
+  <h3>Can this sleep calculator replace medical advice?</h3>
+  <p>
+    No. This tool is educational and can help you plan timing, but it can’t diagnose sleep problems or replace professional guidance.
+    If you have persistent insomnia, loud snoring, or severe daytime sleepiness, consider talking with a clinician.
+  </p>
+</section>
