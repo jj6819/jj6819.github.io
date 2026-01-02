@@ -86,8 +86,9 @@ const app = {
       btn.addEventListener('click', (e) => this.setTimeFormat(e.target.dataset.format));
     });
 
-    document.querySelectorAll('[data-meme]').forEach(btn => {
-      btn.addEventListener('click', (e) => this.setMemeMode(e.target.dataset.meme));
+    document.getElementById('memeModeToggle').addEventListener('click', () => {
+      const isCurrentlyOff = !this.memeMode;
+      this.setMemeMode(isCurrentlyOff ? 'on' : 'off');
     });
 
     ['hourColumn', 'minuteColumn', 'periodColumn'].forEach(id => {
@@ -139,16 +140,15 @@ const app = {
   setMemeMode(status) {
     this.memeMode = status === 'on';
     
-    // Using simple ID-based direct class manipulation for maximum reliability
-    const offBtn = document.querySelector('[data-meme="off"]');
-    const onBtn = document.querySelector('[data-meme="on"]');
+    const toggleContainer = document.getElementById('memeModeToggle');
+    const label = toggleContainer.querySelector('.meme-toggle-label');
     
     if (status === 'on') {
-      onBtn.classList.add('active');
-      offBtn.classList.remove('active');
+      toggleContainer.classList.add('active');
+      label.textContent = 'Meme Mode';
     } else {
-      offBtn.classList.add('active');
-      onBtn.classList.remove('active');
+      toggleContainer.classList.remove('active');
+      label.textContent = 'Normal';
     }
     
     this.setTimeFormat('12');
@@ -742,11 +742,10 @@ const app = {
         document.getElementById('timeFormatToggle').classList.toggle('active', this.timeFormat === '24');
 
         // Forcing a hard reset of classes on load to ensure "Off" is the only one active
-        const offBtn = document.querySelector('[data-meme="off"]');
-        const onBtn = document.querySelector('[data-meme="on"]');
-        if (offBtn && onBtn) {
-          offBtn.classList.add('active');
-          onBtn.classList.remove('active');
+        const toggleContainer = document.getElementById('memeModeToggle');
+        if (toggleContainer) {
+          toggleContainer.classList.remove('active');
+          toggleContainer.querySelector('.meme-toggle-label').textContent = 'Normal';
         }
         
         this.updateMemeUI();
