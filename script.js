@@ -692,11 +692,12 @@ const app = {
         });
         document.getElementById('timeFormatToggle').classList.toggle('active', this.timeFormat === '24');
 
-        // Force 'Off' highlight visually
+        // Match time format toggle behavior: highlight selected option in blue
         document.querySelectorAll('.toggle-option[data-meme]').forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.meme === 'off');
+          const isBtnOn = btn.dataset.meme === 'on';
+          btn.classList.toggle('active', isBtnOn === this.memeMode);
         });
-        document.getElementById('memeModeToggle').classList.remove('active');
+        document.getElementById('memeModeToggle').classList.toggle('active', this.memeMode);
         this.updateMemeUI();
       } catch (e) {
         console.error('Error loading settings:', e);

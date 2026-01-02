@@ -213,26 +213,7 @@ header {
   font-style: italic;
 }
 
-#memeModeToggle.active {
-  background: rgba(251, 191, 36, 0.4);
-  border-color: rgba(251, 191, 36, 0.6);
-}
-
-#memeModeToggle .toggle-option.active {
-  background: #475569;
-  color: white;
-}
-
-#memeModeToggle .toggle-option.active[data-meme="on"] {
-  background: #fbbf24;
-  color: #0f172a;
-}
-
-#memeModeToggle.active {
-  background: rgba(251, 191, 36, 0.2);
-  border-color: rgba(251, 191, 36, 0.4);
-}
-
+/* Removed meme specific toggle overrides to match time format toggle */
 .setting-value {
   font-size: 20px;
   font-weight: 600;
