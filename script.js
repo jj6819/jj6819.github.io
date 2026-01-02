@@ -99,6 +99,36 @@ const app = {
       e.preventDefault();
       e.stopPropagation();
     });
+
+    // --- Nap Calculator ---
+    document.querySelectorAll(".nap-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const napMins = Number(btn.dataset.nap);
+        const wakeWindowMins = this.settings.wakeWindow;
+
+        const now = new Date();
+        const start = new Date(now.getTime() + napMins * 60000);
+        const end = new Date(start.getTime() + wakeWindowMins * 60000);
+
+        const use24h = (this.timeFormat === "24");
+        const fmt = new Intl.DateTimeFormat(undefined, { 
+          hour: "numeric", 
+          minute: "2-digit", 
+          hour12: !use24h 
+        });
+
+        const out = document.getElementById("napOutput");
+        if (out) {
+          out.innerHTML = `<strong>Wake between:</strong> ${fmt.format(start)} – ${fmt.format(end)}`;
+          out.classList.add('glow');
+          setTimeout(() => out.classList.remove('glow'), 600);
+        }
+
+        // Add active state to button
+        document.querySelectorAll('.nap-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
   },
 
   setMemeMode(status) {

@@ -228,6 +228,24 @@
         <div class="results-list" id="resultsList"></div>
       </div>
 
+      <section id="nap-calculator" class="seo-block">
+        <h2 class="results-label">Nap Calculator</h2>
+        <p style="font-size: 14px; color: #94a3b8; margin-bottom: 16px;">
+          Need a quick reset? Pick a nap type to get a recommended wake window.
+          <br><span style="font-style: italic; font-size: 12px;">(Tip: a short nap can boost alertness without ruining bedtime.)</span>
+        </p>
+
+        <div class="nap-controls">
+          <button class="nap-btn" data-nap="15">Coffee Nap (15m)</button>
+          <button class="nap-btn" data-nap="20">Power Nap (20m)</button>
+          <button class="nap-btn" data-nap="90">Full Cycle (90m)</button>
+        </div>
+
+        <div class="nap-output" id="napOutput" aria-live="polite">
+          Select a nap to see your wake window.
+        </div>
+      </section>
+
       <button class="info-toggle" id="infoToggle">
         <span class="info-title">How this sleep cycle calculator works</span>
         <span class="info-arrow">▼</span>
