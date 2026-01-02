@@ -264,9 +264,11 @@ input[type="range"] {
   cursor: pointer;
 }
 
-.toggle-option.active {
-  background: #4f46e5;
-  color: white;
+.toggle-option.active,
+[data-meme].active,
+[data-format].active {
+  background: #4f46e5 !important;
+  color: white !important;
 }
 
 .time-picker-container {

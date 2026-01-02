@@ -105,10 +105,7 @@ const app = {
     this.memeMode = status === 'on';
     
     // Explicitly update highlighting to match time format toggle
-    const toggle = document.getElementById('memeModeToggle');
-    const options = toggle.querySelectorAll('.toggle-option');
-    options.forEach(opt => {
-      // Direct comparison with the status passed to the function
+    document.querySelectorAll('[data-meme]').forEach(opt => {
       if (opt.getAttribute('data-meme') === status) {
         opt.classList.add('active');
       } else {
@@ -703,7 +700,7 @@ const app = {
 
         // Apply consistent highlighting pattern from time format toggle
         const memeToggle = document.getElementById('memeModeToggle');
-        const memeOptions = memeToggle.querySelectorAll('.toggle-option');
+        const memeOptions = memeToggle.querySelectorAll('[data-meme]');
         memeOptions.forEach(opt => {
           if (opt.getAttribute('data-meme') === 'off') {
             opt.classList.add('active');
