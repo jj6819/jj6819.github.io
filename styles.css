@@ -218,26 +218,14 @@ header {
   border-color: rgba(251, 191, 36, 0.6);
 }
 
-#memeModeToggle .toggle-option.active[data-meme="on"] {
-  background: #fbbf24;
-  color: #0f172a;
-}
-
-#memeModeToggle .toggle-option.active[data-meme="off"] {
+#memeModeToggle .toggle-option.active {
   background: #475569;
   color: white;
 }
 
-#memeModeToggle .toggle-option {
-  flex: 1;
-  padding: 6px 12px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 600;
-  color: #94a3b8;
-  border-radius: 16px;
-  transition: all 0.3s ease;
-  cursor: pointer;
+#memeModeToggle .toggle-option.active[data-meme="on"] {
+  background: #fbbf24;
+  color: #0f172a;
 }
 
 #memeModeToggle.active {

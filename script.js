@@ -103,8 +103,8 @@ const app = {
 
   setMemeMode(status) {
     this.memeMode = status === 'on';
-    document.querySelectorAll('[data-meme]').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.meme === status);
+    document.querySelectorAll('.toggle-option[data-meme]').forEach(btn => {
+      btn.classList.toggle('active', (btn.dataset.meme === 'on') === this.memeMode);
     });
     document.getElementById('memeModeToggle').classList.toggle('active', this.memeMode);
     
