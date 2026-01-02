@@ -478,9 +478,16 @@ const app = {
 
       let memeMicro = "";
       if (isMeme) {
-        if (r.cycles === 4) memeMicro = "Survival Mode";
-        if (r.cycles === 5) memeMicro = "Solid Human Energy";
-        if (r.cycles === 6) memeMicro = "Peak Adulting";
+        if (r.cycles === 4) {
+          const variants = ["Survival Mode", "Quick Reset", "Not ideal, but we move."];
+          memeMicro = variants[Math.floor(Math.random() * variants.length)];
+        } else if (r.cycles === 5) {
+          const variants = ["Solid Human Energy", "Best Option", "Main character morning."];
+          memeMicro = variants[Math.floor(Math.random() * variants.length)];
+        } else if (r.cycles === 6) {
+          const variants = ["Peak Adulting", "Full Recharge", "Boss fight ready."];
+          memeMicro = variants[Math.floor(Math.random() * variants.length)];
+        }
       }
 
       let bestBadge = "★ Best Option";
