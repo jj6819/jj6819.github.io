@@ -104,13 +104,16 @@ const app = {
   setMemeMode(status) {
     this.memeMode = status === 'on';
     
-    // Update active class for the toggle options
-    document.querySelectorAll('[data-meme]').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.meme === status);
+    // Manual UI update to ensure highlighting is immediate and correct
+    const toggle = document.getElementById('memeModeToggle');
+    const options = toggle.querySelectorAll('.toggle-option');
+    options.forEach(opt => {
+      if (opt.getAttribute('data-meme') === status) {
+        opt.classList.add('active');
+      } else {
+        opt.classList.remove('active');
+      }
     });
-    
-    // Update active class for the container
-    document.getElementById('memeModeToggle').classList.toggle('active', this.memeMode);
     
     // Always default to 12hr when switching Meme Mode
     this.setTimeFormat('12');
@@ -697,10 +700,17 @@ const app = {
         document.getElementById('timeFormatToggle').classList.toggle('active', this.timeFormat === '24');
 
         // Match time format toggle behavior: highlight selected option in blue
-        document.querySelectorAll('[data-meme]').forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.meme === (this.memeMode ? 'on' : 'off'));
+        const memeToggle = document.getElementById('memeModeToggle');
+        const memeOptions = memeToggle.querySelectorAll('.toggle-option');
+        const currentStatus = this.memeMode ? 'on' : 'off';
+        memeOptions.forEach(opt => {
+          if (opt.getAttribute('data-meme') === currentStatus) {
+            opt.classList.add('active');
+          } else {
+            opt.classList.remove('active');
+          }
         });
-        document.getElementById('memeModeToggle').classList.toggle('active', this.memeMode);
+        
         this.updateMemeUI();
       } catch (e) {
         console.error('Error loading settings:', e);
