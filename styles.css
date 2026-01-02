@@ -195,6 +195,13 @@ header {
   transition: max-height 0.3s ease;
 }
 
+@media (max-width: 600px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
 .settings-grid.show {
   max-height: 500px;
 }
