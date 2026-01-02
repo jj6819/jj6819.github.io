@@ -223,6 +223,28 @@ header {
   color: #0f172a;
 }
 
+#memeModeToggle .toggle-option.active[data-meme="off"] {
+  background: #475569;
+  color: white;
+}
+
+#memeModeToggle .toggle-option {
+  flex: 1;
+  padding: 6px 12px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+#memeModeToggle.active {
+  background: rgba(251, 191, 36, 0.2);
+  border-color: rgba(251, 191, 36, 0.4);
+}
+
 .setting-value {
   font-size: 20px;
   font-weight: 600;
