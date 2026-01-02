@@ -692,6 +692,7 @@ const app = {
         });
         document.getElementById('timeFormatToggle').classList.toggle('active', this.timeFormat === '24');
 
+        // Force 'Off' highlight visually
         document.querySelectorAll('.toggle-option[data-meme]').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.meme === 'off');
         });
