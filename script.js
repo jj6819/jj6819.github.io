@@ -476,13 +476,6 @@ const app = {
     }
     const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
     
-    // Update OpenGraph tags dynamically for better social sharing
-    document.title = previewText || "NightOwl Sleep Plan";
-    const metaTitle = document.querySelector('meta[property="og:title"]');
-    if (metaTitle) metaTitle.setAttribute('content', previewText || "NightOwl Sleep Plan");
-    const metaDesc = document.querySelector('meta[property="og:description"]');
-    if (metaDesc) metaDesc.setAttribute('content', `Check out my NightOwl sleep plan: ${previewText}`);
-    
     // Show share card preview
     const shareCard = document.getElementById('shareCard');
     const shareCardBody = document.getElementById('shareCardBody');
@@ -500,28 +493,25 @@ const app = {
       return;
     }
 
-    if (shareCard && shareCardBody) {
-      let previewText = '';
-      if (this.selectedResult !== null) {
-        const r = document.querySelectorAll('.result-card')[this.selectedResult];
-        const time = r.querySelector('.result-time').textContent;
-        const windowText = r.querySelector('.result-window')?.textContent || '';
-        
-        if (this.mode === 'wake') {
-          shareCardTitle.textContent = "Tonight's Sleep Plan";
-          previewText = `Go to bed: ${windowText.replace('Go to bed between:', '').trim() || time} • Wake up: ${this.formatTime(this.to24Hour(this.hour, this.minute, this.period))}`;
-        } else {
-          shareCardTitle.textContent = "Wake up Plan";
-          previewText = `Bedtime: Now • Wake up: ${windowText.replace('Wake between:', '').trim() || time}`;
-        }
-      } else {
-        shareCardTitle.textContent = "NightOwl Sleep Calc";
-        previewText = "Find your perfect sleep cycles and wake up refreshed.";
-      }
-      
-      shareCardBody.textContent = previewText;
-      shareCard.style.display = 'block';
+    let previewText = '';
+    const r = document.querySelectorAll('.result-card')[this.selectedResult];
+    const time = r.querySelector('.result-time').textContent;
+    const windowText = r.querySelector('.result-window')?.textContent || '';
+    
+    if (this.mode === 'wake') {
+      shareCardTitle.textContent = "Tonight's Sleep Plan";
+      previewText = `Go to bed: ${windowText.replace('Go to bed between:', '').trim() || time} • Wake up: ${this.formatTime(this.to24Hour(this.hour, this.minute, this.period))}`;
+    } else {
+      shareCardTitle.textContent = "Wake up Plan";
+      previewText = `Bedtime: Now • Wake up: ${windowText.replace('Wake between:', '').trim() || time}`;
     }
+
+    // Update OpenGraph tags dynamically for better social sharing
+    document.title = previewText || "NightOwl Sleep Plan";
+    const metaTitle = document.querySelector('meta[property="og:title"]');
+    if (metaTitle) metaTitle.setAttribute('content', previewText || "NightOwl Sleep Plan");
+    const metaDesc = document.querySelector('meta[property="og:description"]');
+    if (metaDesc) metaDesc.setAttribute('content', `Check out my NightOwl sleep plan: ${previewText}`);
 
     navigator.clipboard.writeText(shareUrl).then(() => {
       const btn = document.getElementById('shareBtn');
