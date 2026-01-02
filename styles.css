@@ -605,26 +605,56 @@ input[type="range"] {
   margin-top: 32px;
 }
 
-.inner-section-title,
-.info-section h4 {
+.inner-section-title {
   font-size: 16px;
   font-weight: 600;
   color: #fbbf24;
   margin: 20px 0 12px;
 }
 
-.info-section p,
-.info-section li,
-.faq-item p {
+.content-list {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
+.content-list li {
+  margin-bottom: 8px;
+}
+
+.example-grid-simple {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.example-item {
+  background: rgba(15, 23, 42, 0.4);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.example-item h4 {
+  font-size: 15px;
+  color: #a5b4fc;
+  margin-bottom: 8px;
+}
+
+.example-item p {
   font-size: 14px;
+  margin-bottom: 0 !important;
   line-height: 1.6;
+}
+
+.faq-item {
+  margin-bottom: 16px;
 }
 
 .faq-item strong {
   display: block;
-  color: #fbbf24;
+  color: #a5b4fc;
   margin-bottom: 4px;
-  font-size: 15px;
 }
 
 @media (max-width: 480px) {
