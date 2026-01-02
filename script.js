@@ -78,6 +78,10 @@ const app = {
       btn.addEventListener('click', (e) => this.setTimeFormat(e.target.dataset.format));
     });
 
+    document.querySelectorAll('[data-meme]').forEach(btn => {
+      btn.addEventListener('click', (e) => this.setMemeMode(e.target.dataset.meme));
+    });
+
     ['hourColumn', 'minuteColumn', 'periodColumn'].forEach(id => {
       const col = document.getElementById(id);
       if (col) {
@@ -92,6 +96,92 @@ const app = {
       e.preventDefault();
       e.stopPropagation();
     });
+  },
+
+  setMemeMode(status) {
+    this.memeMode = status === 'on';
+    document.querySelectorAll('[data-meme]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.meme === status);
+    });
+    document.getElementById('memeModeToggle').classList.toggle('active', this.memeMode);
+    
+    this.updateMemeUI();
+    this.calculate();
+    this.saveSettings();
+  },
+
+  updateMemeUI() {
+    const isMeme = this.memeMode;
+    
+    // Header
+    const headerTitle = "Sleep Cycle Calculator";
+    const headerSub = isMeme 
+      ? "Sleep math for the chronically sleepy." 
+      : "Bedtimes + wake windows based on 90-minute cycles";
+    document.querySelector('.subtitle').textContent = headerSub;
+
+    // Mode Buttons
+    const wakeBtn = document.querySelector('[data-mode="wake"]');
+    const sleepBtn = document.querySelector('[data-mode="sleep"]');
+    if (isMeme) {
+      wakeBtn.innerHTML = `<span>⏰</span> I need to be human by...`;
+      sleepBtn.innerHTML = `<span>🛏️</span> Put me in sleep mode.`;
+    } else {
+      wakeBtn.innerHTML = `<span>⏰</span> Wake up at...`;
+      sleepBtn.innerHTML = `<span>🛏️</span> Bedtime now`;
+    }
+
+    // Setting Helpers
+    const labels = document.querySelectorAll('.setting-label');
+    const latencyHelper = isMeme ? "How long I doomscroll before sleep." : "";
+    const cycleHelper = isMeme ? "My brain’s sleep playlist length." : "";
+    const windowHelper = isMeme ? "Grace period for my life choices." : "";
+    const formatHelper = isMeme ? "Civilian time vs 24h time." : "";
+
+    this.updateHelper(labels[0], latencyHelper);
+    this.updateHelper(labels[1], cycleHelper);
+    this.updateHelper(labels[2], windowHelper);
+    this.updateHelper(labels[3], formatHelper);
+
+    // Time Label
+    const timeLabel = document.getElementById('timeLabel');
+    if (this.mode === 'wake') {
+      timeLabel.textContent = isMeme ? "Wake time (please don’t judge me):" : "I want to wake up at...";
+    } else {
+      timeLabel.textContent = isMeme ? "Bedtime (yes, I said it):" : "I want to go to bed...";
+    }
+
+    // Results Label
+    const resLabel = document.getElementById('resultsLabel');
+    if (isMeme) {
+      resLabel.textContent = "Your ‘don’t be groggy’ options";
+    } else {
+      resLabel.textContent = this.mode === 'wake' ? 'Go to bed at...' : 'Wake up at...';
+    }
+
+    // Share Button
+    const shareBtn = document.getElementById('shareBtn');
+    shareBtn.textContent = isMeme ? "Export bedtime propaganda" : "Share Link";
+
+    // Footer
+    const disclaimer = document.querySelector('.footer-disclaimer');
+    disclaimer.textContent = isMeme 
+      ? "Not a doctor, just an owl with opinions." 
+      : "Educational tool only — not medical advice.";
+  },
+
+  updateHelper(labelEl, text) {
+    let helper = labelEl.parentElement.querySelector('.setting-helper');
+    if (text) {
+      if (!helper) {
+        helper = document.createElement('div');
+        helper.className = 'setting-helper';
+        labelEl.after(helper);
+      }
+      helper.textContent = text;
+    } else if (helper) {
+      helper.remove();
+    }
   },
 
   setTimeFormat(format) {
@@ -343,6 +433,7 @@ const app = {
   },
 
   renderResults(results) {
+    const isMeme = this.memeMode;
     const listHtml = results.map((r, i) => {
       const isBest = Math.abs(r.cycles - 5) === 0;
       const resultTime = this.mode === 'wake' ? r.bedTimeStr : r.wakeTimeStr;
@@ -350,15 +441,30 @@ const app = {
       const windowLabel = this.mode === 'wake' ? 'Go to bed between:' : 'Wake between:';
       const showWindow = this.settings.wakeWindow > 0;
 
+      let memeMicro = "";
+      if (isMeme) {
+        if (r.cycles === 4) memeMicro = "Survival Mode";
+        if (r.cycles === 5) memeMicro = "Solid Human Energy";
+        if (r.cycles === 6) memeMicro = "Peak Adulting";
+      }
+
+      let bestBadge = "★ Best Option";
+      if (isMeme) {
+        const badges = ["⭐ Least Painful", "⭐ Top Pick", "⭐ Main Quest", "⭐ Optimal Owl Choice"];
+        bestBadge = badges[i % badges.length];
+      }
+
       return `
         <button class="result-card ${isSelected ? 'selected' : ''} ${isBest ? 'best' : ''}" data-index="${i}">
           <div class="copy-btn" title="Copy to clipboard" data-index="${i}">📋</div>
+          ${isBest ? `<div class="badge-meme" style="font-size: 11px; color: #fbbf24; font-weight: 600; text-transform: uppercase; margin-bottom: 8px;">${bestBadge}</div>` : ''}
           <div class="result-time">${resultTime}</div>
           ${showWindow ? `<div class="result-window">${windowLabel} ${r.wakeWindowStr}</div>` : ''}
           <div class="result-details">
             <span class="result-detail">${r.cycles} cycles</span>
             <span class="result-detail">${r.duration}</span>
           </div>
+          ${isMeme ? `<div class="meme-micro" style="font-size: 12px; color: #fbbf24; margin-top: 4px; font-weight: 600;">"${memeMicro}"</div>` : ''}
           <div class="result-explanation">
             ${this.mode === 'wake' ? `(${this.settings.latency}m latency + ${r.cycles} cycles × ${this.settings.cycleLength}m)` : `(${this.settings.latency}m latency + ${r.cycles} cycles × ${this.settings.cycleLength}m)`}
           </div>
@@ -435,7 +541,8 @@ const app = {
   saveSettings() {
     localStorage.setItem('sleepSettings', JSON.stringify({
       settings: this.settings,
-      timeFormat: this.timeFormat
+      timeFormat: this.timeFormat,
+      memeMode: this.memeMode
     }));
   },
 
@@ -540,6 +647,7 @@ const app = {
           this.settings = { ...this.settings, ...data.settings };
         }
         this.timeFormat = data.timeFormat || '12';
+        this.memeMode = data.memeMode || false;
         
         // Update UI
         document.getElementById('latencyValue').textContent = this.settings.latency;
@@ -549,10 +657,16 @@ const app = {
         document.getElementById('cycleLength').value = this.settings.cycleLength;
         document.getElementById('wakeWindow').value = this.settings.wakeWindow;
         
-        document.querySelectorAll('.toggle-option').forEach(btn => {
+        document.querySelectorAll('.toggle-option[data-format]').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.format === this.timeFormat);
         });
         document.getElementById('timeFormatToggle').classList.toggle('active', this.timeFormat === '24');
+
+        document.querySelectorAll('.toggle-option[data-meme]').forEach(btn => {
+          btn.classList.toggle('active', (btn.dataset.meme === 'on') === this.memeMode);
+        });
+        document.getElementById('memeModeToggle').classList.toggle('active', this.memeMode);
+        this.updateMemeUI();
       } catch (e) {
         console.error('Error loading settings:', e);
       }

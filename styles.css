@@ -205,12 +205,22 @@ header {
   gap: 8px;
 }
 
-.setting-label {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #94a3b8;
-  font-weight: 500;
+.setting-helper {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: -4px;
+  margin-bottom: 4px;
+  font-style: italic;
+}
+
+#memeModeToggle.active {
+  background: rgba(251, 191, 36, 0.4);
+  border-color: rgba(251, 191, 36, 0.6);
+}
+
+#memeModeToggle .toggle-option.active[data-meme="on"] {
+  background: #fbbf24;
+  color: #0f172a;
 }
 
 .setting-value {
@@ -527,14 +537,7 @@ input[type="range"] {
 }
 
 .result-card.best::before {
-  content: '★ Best Option';
-  display: block;
-  font-size: 11px;
-  color: #fbbf24;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
+  display: none;
 }
 
 .result-time {
