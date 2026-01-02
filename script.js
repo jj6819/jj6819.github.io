@@ -515,6 +515,18 @@ const app = {
       const btn = document.getElementById('shareBtn');
       const originalText = btn.textContent;
       btn.textContent = 'Link copied!';
+      
+      // Attempt to share using Web Share API if supported for better rich preview
+      if (navigator.share) {
+        navigator.share({
+          title: 'NightOwl Sleep Plan',
+          text: previewText,
+          url: shareUrl
+        }).catch(() => {
+          // Fallback to clipboard which we already did
+        });
+      }
+      
       setTimeout(() => { btn.textContent = originalText; }, 2000);
     }).catch(() => { alert('Could not copy link. URL: ' + shareUrl); });
   },
