@@ -657,16 +657,24 @@ input[type="range"] {
 }
 
 .content-list {
-  padding-left: 20px !important;
-  margin-bottom: 16px;
-  list-style-position: inside !important;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 0 16px 0 !important;
 }
 
 .content-list li {
-  margin-bottom: 12px;
-  padding-left: 0 !important;
-  text-indent: -20px;
-  padding-left: 20px !important;
+  display: flex !important;
+  gap: 12px !important;
+  margin-bottom: 12px !important;
+  align-items: flex-start !important;
+}
+
+.content-list li::before {
+  content: attr(data-number) "." !important;
+  color: #fbbf24 !important;
+  font-weight: 700 !important;
+  min-width: 20px !important;
+  flex-shrink: 0 !important;
 }
 
 .share-btn:hover {
