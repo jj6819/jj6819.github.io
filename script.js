@@ -676,7 +676,7 @@ const app = {
           this.settings = { ...this.settings, ...data.settings };
         }
         this.timeFormat = data.timeFormat || '12';
-        this.memeMode = data.memeMode || false;
+        this.memeMode = false; // Always default to Off on refresh
         
         // Update UI
         document.getElementById('latencyValue').textContent = this.settings.latency;
@@ -692,13 +692,19 @@ const app = {
         document.getElementById('timeFormatToggle').classList.toggle('active', this.timeFormat === '24');
 
         document.querySelectorAll('.toggle-option[data-meme]').forEach(btn => {
-          btn.classList.toggle('active', (btn.dataset.meme === 'on') === this.memeMode);
+          btn.classList.toggle('active', btn.dataset.meme === 'off');
         });
-        document.getElementById('memeModeToggle').classList.toggle('active', this.memeMode);
+        document.getElementById('memeModeToggle').classList.toggle('active', false);
         this.updateMemeUI();
       } catch (e) {
         console.error('Error loading settings:', e);
       }
+    } else {
+      this.memeMode = false;
+      document.querySelectorAll('.toggle-option[data-meme]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.meme === 'off');
+      });
+      document.getElementById('memeModeToggle').classList.toggle('active', false);
     }
   }
 };
