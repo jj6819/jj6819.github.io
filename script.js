@@ -1,3 +1,11 @@
+// Morning Routine suggestions based on sleep quality
+const routines = [
+  "☀️ Sunlight: Open your blinds immediately to reset your circadian rhythm.",
+  "💧 Hydration: Drink 8oz of water before your first cup of coffee.",
+  "🧘 Quick Stretch: A 2-minute morning stretch reduces sleep inertia.",
+  "🧊 Cold Splash: Splash cold water on your face to signal alertness to your brain."
+];
+
 const app = {
   mode: 'wake',
   hour: 1,
@@ -597,7 +605,15 @@ const app = {
       `;
     }).join('');
 
-    document.getElementById('resultsList').innerHTML = listHtml;
+    const randomRoutine = routines[Math.floor(Math.random() * routines.length)];
+    const routineHtml = `
+      <div class="routine-tip">
+        <div class="routine-tip-header">💡 Morning Pro-Tip</div>
+        <div class="routine-tip-body">${randomRoutine}</div>
+      </div>
+    `;
+
+    document.getElementById('resultsList').innerHTML = listHtml + routineHtml;
 
     document.querySelectorAll('.result-card').forEach(card => {
       card.addEventListener('click', (e) => {
