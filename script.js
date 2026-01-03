@@ -338,12 +338,10 @@ const app = {
   updateSocialJetLagUI() {
     const container = document.getElementById('socialJetLagToggle');
     const inputs = document.getElementById('socialJetLagInputs');
-    const label = container.querySelector('.meme-toggle-label');
     const resultDiv = document.getElementById('socialJetLagResult');
 
     if (this.socialJetLagEnabled) {
       container.classList.add('active');
-      label.textContent = 'On';
       inputs.style.display = 'block';
 
       const weekday = document.getElementById('weekdayWake').value;
@@ -373,7 +371,6 @@ const app = {
       `;
     } else {
       container.classList.remove('active');
-      label.textContent = 'Off';
       inputs.style.display = 'none';
     }
   },
