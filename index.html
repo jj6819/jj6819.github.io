@@ -226,6 +226,21 @@
         <div class="results-list" id="resultsList"></div>
         
         <button class="share-btn" id="shareBtn" data-testid="button-share-link">Share Link</button>
+        <button class="embed-toggle-btn" id="embedToggle" data-testid="button-embed-calculator">
+          <span>&lt;/&gt;</span> Embed
+        </button>
+
+        <div id="embedPanel" class="embed-panel" style="display: none;">
+          <div class="embed-panel-header">
+            <strong>Embed this Calculator</strong>
+            <button class="embed-close" id="embedClose">&times;</button>
+          </div>
+          <p>Copy and paste this code into your website:</p>
+          <div class="embed-code-wrapper">
+            <code id="embedCode">&lt;iframe src="https://nightowlsleepcalc.com/" width="100%" height="600" frameborder="0"&gt;&lt;/iframe&gt;&lt;p&gt;Powered by &lt;a href="https://nightowlsleepcalc.com/"&gt;NightOwl Sleep Calc&lt;/a&gt;&lt;/p&gt;</code>
+            <button class="copy-embed-btn" id="copyEmbedBtn">Copy Code</button>
+          </div>
+        </div>
 
         <div id="shareCard" class="share-card-preview" style="display: none;">
           <div class="share-card-header">

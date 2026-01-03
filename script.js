@@ -57,6 +57,41 @@ const app = {
 
     document.getElementById('shareBtn').addEventListener('click', () => this.shareLink());
 
+    const embedToggle = document.getElementById('embedToggle');
+    const embedPanel = document.getElementById('embedPanel');
+    const embedClose = document.getElementById('embedClose');
+    const copyEmbedBtn = document.getElementById('copyEmbedBtn');
+
+    if (embedToggle) {
+      embedToggle.addEventListener('click', () => {
+        embedPanel.style.display = embedPanel.style.display === 'none' ? 'block' : 'none';
+        if (embedPanel.style.display === 'block') {
+          embedPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+    }
+
+    if (embedClose) {
+      embedClose.addEventListener('click', () => {
+        embedPanel.style.display = 'none';
+      });
+    }
+
+    if (copyEmbedBtn) {
+      copyEmbedBtn.addEventListener('click', () => {
+        const code = document.getElementById('embedCode').textContent;
+        navigator.clipboard.writeText(code).then(() => {
+          const originalText = copyEmbedBtn.textContent;
+          copyEmbedBtn.textContent = 'Copied!';
+          copyEmbedBtn.classList.add('success');
+          setTimeout(() => {
+            copyEmbedBtn.textContent = originalText;
+            copyEmbedBtn.classList.remove('success');
+          }, 2000);
+        });
+      });
+    }
+
     document.getElementById('toggleSettings').addEventListener('click', () => {
       document.getElementById('settingsGrid').classList.toggle('show');
     });
