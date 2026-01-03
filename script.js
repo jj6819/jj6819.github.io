@@ -736,8 +736,10 @@ const app = {
     const time = this.mode === 'wake' ? result.bedTimeStr : result.wakeTimeStr;
     const text = `I'm using NightOwl to plan my sleep! My target ${this.mode === 'wake' ? 'bedtime' : 'wake time'} is ${time} (${result.cycles} cycles). Check your sleep cycle at https://nightowlsleepcalc.com/`;
     
+    const index = this.selectedResult !== null ? this.selectedResult : 0;
+    
     navigator.clipboard.writeText(text).then(() => {
-      const btn = document.querySelector(`.result-card[data-index="${results.indexOf(result)}"] .copy-btn`);
+      const btn = document.querySelector(`.result-card[data-index="${index}"] .copy-btn`);
       if (btn) {
         const original = btn.textContent;
         btn.textContent = '✅';
