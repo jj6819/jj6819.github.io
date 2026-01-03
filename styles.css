@@ -224,18 +224,67 @@ header {
   margin-bottom: 32px;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease;
-}
-
-@media (max-width: 600px) {
-  .settings-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0 20px;
+  background: rgba(15, 23, 42, 0.4);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .settings-grid.show {
-  max-height: 500px;
+  max-height: 800px; /* Increased to prevent obstruction */
+  padding: 24px 20px;
+  margin-top: 10px;
+}
+
+/* Custom Minimal Toggle for Social Jet Lag */
+#socialJetLagToggle {
+  width: 52px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+#socialJetLagToggle .meme-toggle-thumb {
+  width: 20px;
+  height: 20px;
+  background: #94a3b8;
+  border-radius: 50%;
+  position: absolute;
+  top: 2.5px;
+  left: 3px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: none; /* Reset meme rotation */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+#socialJetLagToggle.active {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #10b981;
+}
+
+#socialJetLagToggle.active .meme-toggle-thumb {
+  left: 26px;
+  background: #10b981;
+  transform: none;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+#socialJetLagToggle .meme-toggle-label {
+  display: none;
+}
+
+#socialJetLagToggle::after {
+  content: ''; /* No emoji for this clean toggle */
+}
+
+#socialJetLagToggle .meme-toggle-thumb::after {
+  content: '' !important; /* Force remove emoji from thumb */
 }
 
 .setting-group {
