@@ -367,12 +367,22 @@ const app = {
       container.classList.add('active');
       inputs.style.display = 'block';
 
-      const weekday = document.getElementById('weekdayWake').value;
-      const weekend = document.getElementById('weekendWake').value;
-
-      const weekdayMins = this.timeToMinutes(weekday);
-      const weekendMins = this.timeToMinutes(weekend);
+      const weekdayEl = document.getElementById('weekdayWake');
+      const weekendEl = document.getElementById('weekendWake');
       
+      const weekdayValue = weekdayEl.value;
+      const weekendValue = weekendEl.value;
+
+      const weekdayMins = this.timeToMinutes(weekdayValue);
+      const weekendMins = this.timeToMinutes(weekendValue);
+      
+      // Update the display labels for the inputs to show the selected format
+      const weekdayLabel = weekdayEl.previousElementSibling;
+      const weekendLabel = weekendEl.previousElementSibling;
+      
+      if (weekdayLabel) weekdayLabel.textContent = `Weekday Wake (${this.formatDisplayTime(weekdayMins)})`;
+      if (weekendLabel) weekendLabel.textContent = `Weekend Wake (${this.formatDisplayTime(weekendMins)})`;
+
       let diff = weekendMins - weekdayMins;
       if (diff < 0) diff = 0; 
 
@@ -389,8 +399,8 @@ const app = {
       const smootherTime = this.formatDisplayTime(smootherMins);
 
       resultDiv.innerHTML = `
-        <span class="social-result-value">Social jet lag: <span class="${severityClass}">${hours}h ${mins}m (${severity})</span></span>
-        <span class="social-result-target">Smoother weekend target: ${smootherTime}</span>
+        <div class="social-result-value">Social jet lag: <span class="${severityClass}">${hours}h ${mins}m (${severity})</span></div>
+        <div class="social-result-target">Smoother weekend target: ${smootherTime}</div>
       `;
     } else {
       container.classList.remove('active');
