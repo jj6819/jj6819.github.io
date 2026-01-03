@@ -1131,6 +1131,8 @@ input[type="range"] {
 }
 
 .calendar-btn {
+  appearance: none;
+  -webkit-appearance: none;
   background: rgba(251, 191, 36, 0.1);
   border: 1px solid rgba(251, 191, 36, 0.3);
   color: #fbbf24;
@@ -1145,6 +1147,8 @@ input[type="range"] {
   gap: 8px;
   width: 100%;
   justify-content: center;
+  outline: none;
+  font-family: inherit;
 }
 
 .calendar-btn:hover {
