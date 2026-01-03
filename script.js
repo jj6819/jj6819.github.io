@@ -426,11 +426,16 @@ const app = {
       this.period = period;
     }
     this.timeFormat = format;
+    
+    // Sync Social Jet Lag inputs with format (purely for consistency, though HTML time inputs are usually 24h internally)
+    // The display in Social Jet Lag results already uses formatDisplayTime() which respects this.timeFormat
+    
     document.querySelectorAll('.toggle-option').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.format === format);
     });
     document.getElementById('timeFormatToggle').classList.toggle('active', format === '24');
     this.updateTimePicker();
+    this.updateSocialJetLagUI();
     this.calculate();
     this.saveSettings();
   },
