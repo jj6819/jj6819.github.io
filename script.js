@@ -341,6 +341,11 @@ const app = {
     return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
   },
 
+  timeToMinutes(timeStr) {
+    const [hrs, mins] = timeStr.split(':').map(Number);
+    return hrs * 60 + mins;
+  },
+
   formatDisplayTime(totalMins) {
     let hrs = Math.floor(totalMins / 60) % 24;
     const mins = totalMins % 60;
