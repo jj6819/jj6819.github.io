@@ -376,17 +376,20 @@ const app = {
       const weekdayMins = this.timeToMinutes(weekdayValue);
       const weekendMins = this.timeToMinutes(weekendValue);
       
-      // Force formatting update for the labels
+      // Update the display labels for the inputs to show the selected format
       const weekdayLabel = weekdayEl.previousElementSibling;
       const weekendLabel = weekendEl.previousElementSibling;
       
-      // Ensure we display 24h format in labels if that's the mode
+      // Force 24h format if the toggle is set to 24h
       const formattedWeekday = this.formatDisplayTime(weekdayMins);
       const formattedWeekend = this.formatDisplayTime(weekendMins);
 
       if (weekdayLabel) weekdayLabel.textContent = `Weekday Wake (${formattedWeekday})`;
       if (weekendLabel) weekendLabel.textContent = `Weekend Wake (${formattedWeekend})`;
 
+      // Also update the input values if they look like 12h but should be 24h
+      // However, HTML time inputs ARE 24h. The issue might be initial values or loading.
+      
       let diff = weekendMins - weekdayMins;
       if (diff < 0) diff = 0; 
 
@@ -410,6 +413,37 @@ const app = {
       container.classList.remove('active');
       inputs.style.display = 'none';
     }
+  },
+
+  setTimeFormat(format) {
+    if (this.timeFormat === '12' && format === '24') {
+      let hour24 = this.hour;
+      if (this.period === 'PM' && this.hour !== 12) hour24 += 12;
+      if (this.period === 'AM' && this.hour === 12) hour24 = 0;
+      this.hour = hour24;
+      this.period = 'AM';
+    } else if (this.timeFormat === '24' && format === '12') {
+      const period = this.hour >= 12 ? 'PM' : 'AM';
+      const hour12 = this.hour % 12 || 12;
+      this.hour = hour12;
+      this.period = period;
+    }
+    this.timeFormat = format;
+    
+    // Update active state of buttons
+    document.querySelectorAll('.toggle-option').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.format === format);
+    });
+    
+    const formatToggle = document.getElementById('timeFormatToggle');
+    if (formatToggle) {
+      formatToggle.classList.toggle('active', format === '24');
+    }
+
+    this.updateTimePicker();
+    this.updateSocialJetLagUI();
+    this.calculate();
+    this.saveSettings();
   },
 
   updateHelper(labelEl, text) {
