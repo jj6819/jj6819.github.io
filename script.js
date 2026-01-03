@@ -335,6 +335,24 @@ const app = {
       : "Educational tool only — not medical advice.";
   },
 
+  minutesToTime(totalMins) {
+    let hrs = Math.floor(totalMins / 60) % 24;
+    const mins = totalMins % 60;
+    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+  },
+
+  formatDisplayTime(totalMins) {
+    let hrs = Math.floor(totalMins / 60) % 24;
+    const mins = totalMins % 60;
+
+    if (this.timeFormat === '12') {
+      const period = hrs >= 12 ? 'PM' : 'AM';
+      hrs = hrs % 12 || 12;
+      return `${hrs}:${mins.toString().padStart(2, '0')} ${period}`;
+    }
+    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+  },
+
   updateSocialJetLagUI() {
     const container = document.getElementById('socialJetLagToggle');
     const inputs = document.getElementById('socialJetLagInputs');
@@ -363,7 +381,7 @@ const app = {
       else if (diff >= 30) { severity = "Mild"; severityClass = "severity-mild"; }
 
       const smootherMins = weekdayMins + Math.min(diff, 60);
-      const smootherTime = this.minutesToTime(smootherMins);
+      const smootherTime = this.formatDisplayTime(smootherMins);
 
       resultDiv.innerHTML = `
         <span class="social-result-value">Social jet lag: <span class="${severityClass}">${hours}h ${mins}m (${severity})</span></span>
@@ -373,23 +391,6 @@ const app = {
       container.classList.remove('active');
       inputs.style.display = 'none';
     }
-  },
-
-  timeToMinutes(timeStr) {
-    const [hrs, mins] = timeStr.split(':').map(Number);
-    return hrs * 60 + mins;
-  },
-
-  minutesToTime(totalMins) {
-    let hrs = Math.floor(totalMins / 60) % 24;
-    const mins = totalMins % 60;
-    
-    if (this.timeFormat === '12') {
-      const period = hrs >= 12 ? 'PM' : 'AM';
-      hrs = hrs % 12 || 12;
-      return `${hrs}:${mins.toString().padStart(2, '0')} ${period}`;
-    }
-    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
   },
 
   updateHelper(labelEl, text) {
