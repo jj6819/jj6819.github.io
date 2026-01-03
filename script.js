@@ -131,27 +131,6 @@ const app = {
       this.saveSettings();
     });
 
-    document.getElementById('fillCurrentWake').addEventListener('click', () => {
-      let h = this.hour;
-      let p = this.period;
-      if (this.timeFormat === '24') {
-        p = 'AM'; // Internally stored as AM in 24h mode
-      }
-      const mins = this.to24Hour(h, this.minute, p);
-      document.getElementById('weekdayWake').value = this.minutesToTime(mins);
-      this.updateSocialJetLagUI();
-      this.saveSettings();
-    });
-
-    document.getElementById('fillWeekendPlus1').addEventListener('click', () => {
-      const weekday = document.getElementById('weekdayWake').value;
-      let mins = this.timeToMinutes(weekday);
-      mins = (mins + 60) % (24 * 60);
-      document.getElementById('weekendWake').value = this.minutesToTime(mins);
-      this.updateSocialJetLagUI();
-      this.saveSettings();
-    });
-
     document.getElementById('weekdayWake').addEventListener('input', () => {
       this.updateSocialJetLagUI();
       this.saveSettings();
@@ -388,15 +367,11 @@ const app = {
       container.classList.add('active');
       inputs.style.display = 'block';
 
-      const weekdayVal = document.getElementById('weekdayWake').value;
-      const weekendVal = document.getElementById('weekendWake').value;
+      const weekday = document.getElementById('weekdayWake').value;
+      const weekend = document.getElementById('weekendWake').value;
 
-      const weekdayMins = this.timeToMinutes(weekdayVal);
-      const weekendMins = this.timeToMinutes(weekendVal);
-
-      // Update the inline display spans to match format toggle
-      document.getElementById('weekdayDisplay').textContent = this.formatDisplayTime(weekdayMins);
-      document.getElementById('weekendDisplay').textContent = this.formatDisplayTime(weekendMins);
+      const weekdayMins = this.timeToMinutes(weekday);
+      const weekendMins = this.timeToMinutes(weekend);
       
       let diff = weekendMins - weekdayMins;
       if (diff < 0) diff = 0; 
