@@ -747,13 +747,40 @@ const app = {
     const calendarBtn = document.getElementById('calendarBtn');
     if (calendarBtn) {
       calendarBtn.onclick = () => {
-        const title = encodeURIComponent(shareCardTitle.textContent);
-        const description = encodeURIComponent(`NightOwl Sleep Plan: ${previewText}\n\nPlan your sleep at: https://nightowlsleepcalc.com`);
+        const title = shareCardTitle.textContent;
+        const description = `NightOwl Sleep Plan: ${previewText}\n\nPlan your sleep at: https://nightowlsleepcalc.com`;
         
-        // Generate a Google Calendar link for simplicity
-        // Note: In a real app we might offer .ics, but Google is the most common request
-        const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${description}`;
-        window.open(googleUrl, '_blank');
+        // Create iCalendar data for native device support (iOS, Android, etc.)
+        const startTime = new Date(); // Using current date for simplicity
+        const endTime = new Date(startTime.getTime() + 60 * 60 * 1000); // 1 hour duration
+        
+        const formatDate = (date) => {
+          return date.toISOString().replace(/-|:|\.\d+/g, '');
+        };
+
+        const icsData = [
+          'BEGIN:VCALENDAR',
+          'VERSION:2.0',
+          'PROID:-//NightOwl//Sleep Calculator//EN',
+          'BEGIN:VEVENT',
+          `DTSTART:${formatDate(startTime)}`,
+          `DTEND:${formatDate(endTime)}`,
+          `SUMMARY:${title}`,
+          `DESCRIPTION:${description.replace(/\n/g, '\\n')}`,
+          'URL:https://nightowlsleepcalc.com',
+          'END:VEVENT',
+          'END:VCALENDAR'
+        ].join('\n');
+
+        const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'sleep-plan.ics');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
       };
     }
 
