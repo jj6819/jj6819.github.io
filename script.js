@@ -759,48 +759,50 @@ const app = {
           this.settings = { ...this.settings, ...data.settings };
         }
         this.timeFormat = data.timeFormat || '12';
+        this.hour = data.hour || 1;
+        this.minute = data.minute || 0;
+        this.period = data.period || 'AM';
         
         // Force Meme Mode OFF on every refresh as requested
         this.memeMode = false;
         
         // Update UI
-        document.getElementById('latencyValue').textContent = this.settings.latency;
-        document.getElementById('cycleLengthValue').textContent = this.settings.cycleLength;
-        document.getElementById('wakeWindowValue').textContent = this.settings.wakeWindow;
-        document.getElementById('latency').value = this.settings.latency;
-        document.getElementById('cycleLength').value = this.settings.cycleLength;
-        document.getElementById('wakeWindow').value = this.settings.wakeWindow;
+        const latencyVal = document.getElementById('latencyValue');
+        const cycleVal = document.getElementById('cycleLengthValue');
+        const windowVal = document.getElementById('wakeWindowValue');
+        const latencyInp = document.getElementById('latency');
+        const cycleInp = document.getElementById('cycleLength');
+        const windowInp = document.getElementById('wakeWindow');
+
+        if (latencyVal) latencyVal.textContent = this.settings.latency;
+        if (cycleVal) cycleVal.textContent = this.settings.cycleLength;
+        if (windowVal) windowVal.textContent = this.settings.wakeWindow;
+        if (latencyInp) latencyInp.value = this.settings.latency;
+        if (cycleInp) cycleInp.value = this.settings.cycleLength;
+        if (windowInp) windowInp.value = this.settings.wakeWindow;
         
         document.querySelectorAll('.toggle-option[data-format]').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.format === this.timeFormat);
         });
-        document.getElementById('timeFormatToggle').classList.toggle('active', this.timeFormat === '24');
+        const formatToggle = document.getElementById('timeFormatToggle');
+        if (formatToggle) {
+          formatToggle.classList.toggle('active', this.timeFormat === '24');
+        }
 
         // Forcing a hard reset of classes on load to ensure "Off" is the only one active
         const toggleContainer = document.getElementById('memeModeToggle');
         if (toggleContainer) {
           toggleContainer.classList.remove('active');
-          toggleContainer.querySelector('.meme-toggle-label').textContent = 'Normal';
+          const memeLabel = toggleContainer.querySelector('.meme-toggle-label');
+          if (memeLabel) memeLabel.textContent = 'Normal';
         }
         
         this.updateMemeUI();
       } catch (e) {
         console.error('Error loading settings:', e);
       }
-    } else {
-      // Default: Off
-      this.memeMode = false;
-      const memeToggle = document.getElementById('memeModeToggle');
-      const memeOptions = memeToggle.querySelectorAll('.toggle-option');
-      memeOptions.forEach(opt => {
-        if (opt.getAttribute('data-meme') === 'off') {
-          opt.classList.add('active');
-        } else {
-          opt.classList.remove('active');
-        }
-      });
-      this.updateMemeUI();
     }
+    this.updateTimePicker();
   }
 };
 
