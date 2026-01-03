@@ -523,6 +523,12 @@ input[type="range"] {
 .result-card:hover {
   border-color: rgba(99, 102, 241, 0.6);
   background: rgba(51, 65, 85, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.result-card:active {
+  transform: translateY(0);
 }
 
 .result-explanation {
@@ -632,12 +638,18 @@ input[type="range"] {
 }
 
 .settings-toggle-btn:hover {
-  color: #cbd5e1;
+  color: #fbbf24;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
 }
 
 .settings-toggle-btn::after {
   content: '⚙️';
   font-size: 18px;
+  transition: transform 0.5s ease;
+}
+
+.settings-toggle-btn:hover::after {
+  transform: rotate(90deg);
 }
 
 .seo-content-moat {

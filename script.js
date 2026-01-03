@@ -92,6 +92,19 @@ const app = {
       });
     }
 
+    // --- Keyboard Shortcuts ---
+    window.addEventListener('keydown', (e) => {
+      // Toggle Meme Mode with 'M'
+      if (e.key.toLowerCase() === 'm' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') {
+        const isCurrentlyOff = !this.memeMode;
+        this.setMemeMode(isCurrentlyOff ? 'on' : 'off');
+      }
+      // Open/Close Settings with 'S'
+      if (e.key.toLowerCase() === 's' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') {
+        document.getElementById('settingsGrid').classList.toggle('show');
+      }
+    });
+
     document.getElementById('toggleSettings').addEventListener('click', () => {
       document.getElementById('settingsGrid').classList.toggle('show');
     });
