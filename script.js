@@ -743,6 +743,20 @@ const app = {
       shareCard.style.display = 'block';
     }
 
+    // --- Calendar Integration ---
+    const calendarBtn = document.getElementById('calendarBtn');
+    if (calendarBtn) {
+      calendarBtn.onclick = () => {
+        const title = encodeURIComponent(shareCardTitle.textContent);
+        const description = encodeURIComponent(`NightOwl Sleep Plan: ${previewText}\n\nPlan your sleep at: https://nightowlsleepcalc.com`);
+        
+        // Generate a Google Calendar link for simplicity
+        // Note: In a real app we might offer .ics, but Google is the most common request
+        const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${description}`;
+        window.open(googleUrl, '_blank');
+      };
+    }
+
     navigator.clipboard.writeText(shareUrl).then(() => {
       const btn = document.getElementById('shareBtn');
       const originalText = btn.textContent;

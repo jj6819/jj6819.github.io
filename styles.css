@@ -1124,6 +1124,35 @@ input[type="range"] {
   font-weight: 500;
 }
 
+.share-card-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.calendar-btn {
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  color: #fbbf24;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.calendar-btn:hover {
+  background: rgba(251, 191, 36, 0.2);
+  border-color: #fbbf24;
+  transform: translateY(-1px);
+}
+
 .share-card-footer {
   margin-top: 16px;
   font-size: 11px;
