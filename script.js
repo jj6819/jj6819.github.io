@@ -352,8 +352,8 @@ const app = {
 
     if (this.timeFormat === '12') {
       const period = hrs >= 12 ? 'PM' : 'AM';
-      hrs = hrs % 12 || 12;
-      return `${hrs}:${mins.toString().padStart(2, '0')} ${period}`;
+      const hour12 = hrs % 12 || 12;
+      return `${hour12}:${mins.toString().padStart(2, '0')} ${period}`;
     }
     return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
   },
@@ -376,12 +376,16 @@ const app = {
       const weekdayMins = this.timeToMinutes(weekdayValue);
       const weekendMins = this.timeToMinutes(weekendValue);
       
-      // Update the display labels for the inputs to show the selected format
+      // Force formatting update for the labels
       const weekdayLabel = weekdayEl.previousElementSibling;
       const weekendLabel = weekendEl.previousElementSibling;
       
-      if (weekdayLabel) weekdayLabel.textContent = `Weekday Wake (${this.formatDisplayTime(weekdayMins)})`;
-      if (weekendLabel) weekendLabel.textContent = `Weekend Wake (${this.formatDisplayTime(weekendMins)})`;
+      // Ensure we display 24h format in labels if that's the mode
+      const formattedWeekday = this.formatDisplayTime(weekdayMins);
+      const formattedWeekend = this.formatDisplayTime(weekendMins);
+
+      if (weekdayLabel) weekdayLabel.textContent = `Weekday Wake (${formattedWeekday})`;
+      if (weekendLabel) weekendLabel.textContent = `Weekend Wake (${formattedWeekend})`;
 
       let diff = weekendMins - weekdayMins;
       if (diff < 0) diff = 0; 
