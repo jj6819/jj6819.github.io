@@ -9,7 +9,6 @@ const app = {
     cycleLength: 90,
     wakeWindow: 10
   },
-  socialJetLagEnabled: false,
   selectedResult: null,
   scrollVelocity: 0,
   lastWheelTime: 0,
@@ -36,6 +35,7 @@ const app = {
           const infoSection = document.getElementById(sectionId);
           const isExpanded = infoSection.style.display !== 'none';
           
+          // Close all other panels
           for (let j = 1; j <= 4; j++) {
             if (j === i) continue;
             const otherSection = document.getElementById(`infoSection${j === 1 ? '' : j}`);
@@ -44,6 +44,7 @@ const app = {
             if (otherToggle) otherToggle.classList.remove('expanded');
           }
           
+          // Toggle current panel
           infoSection.style.display = isExpanded ? 'none' : 'block';
           toggleEl.classList.toggle('expanded');
         });
@@ -125,22 +126,6 @@ const app = {
       this.setMemeMode(isCurrentlyOff ? 'on' : 'off');
     });
 
-    document.getElementById('socialJetLagToggle').addEventListener('click', () => {
-      this.socialJetLagEnabled = !this.socialJetLagEnabled;
-      this.updateSocialJetLagUI();
-      this.saveSettings();
-    });
-
-    document.getElementById('weekdayWake').addEventListener('input', () => {
-      this.updateSocialJetLagUI();
-      this.saveSettings();
-    });
-
-    document.getElementById('weekendWake').addEventListener('input', () => {
-      this.updateSocialJetLagUI();
-      this.saveSettings();
-    });
-
     ['hourColumn', 'minuteColumn', 'periodColumn'].forEach(id => {
       const col = document.getElementById(id);
       if (col) {
@@ -156,6 +141,7 @@ const app = {
       e.stopPropagation();
     });
 
+    // --- Nap Calculator ---
     document.querySelectorAll(".nap-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         const napMins = Number(btn.dataset.nap);
@@ -179,66 +165,11 @@ const app = {
           setTimeout(() => out.classList.remove('glow'), 600);
         }
 
+        // Add active state to button
         document.querySelectorAll('.nap-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
       });
     });
-  },
-
-  saveSettings() {
-    const settings = {
-      ...this.settings,
-      timeFormat: this.timeFormat,
-      socialJetLagEnabled: this.socialJetLagEnabled,
-      weekdayWake: document.getElementById('weekdayWake').value,
-      weekendWake: document.getElementById('weekendWake').value
-    };
-    localStorage.setItem('nightowl_settings', JSON.stringify(settings));
-  },
-
-  loadSettings() {
-    const saved = localStorage.getItem('nightowl_settings');
-    if (saved) {
-      try {
-        const settings = JSON.parse(saved);
-        this.settings = {
-          latency: settings.latency ?? 10,
-          cycleLength: settings.cycleLength ?? 90,
-          wakeWindow: settings.wakeWindow ?? 10
-        };
-        this.timeFormat = settings.timeFormat || '12';
-        this.socialJetLagEnabled = settings.socialJetLagEnabled || false;
-        
-        document.getElementById('latency').value = this.settings.latency;
-        document.getElementById('latencyValue').textContent = this.settings.latency;
-        document.getElementById('cycleLength').value = this.settings.cycleLength;
-        document.getElementById('cycleLengthValue').textContent = this.settings.cycleLength;
-        document.getElementById('wakeWindow').value = this.settings.wakeWindow;
-        document.getElementById('wakeWindowValue').textContent = this.settings.wakeWindow;
-        
-        if (settings.weekdayWake) document.getElementById('weekdayWake').value = settings.weekdayWake;
-        if (settings.weekendWake) document.getElementById('weekendWake').value = settings.weekendWake;
-
-        document.querySelectorAll('.toggle-option').forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.format === this.timeFormat);
-        });
-        document.getElementById('timeFormatToggle').classList.toggle('active', this.timeFormat === '24');
-
-        const toggleContainer = document.getElementById('memeModeToggle');
-        if (toggleContainer) {
-          toggleContainer.classList.remove('active');
-          toggleContainer.querySelector('.meme-toggle-label').textContent = 'Normal';
-        }
-        
-        this.updateSocialJetLagUI();
-        this.updateMemeUI();
-      } catch (e) {
-        console.error('Error loading settings:', e);
-      }
-    } else {
-      this.socialJetLagEnabled = false;
-      this.updateSocialJetLagUI();
-    }
   },
 
   setMemeMode(status) {
@@ -263,6 +194,8 @@ const app = {
 
   updateMemeUI() {
     const isMeme = this.memeMode;
+    
+    // Randomize meme variants
     const memeVariants = [
       "Bedtimes + wake windows for people who hate mornings",
       "Sleep math for the chronically sleepy",
@@ -271,11 +204,13 @@ const app = {
       "Helping you wake up like a person, not a cryptid"
     ];
     
+    // Header
     const headerSub = isMeme 
       ? memeVariants[Math.floor(Math.random() * memeVariants.length)]
       : "Bedtimes + wake windows based on 90-minute cycles";
     document.querySelector('.subtitle').textContent = headerSub;
 
+    // Mode Buttons
     const wakeBtn = document.querySelector('[data-mode="wake"]');
     const sleepBtn = document.querySelector('[data-mode="sleep"]');
     
@@ -290,6 +225,7 @@ const app = {
       sleepBtn.innerHTML = `<span>🛏️</span> Bedtime now`;
     }
 
+    // Setting Helpers
     const labels = document.querySelectorAll('.setting-label');
     const latencyHelper = isMeme ? "How long I doomscroll before sleep." : "";
     const cycleHelper = isMeme ? "My brain’s sleep playlist length." : "";
@@ -301,6 +237,7 @@ const app = {
     this.updateHelper(labels[2], windowHelper);
     this.updateHelper(labels[3], formatHelper);
 
+    // Time Label
     const timeLabel = document.getElementById('timeLabel');
     const wakeTimeMeme = ["I want to wake up at... (no promises)", "Wake time (please don’t judge me):", "Target wake time:"];
     const sleepTimeMeme = ["I want to go to bed at... (for real this time)", "Bedtime (yes, I said it):", "When I intend to sleep:"];
@@ -311,6 +248,7 @@ const app = {
       timeLabel.textContent = isMeme ? sleepTimeMeme[Math.floor(Math.random() * sleepTimeMeme.length)] : "I want to go to bed...";
     }
 
+    // Results Label
     const resLabel = document.getElementById('resultsLabel');
     const resultMeme = [
       "Best times to sleep so you’re less cursed tomorrow",
@@ -324,126 +262,17 @@ const app = {
       resLabel.textContent = this.mode === 'wake' ? 'Go to bed at...' : 'Wake up at...';
     }
 
+    // Share Button
     const shareMeme = ["Copy my sleep plan", "Share this wisdom", "Send to a friend who’s tired", "Export bedtime propaganda"];
     const shareBtn = document.getElementById('shareBtn');
     shareBtn.textContent = isMeme ? shareMeme[Math.floor(Math.random() * shareMeme.length)] : "Share Link";
 
+    // Footer
     const disclaimer = document.querySelector('.footer-disclaimer');
     const disclaimerMeme = ["Educational tool only — not medical advice (sadly).", "Not a doctor, just an owl with opinions."];
     disclaimer.textContent = isMeme 
       ? disclaimerMeme[Math.floor(Math.random() * disclaimerMeme.length)]
       : "Educational tool only — not medical advice.";
-  },
-
-  minutesToTime(totalMins) {
-    let hrs = Math.floor(totalMins / 60) % 24;
-    const mins = totalMins % 60;
-    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
-  },
-
-  timeToMinutes(timeStr) {
-    const [hrs, mins] = timeStr.split(':').map(Number);
-    return hrs * 60 + mins;
-  },
-
-  formatDisplayTime(totalMins) {
-    let hrs = Math.floor(totalMins / 60) % 24;
-    const mins = totalMins % 60;
-
-    if (this.timeFormat === '12') {
-      const period = hrs >= 12 ? 'PM' : 'AM';
-      const hour12 = hrs % 12 || 12;
-      return `${hour12}:${mins.toString().padStart(2, '0')} ${period}`;
-    }
-    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
-  },
-
-  updateSocialJetLagUI() {
-    const container = document.getElementById('socialJetLagToggle');
-    const inputs = document.getElementById('socialJetLagInputs');
-    const resultDiv = document.getElementById('socialJetLagResult');
-
-    if (this.socialJetLagEnabled) {
-      container.classList.add('active');
-      inputs.style.display = 'block';
-
-      const weekdayEl = document.getElementById('weekdayWake');
-      const weekendEl = document.getElementById('weekendWake');
-      
-      const weekdayValue = weekdayEl.value;
-      const weekendValue = weekendEl.value;
-
-      const weekdayMins = this.timeToMinutes(weekdayValue);
-      const weekendMins = this.timeToMinutes(weekendValue);
-      
-      // Update the display labels for the inputs to show the selected format
-      const weekdayLabel = weekdayEl.previousElementSibling;
-      const weekendLabel = weekendEl.previousElementSibling;
-      
-      // Force 24h format if the toggle is set to 24h
-      const formattedWeekday = this.formatDisplayTime(weekdayMins);
-      const formattedWeekend = this.formatDisplayTime(weekendMins);
-
-      if (weekdayLabel) weekdayLabel.textContent = `Weekday Wake (${formattedWeekday})`;
-      if (weekendLabel) weekendLabel.textContent = `Weekend Wake (${formattedWeekend})`;
-
-      // Also update the input values if they look like 12h but should be 24h
-      // However, HTML time inputs ARE 24h. The issue might be initial values or loading.
-      
-      let diff = weekendMins - weekdayMins;
-      if (diff < 0) diff = 0; 
-
-      const hours = Math.floor(diff / 60);
-      const mins = diff % 60;
-      
-      let severity = "Low";
-      let severityClass = "severity-low";
-      if (diff >= 120) { severity = "High"; severityClass = "severity-high"; }
-      else if (diff >= 60) { severity = "Moderate"; severityClass = "severity-moderate"; }
-      else if (diff >= 30) { severity = "Mild"; severityClass = "severity-mild"; }
-
-      const smootherMins = weekdayMins + Math.min(diff, 60);
-      const smootherTime = this.formatDisplayTime(smootherMins);
-
-      resultDiv.innerHTML = `
-        <div class="social-result-value">Social jet lag: <span class="${severityClass}">${hours}h ${mins}m (${severity})</span></div>
-        <div class="social-result-target">Smoother weekend target: ${smootherTime}</div>
-      `;
-    } else {
-      container.classList.remove('active');
-      inputs.style.display = 'none';
-    }
-  },
-
-  setTimeFormat(format) {
-    if (this.timeFormat === '12' && format === '24') {
-      let hour24 = this.hour;
-      if (this.period === 'PM' && this.hour !== 12) hour24 += 12;
-      if (this.period === 'AM' && this.hour === 12) hour24 = 0;
-      this.hour = hour24;
-      this.period = 'AM';
-    } else if (this.timeFormat === '24' && format === '12') {
-      const period = this.hour >= 12 ? 'PM' : 'AM';
-      const hour12 = this.hour % 12 || 12;
-      this.hour = hour12;
-      this.period = period;
-    }
-    this.timeFormat = format;
-    
-    // Update active state of buttons
-    document.querySelectorAll('.toggle-option').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.format === format);
-    });
-    
-    const formatToggle = document.getElementById('timeFormatToggle');
-    if (formatToggle) {
-      formatToggle.classList.toggle('active', format === '24');
-    }
-
-    this.updateTimePicker();
-    this.updateSocialJetLagUI();
-    this.calculate();
-    this.saveSettings();
   },
 
   updateHelper(labelEl, text) {
@@ -474,16 +303,11 @@ const app = {
       this.period = period;
     }
     this.timeFormat = format;
-    
-    // Sync Social Jet Lag inputs with format (purely for consistency, though HTML time inputs are usually 24h internally)
-    // The display in Social Jet Lag results already uses formatDisplayTime() which respects this.timeFormat
-    
     document.querySelectorAll('.toggle-option').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.format === format);
     });
     document.getElementById('timeFormatToggle').classList.toggle('active', format === '24');
     this.updateTimePicker();
-    this.updateSocialJetLagUI();
     this.calculate();
     this.saveSettings();
   },
@@ -494,17 +318,20 @@ const app = {
       btn.classList.toggle('active', btn.dataset.mode === newMode);
     });
     
+    // Add visual feedback animation
     const activeBtn = document.querySelector('.mode-btn.active');
     if (activeBtn) {
       activeBtn.classList.add('mode-switched');
       setTimeout(() => activeBtn.classList.remove('mode-switched'), 600);
     }
 
+    // Immediately update owl image and zzz on mode switch for better responsiveness
     this.updateZzz();
     
     const newLabel = newMode === 'wake' ? 'I want to wake up at...' : 'I want to go to bed...';
     document.getElementById('timeLabel').textContent = newLabel;
     
+    // Set timer to current time when switching to "Bedtime now" mode
     if (newMode === 'sleep') {
       const now = new Date();
       const currentHour = now.getHours();
@@ -648,7 +475,9 @@ const app = {
         const sleepDuration = this.settings.latency + cycles * this.settings.cycleLength;
         let bedTime = startTime - sleepDuration;
         if (bedTime < 0) bedTime += 24 * 60;
+
         const bedWindowEnd = (bedTime + this.settings.wakeWindow) % (24 * 60);
+
         results.push({
           cycles: cycles,
           bedTime: bedTime,
@@ -663,7 +492,9 @@ const app = {
       for (let cycles = 4; cycles <= 6; cycles++) {
         const sleepDuration = this.settings.latency + cycles * this.settings.cycleLength;
         const wakeTime = bedTime + sleepDuration;
+
         const wakeWindowEnd = (wakeTime + this.settings.wakeWindow) % (24 * 60);
+
         results[cycles - 4] = {
           cycles: cycles,
           wakeTime: wakeTime % (24 * 60),
@@ -708,7 +539,6 @@ const app = {
 
   renderResults(results) {
     const isMeme = this.memeMode;
-    this.updateSocialJetLagUI();
     const listHtml = results.map((r, i) => {
       const isBest = Math.abs(r.cycles - 5) === 0;
       const resultTime = this.mode === 'wake' ? r.bedTimeStr : r.wakeTimeStr;
@@ -748,7 +578,7 @@ const app = {
           </div>
           ${isMeme ? `<div class="meme-micro" style="font-size: 12px; color: #fbbf24; margin-top: 4px; font-weight: 600;">"${memeMicro}"</div>` : ''}
           <div class="result-explanation">
-            ${this.mode === 'wake' ? `Going to bed at this time gives you ${r.duration} of actual sleep.` : `Waking up at this time gives you ${r.duration} of actual sleep.`}
+            ${this.mode === 'wake' ? `(${this.settings.latency}m latency + ${r.cycles} cycles × ${this.settings.cycleLength}m)` : `(${this.settings.latency}m latency + ${r.cycles} cycles × ${this.settings.cycleLength}m)`}
           </div>
         </button>
       `;
@@ -758,85 +588,227 @@ const app = {
 
     document.querySelectorAll('.result-card').forEach(card => {
       card.addEventListener('click', (e) => {
+        // If clicking copy button, don't trigger selection
         if (e.target.classList.contains('copy-btn')) {
-          this.copyToClipboard(results[e.target.dataset.index]);
+          this.copyResult(e.target.dataset.index);
           return;
         }
-        const index = parseInt(card.dataset.index);
+
+        const index = card.dataset.index;
+        document.querySelectorAll('.result-card').forEach(c => {
+          c.classList.remove('selected');
+          c.classList.remove('glow');
+        });
+        card.classList.add('selected');
+        card.classList.add('glow');
+        setTimeout(() => card.classList.remove('glow'), 600);
         this.selectedResult = index;
-        this.renderResults(results);
-        this.updateShareCard(results[index]);
       });
     });
-  },
 
-  updateShareCard(result) {
-    const shareCard = document.getElementById('shareCard');
-    const title = document.getElementById('shareCardTitle');
-    const body = document.getElementById('shareCardBody');
-    
-    shareCard.style.display = 'block';
-    title.textContent = this.mode === 'wake' ? "Tonight's Bedtime" : "Tomorrow's Wake Up";
-    
-    if (this.mode === 'wake') {
-      body.innerHTML = `I'm aiming for ${result.bedTimeStr}.<br>That's ${result.cycles} cycles of sleep! 🌙`;
-    } else {
-      body.innerHTML = `I'm waking up at ${result.wakeTimeStr}.<br>That's ${result.cycles} cycles of sleep! ⏰`;
+    // If a result was loaded from URL, trigger glow animation on it
+    if (this.selectedResult !== null) {
+      const selectedCard = document.querySelector(`.result-card[data-index="${this.selectedResult}"]`);
+      if (selectedCard) {
+        selectedCard.classList.add('glow');
+        setTimeout(() => selectedCard.classList.remove('glow'), 600);
+      }
     }
+
+    document.getElementById('resultsLabel').textContent = this.mode === 'wake' ? 'Go to bed at...' : 'Wake up at...';
   },
 
-  copyToClipboard(result) {
-    const time = this.mode === 'wake' ? result.bedTimeStr : result.wakeTimeStr;
-    const text = `I'm using NightOwl to plan my sleep! My target ${this.mode === 'wake' ? 'bedtime' : 'wake time'} is ${time} (${result.cycles} cycles). Check your sleep cycle at https://nightowlsleepcalc.com/`;
+  copyResult(index) {
+    const r = document.querySelectorAll('.result-card')[index];
+    if (!r) return;
+    const time = r.querySelector('.result-time').textContent;
+    const windowText = r.querySelector('.result-window')?.textContent || '';
+    const details = Array.from(r.querySelectorAll('.result-detail')).map(d => d.textContent).join(' | ');
     
-    const index = this.selectedResult !== null ? this.selectedResult : 0;
-    
+    const params = new URLSearchParams({
+      mode: this.mode,
+      hour: this.hour,
+      minute: this.minute,
+      period: this.period,
+      latency: this.settings.latency,
+      cycleLength: this.settings.cycleLength,
+      selectedResult: index
+    });
+
+    const shareUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?${params.toString()}`;
+    const text = `NightOwl Sleep Plan:\nTime: ${time}\n${windowText ? `${windowText}\n` : ''}${details}\nPlan your sleep at: ${shareUrl}`;
+
     navigator.clipboard.writeText(text).then(() => {
-      const btn = document.querySelector(`.result-card[data-index="${index}"] .copy-btn`);
-      if (btn) {
-        const original = btn.textContent;
-        btn.textContent = '✅';
-        setTimeout(() => btn.textContent = original, 2000);
+      const copyBtn = r.querySelector('.copy-btn');
+      if (copyBtn) {
+        const originalIcon = copyBtn.textContent;
+        copyBtn.textContent = '✅';
+        setTimeout(() => {
+          copyBtn.textContent = originalIcon;
+        }, 1500);
       }
     });
   },
 
-  shareLink() {
-    const url = new URL(window.location.origin);
-    url.searchParams.set('h', this.hour);
-    url.searchParams.set('m', this.minute);
-    url.searchParams.set('p', this.period);
-    url.searchParams.set('f', this.timeFormat);
-    url.searchParams.set('mode', this.mode);
-    
-    navigator.clipboard.writeText(url.toString()).then(() => {
-      const shareBtn = document.getElementById('shareBtn');
-      const originalText = shareBtn.textContent;
-      shareBtn.textContent = 'Link Copied!';
-      shareBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-      
-      setTimeout(() => {
-        shareBtn.textContent = originalText;
-        shareBtn.style.background = '';
-      }, 2000);
-    });
+  saveSettings() {
+    localStorage.setItem('sleepSettings', JSON.stringify({
+      settings: this.settings,
+      timeFormat: this.timeFormat,
+      memeMode: this.memeMode
+    }));
   },
 
   loadFromUrl() {
     const params = new URLSearchParams(window.location.search);
-    if (params.has('h')) this.hour = parseInt(params.get('h'));
-    if (params.has('m')) this.minute = parseInt(params.get('m'));
-    if (params.has('p')) this.period = params.get('p');
-    if (params.has('f')) this.timeFormat = params.get('f');
-    if (params.has('mode')) this.mode = params.get('mode');
+    if (params.has('mode')) {
+      const mode = params.get('mode');
+      if (mode === 'wake' || mode === 'sleep') this.setMode(mode);
+    }
+    if (params.has('hour')) this.hour = Math.max(1, Math.min(12, parseInt(params.get('hour')) || 1));
+    if (params.has('minute')) this.minute = Math.max(0, Math.min(59, parseInt(params.get('minute')) || 0));
+    if (params.has('period')) {
+      const period = params.get('period');
+      if (period === 'AM' || period === 'PM') this.period = period;
+    }
+    if (params.has('latency')) this.settings.latency = Math.max(0, Math.min(60, parseInt(params.get('latency')) || 10));
+    if (params.has('cycleLength')) this.settings.cycleLength = Math.max(80, Math.min(110, parseInt(params.get('cycleLength')) || 90));
+    if (params.has('selectedResult')) {
+      const selectedIdx = parseInt(params.get('selectedResult'));
+      if (selectedIdx >= 0 && selectedIdx <= 2) {
+        this.selectedResult = selectedIdx;
+      }
+    }
     this.updateTimePicker();
+  },
+
+  shareLink() {
+    const params = new URLSearchParams({
+      mode: this.mode,
+      hour: this.hour,
+      minute: this.minute,
+      period: this.period,
+      latency: this.settings.latency,
+      cycleLength: this.settings.cycleLength
+    });
+    if (this.selectedResult !== null) {
+      params.append('selectedResult', this.selectedResult);
+    }
+    const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    
+    // Show share card preview
+    const shareCard = document.getElementById('shareCard');
+    const shareCardBody = document.getElementById('shareCardBody');
+    const shareCardTitle = document.getElementById('shareCardTitle');
+    
+    if (this.selectedResult === null) {
+      const btn = document.getElementById('shareBtn');
+      const originalText = btn.textContent;
+      btn.textContent = 'Select a result first!';
+      btn.classList.add('error-shake');
+      setTimeout(() => { 
+        btn.textContent = originalText; 
+        btn.classList.remove('error-shake');
+      }, 2000);
+      return;
+    }
+
+    let previewText = '';
+    const r = document.querySelectorAll('.result-card')[this.selectedResult];
+    const time = r.querySelector('.result-time').textContent;
+    const windowText = r.querySelector('.result-window')?.textContent || '';
+    
+    if (this.mode === 'wake') {
+      shareCardTitle.textContent = "Tonight's Sleep Plan";
+      previewText = `Go to bed: ${windowText.replace('Go to bed between:', '').trim() || time} • Wake up: ${this.formatTime(this.to24Hour(this.hour, this.minute, this.period))}`;
+    } else {
+      shareCardTitle.textContent = "Wake up Plan";
+      previewText = `Bedtime: Now • Wake up: ${windowText.replace('Wake between:', '').trim() || time}`;
+    }
+
+    if (shareCard && shareCardBody) {
+      shareCardBody.textContent = previewText;
+      shareCard.style.display = 'block';
+    }
+
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      const btn = document.getElementById('shareBtn');
+      const originalText = btn.textContent;
+      btn.textContent = 'Link copied!';
+      
+      // Attempt to share using Web Share API if supported for better rich preview
+      if (navigator.share) {
+        navigator.share({
+          title: 'NightOwl Sleep Plan',
+          text: previewText,
+          url: shareUrl
+        }).catch(() => {
+          // Fallback to clipboard which we already did
+        });
+      }
+      
+      setTimeout(() => { btn.textContent = originalText; }, 2000);
+    }).catch(() => { alert('Could not copy link. URL: ' + shareUrl); });
+  },
+
+  loadSettings() {
+    const saved = localStorage.getItem('sleepSettings');
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        if (data.settings) {
+          this.settings = { ...this.settings, ...data.settings };
+        }
+        this.timeFormat = data.timeFormat || '12';
+        
+        // Force Meme Mode OFF on every refresh as requested
+        this.memeMode = false;
+        
+        // Update UI
+        document.getElementById('latencyValue').textContent = this.settings.latency;
+        document.getElementById('cycleLengthValue').textContent = this.settings.cycleLength;
+        document.getElementById('wakeWindowValue').textContent = this.settings.wakeWindow;
+        document.getElementById('latency').value = this.settings.latency;
+        document.getElementById('cycleLength').value = this.settings.cycleLength;
+        document.getElementById('wakeWindow').value = this.settings.wakeWindow;
+        
+        document.querySelectorAll('.toggle-option[data-format]').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.format === this.timeFormat);
+        });
+        document.getElementById('timeFormatToggle').classList.toggle('active', this.timeFormat === '24');
+
+        // Forcing a hard reset of classes on load to ensure "Off" is the only one active
+        const toggleContainer = document.getElementById('memeModeToggle');
+        if (toggleContainer) {
+          toggleContainer.classList.remove('active');
+          toggleContainer.querySelector('.meme-toggle-label').textContent = 'Normal';
+        }
+        
+        this.updateMemeUI();
+      } catch (e) {
+        console.error('Error loading settings:', e);
+      }
+    } else {
+      // Default: Off
+      this.memeMode = false;
+      const memeToggle = document.getElementById('memeModeToggle');
+      const memeOptions = memeToggle.querySelectorAll('.toggle-option');
+      memeOptions.forEach(opt => {
+        if (opt.getAttribute('data-meme') === 'off') {
+          opt.classList.add('active');
+        } else {
+          opt.classList.remove('active');
+        }
+      });
+      this.updateMemeUI();
+    }
   }
 };
 
 function createStars() {
   const container = document.getElementById('starsContainer');
-  const count = 150;
-  for (let i = 0; i < count; i++) {
+  if (!container) return;
+  const starCount = 100;
+  for (let i = 0; i < starCount; i++) {
     const star = document.createElement('div');
     star.className = 'star';
     const size = Math.random() * 2 + 1;
