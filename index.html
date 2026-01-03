@@ -201,11 +201,21 @@
           <div id="socialJetLagInputs" class="social-inputs" style="display: none;">
             <div class="social-input-row">
               <label>Weekday Wake</label>
-              <input type="time" id="weekdayWake" value="07:00">
+              <div class="social-input-wrapper">
+                <input type="time" id="weekdayWake" value="07:00">
+                <span id="weekdayDisplay" class="social-time-display"></span>
+              </div>
             </div>
             <div class="social-input-row">
               <label>Weekend Wake</label>
-              <input type="time" id="weekendWake" value="09:00">
+              <div class="social-input-wrapper">
+                <input type="time" id="weekendWake" value="09:00">
+                <span id="weekendDisplay" class="social-time-display"></span>
+              </div>
+            </div>
+            <div class="social-shortcuts">
+              <button id="fillCurrentWake" class="shortcut-btn" title="Uses your selected wake time above">Set to my alarm</button>
+              <button id="fillWeekendPlus1" class="shortcut-btn" title="Sets weekend to weekday + 1 hour">Weekend +1h</button>
             </div>
             <div id="socialJetLagResult" class="social-result" aria-live="polite"></div>
           </div>

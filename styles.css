@@ -988,6 +988,45 @@ input[type="range"] {
   margin-bottom: 12px;
 }
 
+.social-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.social-time-display {
+  margin-left: 8px;
+  font-size: 13px;
+  color: #94a3b8;
+  font-weight: 500;
+  min-width: 65px;
+}
+
+.social-shortcuts {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
+.shortcut-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.shortcut-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
 .social-input-row label {
   font-size: 13px;
   color: #94a3b8;
