@@ -1166,35 +1166,6 @@ input[type="range"] {
   text-align: right;
 }
 
-.routine-tip {
-  margin-top: 24px;
-  background: rgba(251, 191, 36, 0.1);
-  border-left: 4px solid #fbbf24;
-  padding: 16px;
-  border-radius: 8px;
-  animation: routineFadeIn 0.5s ease-out;
-}
-
-.routine-tip-header {
-  font-size: 12px;
-  font-weight: 700;
-  color: #fbbf24;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-}
-
-.routine-tip-body {
-  font-size: 14px;
-  color: #e2e8f0;
-  line-height: 1.5;
-}
-
-@keyframes routineFadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 footer {
   text-align: center;
   margin-top: 60px;
