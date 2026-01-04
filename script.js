@@ -586,6 +586,11 @@ const app = {
     }).join('');
     const list = document.getElementById('resultsList');
     if (list) list.innerHTML = listHtml;
+    
+    // Check if we are in results list for proper scoping
+    const resultsContainer = document.getElementById('results');
+    if (!resultsContainer) return;
+
     document.querySelectorAll('.result-card').forEach(card => {
       card.addEventListener('click', (e) => {
         if (e.target.classList.contains('copy-btn')) { this.copyResult(e.target.dataset.index); return; }
