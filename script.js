@@ -28,19 +28,22 @@ const app = {
 
   setupEventListeners() {
     for (let i = 1; i <= 4; i++) {
-      const toggleId = `infoToggle${i === 1 ? '' : i}`;
-      const sectionId = `infoSection${i === 1 ? '' : i}`;
+      const toggleId = i === 1 ? 'infoToggle' : `infoToggle${i}`;
+      const sectionId = i === 1 ? 'infoSection' : `infoSection${i}`;
       const toggleEl = document.getElementById(toggleId);
       
       if (toggleEl) {
         toggleEl.addEventListener('click', () => {
           const infoSection = document.getElementById(sectionId);
+          if (!infoSection) return;
           const isExpanded = infoSection.style.display !== 'none';
           
           for (let j = 1; j <= 4; j++) {
             if (j === i) continue;
-            const otherSection = document.getElementById(`infoSection${j === 1 ? '' : j}`);
-            const otherToggle = document.getElementById(`infoToggle${j === 1 ? '' : j}`);
+            const otherSectionId = j === 1 ? 'infoSection' : `infoSection${j}`;
+            const otherToggleId = j === 1 ? 'infoToggle' : `infoToggle${j}`;
+            const otherSection = document.getElementById(otherSectionId);
+            const otherToggle = document.getElementById(otherToggleId);
             if (otherSection) otherSection.style.display = 'none';
             if (otherToggle) otherToggle.classList.remove('expanded');
           }
