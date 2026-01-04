@@ -113,6 +113,20 @@
   <meta name="google-adsense-account" content="ca-pub-2078168053570687">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2078168053570687"
      crossorigin="anonymous"></script>
+  <script>
+    function createStars() {
+      const container = document.getElementById('starsContainer');
+      if (!container) return;
+      for (let i = 0; i < 50; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        container.appendChild(star);
+      }
+    }
+  </script>
 </head>
 <body onload="createStars()">
   <div class="stars-container" id="starsContainer"></div>
