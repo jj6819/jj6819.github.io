@@ -204,12 +204,16 @@ const app = {
   setupQuiz() {
     const quizBtn = document.getElementById('quizBtn');
     if (!quizBtn) return;
-    quizBtn.onclick = () => {
+    
+    // Use addEventListener instead of onclick to avoid collisions and ensure it works
+    quizBtn.addEventListener('click', () => {
       const startTime = this.to24Hour(this.hour, this.minute, this.period);
       const isMeme = this.memeMode;
       let identity = { name: "The Balanced Owl", emoji: "🦉", desc: "You prioritize steady rest and consistent cycles." };
+      
       const targetWake = this.mode === 'wake' ? startTime : (startTime + this.settings.latency + 5 * this.settings.cycleLength) % (24 * 60);
       const targetH = Math.floor(targetWake / 60);
+      
       if (targetH >= 4 && targetH < 7) {
         identity = { name: isMeme ? "The Productive Menace" : "The Early Riser", emoji: "🌅", desc: isMeme ? "Waking up before the sun even considers starting its shift." : "You thrive on getting a head start on the day." };
       } else if (targetH >= 22 || targetH < 4) {
@@ -217,6 +221,7 @@ const app = {
       } else if (this.settings.cycleLength !== 90) {
         identity = { name: "The Bio-Hacker", emoji: "🧪", desc: "Adjusting your cycles to match your unique internal rhythm." };
       }
+      
       const overlay = document.createElement('div');
       overlay.className = 'quiz-overlay';
       overlay.innerHTML = `
@@ -229,8 +234,10 @@ const app = {
         </div>
       `;
       document.body.appendChild(overlay);
+      
       const close = document.getElementById('closeQuiz');
       if (close) close.onclick = () => overlay.remove();
+      
       const share = document.getElementById('shareQuiz');
       if (share) {
         share.onclick = () => {
@@ -242,7 +249,7 @@ const app = {
           });
         };
       }
-    };
+    });
   },
 
   setMemeMode(status) {
