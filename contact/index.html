@@ -56,7 +56,9 @@
         <p>Have questions, feedback, or suggestions? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.</p>
       </section>
 
-      <form class="contact-form" id="contactForm" data-testid="form-contact">
+      <form class="contact-form" id="contactForm" data-testid="form-contact" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <input type="hidden" name="_subject" value="NightOwl Contact Form Submission">
+        
         <div class="form-group">
           <label for="name" class="form-label">Name</label>
           <input type="text" id="name" name="name" class="form-input" required data-testid="input-name" placeholder="Your name">
@@ -71,11 +73,11 @@
           <label for="subject" class="form-label">Subject</label>
           <select id="subject" name="subject" class="form-input form-select" required data-testid="select-subject">
             <option value="">Select a topic...</option>
-            <option value="feedback">General Feedback</option>
-            <option value="bug">Bug Report</option>
-            <option value="feature">Feature Request</option>
-            <option value="question">Question</option>
-            <option value="other">Other</option>
+            <option value="General Feedback">General Feedback</option>
+            <option value="Bug Report">Bug Report</option>
+            <option value="Feature Request">Feature Request</option>
+            <option value="Question">Question</option>
+            <option value="Other">Other</option>
           </select>
         </div>
 
@@ -132,8 +134,8 @@
     }
     createStars();
 
-    // Contact form handler (frontend-only simulation)
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
+    // Contact form handler for Formspree
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const status = document.getElementById('formStatus');
       const submitBtn = this.querySelector('.form-submit');
@@ -141,13 +143,25 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending...';
       
-      // Simulate form submission (frontend mockup)
-      setTimeout(() => {
-        status.innerHTML = '<div class="form-success">Thank you for your message! We\'ll get back to you soon.</div>';
-        this.reset();
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Send Message';
-      }, 1500);
+      try {
+        const response = await fetch(this.action, {
+          method: 'POST',
+          body: new FormData(this),
+          headers: { 'Accept': 'application/json' }
+        });
+        
+        if (response.ok) {
+          status.innerHTML = '<div class="form-success">Thank you for your message! We\'ll get back to you soon.</div>';
+          this.reset();
+        } else {
+          throw new Error('Form submission failed');
+        }
+      } catch (error) {
+        status.innerHTML = '<div class="form-error">Oops! Something went wrong. Please try again or email us directly.</div>';
+      }
+      
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
     });
   </script>
 </body>

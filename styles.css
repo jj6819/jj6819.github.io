@@ -1982,3 +1982,12 @@ ol.article-list li::before {
   border-radius: 10px;
   font-size: 14px;
 }
+
+.form-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  padding: 16px;
+  border-radius: 10px;
+  font-size: 14px;
+}
