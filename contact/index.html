@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#0b1220" />
+  <title>Contact Us | NightOwl Sleep Calc</title>
+  <link rel="canonical" href="https://nightowlsleepcalc.com/contact/" />
+  <meta name="description" content="Contact NightOwl Sleep Calc. Send us your questions, feedback, or suggestions about our sleep cycle calculator.">
+  
+  <meta property="og:title" content="Contact Us | NightOwl Sleep Calc" />
+  <meta property="og:description" content="Contact NightOwl Sleep Calc. Send us your questions, feedback, or suggestions about our sleep cycle calculator." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="NightOwl Sleep Calc" />
+  <meta property="og:url" content="https://nightowlsleepcalc.com/contact/" />
+  <meta property="og:image" content="https://nightowlsleepcalc.com/opengraph.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@nightowlsleepcalc" />
+  <meta name="twitter:title" content="Contact Us | NightOwl Sleep Calc" />
+  <meta name="twitter:description" content="Contact NightOwl Sleep Calc. Send us your questions, feedback, or suggestions about our sleep cycle calculator." />
+  <meta name="twitter:image" content="https://nightowlsleepcalc.com/opengraph.jpg" />
+
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+
+  <meta name="google-adsense-account" content="ca-pub-2078168053570687">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2078168053570687"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="stars-container" id="starsContainer"></div>
+  
+  <nav class="top-nav">
+    <a href="/" class="nav-brand">
+      <span class="nav-logo">🌙</span>
+      <span class="nav-brand-name">NightOwl</span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Calculator</a>
+      <a href="/sleep-calculator/" class="nav-link">Sleep Guide</a>
+      <a href="/sleep-cycle-calculator/" class="nav-link">Sleep Cycles</a>
+      <a href="/power-nap-calculator/" class="nav-link">Nap Calculator</a>
+    </div>
+    <button class="nav-toggle" id="navToggle">☰</button>
+  </nav>
+
+  <div class="container article-container">
+    <article class="article-content">
+      <h1 class="article-title">Contact Us</h1>
+
+      <section class="article-section">
+        <p>Have questions, feedback, or suggestions? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.</p>
+      </section>
+
+      <form class="contact-form" id="contactForm" data-testid="form-contact">
+        <div class="form-group">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" id="name" name="name" class="form-input" required data-testid="input-name" placeholder="Your name">
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" name="email" class="form-input" required data-testid="input-email" placeholder="your@email.com">
+        </div>
+
+        <div class="form-group">
+          <label for="subject" class="form-label">Subject</label>
+          <select id="subject" name="subject" class="form-input form-select" required data-testid="select-subject">
+            <option value="">Select a topic...</option>
+            <option value="feedback">General Feedback</option>
+            <option value="bug">Bug Report</option>
+            <option value="feature">Feature Request</option>
+            <option value="question">Question</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message" class="form-label">Message</label>
+          <textarea id="message" name="message" class="form-input form-textarea" rows="5" required data-testid="input-message" placeholder="Your message..."></textarea>
+        </div>
+
+        <button type="submit" class="cta-button form-submit" data-testid="button-submit">Send Message</button>
+        
+        <div id="formStatus" class="form-status"></div>
+      </form>
+
+      <section class="article-section" style="margin-top: 40px;">
+        <h2 class="section-title">Other Ways to Reach Us</h2>
+        <p>You can also reach us through:</p>
+        <ul class="article-list">
+          <li><strong>Email:</strong> hello@nightowlsleepcalc.com</li>
+        </ul>
+        <p>We typically respond within 1-2 business days.</p>
+      </section>
+    </article>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/about/">About</a>
+      <a href="/privacy/">Privacy Policy</a>
+      <a href="/terms/">Terms of Service</a>
+      <a href="/contact/">Contact</a>
+    </div>
+    <div class="footer-copyright">&copy; <span id="year"></span> NightOwl Sleep Calc. All rights reserved.</div>
+    <div class="footer-disclaimer">Educational tool only — not medical advice.</div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (navToggle) {
+      navToggle.addEventListener('click', () => navLinks.classList.toggle('show'));
+    }
+    function createStars() {
+      const container = document.getElementById('starsContainer');
+      if (!container) return;
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        container.appendChild(star);
+      }
+    }
+    createStars();
+
+    // Contact form handler (frontend-only simulation)
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const status = document.getElementById('formStatus');
+      const submitBtn = this.querySelector('.form-submit');
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      
+      // Simulate form submission (frontend mockup)
+      setTimeout(() => {
+        status.innerHTML = '<div class="form-success">Thank you for your message! We\'ll get back to you soon.</div>';
+        this.reset();
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Message';
+      }, 1500);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#0b1220" />
+  <title>About NightOwl Sleep Calc | Free Sleep Cycle Calculator</title>
+  <link rel="canonical" href="https://nightowlsleepcalc.com/about/" />
+  <meta name="description" content="Learn about NightOwl Sleep Calc, a free sleep cycle calculator designed to help you find optimal bedtimes and wake times.">
+  
+  <meta property="og:title" content="About | NightOwl Sleep Calc" />
+  <meta property="og:description" content="Learn about NightOwl Sleep Calc, a free sleep cycle calculator designed to help you find optimal bedtimes and wake times." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="NightOwl Sleep Calc" />
+  <meta property="og:url" content="https://nightowlsleepcalc.com/about/" />
+  <meta property="og:image" content="https://nightowlsleepcalc.com/opengraph.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@nightowlsleepcalc" />
+  <meta name="twitter:title" content="About | NightOwl Sleep Calc" />
+  <meta name="twitter:description" content="Learn about NightOwl Sleep Calc, a free sleep cycle calculator designed to help you find optimal bedtimes and wake times." />
+  <meta name="twitter:image" content="https://nightowlsleepcalc.com/opengraph.jpg" />
+
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+
+  <meta name="google-adsense-account" content="ca-pub-2078168053570687">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2078168053570687"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="stars-container" id="starsContainer"></div>
+  
+  <nav class="top-nav">
+    <a href="/" class="nav-brand">
+      <span class="nav-logo">🌙</span>
+      <span class="nav-brand-name">NightOwl</span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Calculator</a>
+      <a href="/sleep-calculator/" class="nav-link">Sleep Guide</a>
+      <a href="/sleep-cycle-calculator/" class="nav-link">Sleep Cycles</a>
+      <a href="/power-nap-calculator/" class="nav-link">Nap Calculator</a>
+    </div>
+    <button class="nav-toggle" id="navToggle">☰</button>
+  </nav>
+
+  <div class="container article-container">
+    <article class="article-content">
+      <h1 class="article-title">About NightOwl Sleep Calc</h1>
+
+      <section class="article-section">
+        <h2 class="section-title">Our Mission</h2>
+        <p>NightOwl Sleep Calc was created with a simple goal: help people wake up feeling better by planning sleep around natural sleep cycles instead of arbitrary hour counts.</p>
+        <p>We believe that understanding your sleep patterns shouldn't require expensive devices or complicated apps. That's why NightOwl is completely free, works in your browser, and respects your privacy.</p>
+      </section>
+
+      <section class="article-section">
+        <h2 class="section-title">What We Offer</h2>
+        <ul class="article-list">
+          <li><strong>Sleep Cycle Calculator:</strong> Plan bedtimes or wake times based on 90-minute sleep cycles</li>
+          <li><strong>Customizable Settings:</strong> Adjust sleep latency, cycle length, and wake windows to match your personal patterns</li>
+          <li><strong>Nap Calculator:</strong> Plan power naps, coffee naps, or full-cycle naps</li>
+          <li><strong>Calendar Integration:</strong> Add sleep schedules directly to your calendar</li>
+          <li><strong>Meme Mode:</strong> Because sleep planning doesn't have to be boring</li>
+        </ul>
+      </section>
+
+      <section class="article-section">
+        <h2 class="section-title">The Science Behind It</h2>
+        <p>Sleep happens in cycles that typically last around 90 minutes. Each cycle moves through different stages: light sleep, deep sleep, and REM (dream) sleep. Waking up at the end of a cycle—during lighter sleep—often feels easier than waking from deep sleep.</p>
+        <p>NightOwl uses this principle to suggest bedtimes and wake times that align with your natural sleep architecture. While individual cycles vary, planning around this pattern is a practical starting point for better mornings.</p>
+      </section>
+
+      <section class="article-section">
+        <h2 class="section-title">Important Disclaimer</h2>
+        <p>NightOwl Sleep Calc is an educational tool designed to help with general sleep planning. It is not medical advice, and it should not replace consultation with a healthcare professional if you have persistent sleep issues, sleep disorders, or health concerns.</p>
+        <p>Sleep quality depends on many factors beyond timing, including sleep environment, stress, diet, exercise, and underlying health conditions. Use this tool as one part of a healthy sleep routine.</p>
+      </section>
+
+      <div class="article-cta">
+        <a href="/" class="cta-button" data-testid="link-try-calculator">Try the Calculator →</a>
+      </div>
+    </article>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/about/">About</a>
+      <a href="/privacy/">Privacy Policy</a>
+      <a href="/terms/">Terms of Service</a>
+      <a href="/contact/">Contact</a>
+    </div>
+    <div class="footer-copyright">&copy; <span id="year"></span> NightOwl Sleep Calc. All rights reserved.</div>
+    <div class="footer-disclaimer">Educational tool only — not medical advice.</div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (navToggle) {
+      navToggle.addEventListener('click', () => navLinks.classList.toggle('show'));
+    }
+    function createStars() {
+      const container = document.getElementById('starsContainer');
+      if (!container) return;
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        container.appendChild(star);
+      }
+    }
+    createStars();
+  </script>
+</body>
+</html>
