@@ -1699,6 +1699,7 @@ footer .footer-disclaimer {
   width: 100%;
   height: 280px;
   object-fit: cover;
+  object-position: top;
   display: block;
 }
 
