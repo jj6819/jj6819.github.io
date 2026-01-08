@@ -22,6 +22,15 @@ const app = {
     this.updateMemeUI();
     this.calculate();
     document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (navToggle && navLinks) {
+      navToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('show');
+      });
+    }
   },
 
   setupEventListeners() {

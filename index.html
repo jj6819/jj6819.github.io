@@ -116,7 +116,22 @@
 </head>
 <body onload="createStars()">
   <div class="stars-container" id="starsContainer"></div>
-  <div class="container">
+  
+  <nav class="top-nav">
+    <a href="/" class="nav-brand">
+      <span class="nav-logo">🌙</span>
+      <span class="nav-brand-name">NightOwl</span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link active">Calculator</a>
+      <a href="/sleep-calculator/" class="nav-link">Sleep Guide</a>
+      <a href="/sleep-cycle-calculator/" class="nav-link">Sleep Cycles</a>
+      <a href="/power-nap-calculator/" class="nav-link">Nap Calculator</a>
+    </div>
+    <button class="nav-toggle" id="navToggle">☰</button>
+  </nav>
+
+  <div class="container" style="padding-top: 60px;">
     <header>
       <div class="brand">
         <div class="logo">🌙</div><span class="brand-name">NightOwl</span>
