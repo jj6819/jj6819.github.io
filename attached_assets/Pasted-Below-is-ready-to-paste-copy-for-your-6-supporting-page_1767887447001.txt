@@ -1,0 +1,219 @@
+Below is ready-to-paste copy for your 6 supporting pages (unique, AdSense-friendly). Each includes: H1 + intro + 3–5 sections + mini FAQ + CTA back to the calculator. You can wrap these in your own layout and add your top nav/footer.
+
+⸻
+
+1) /sleep-calculator/ (general landing page)
+
+Meta title: Sleep Calculator: Bedtime + Wake Times + Nap Planner | NightOwl
+Meta description: Free sleep calculator for bedtimes and wake-up times using sleep cycles, adjustable sleep latency, a wake window, and a nap calculator.
+
+Page copy
+
+H1: Sleep Calculator
+NightOwl is a free sleep calculator that helps you plan the best time to go to bed or wake up—without obsessing over a single exact minute. It uses sleep cycles, sleep latency (how long you take to fall asleep), and a wake window (a flexible range around the recommended time) so the results are easier to follow in real life.
+
+H2: What this sleep calculator does
+This tool gives you two quick ways to plan:
+	•	Wake up at… → get recommended bedtimes based on full cycles.
+	•	Bedtime now → get recommended wake-up windows starting from the current time.
+You can also use the nap calculator to choose a short reset nap or a full-cycle nap.
+
+H2: Why cycle timing can feel better than “hours only”
+“8 hours” is a helpful target, but how you feel can depend on when you wake. Waking from deeper sleep can cause sleep inertia (grogginess). Planning around cycles helps you aim for a lighter phase near the end of a cycle.
+
+H2: How to use NightOwl (quick steps)
+	1.	Choose Wake up at… or Bedtime now
+	2.	Set Sleep Latency to match your routine (often 10–20 minutes)
+	3.	Keep Cycle Length at 90 minutes, or adjust if needed
+	4.	Set your Wake Window for flexibility
+	5.	Pick an option that fits your schedule and try it for a few mornings
+
+H2: What to adjust if results feel “off”
+If you keep waking up too early or too late compared to how you feel, adjust cycle length by 5–10 minutes. If bedtime suggestions don’t match your real nights, increase sleep latency.
+
+FAQ
+How much sleep do adults need? Most adults do best around 7–9 hours, but your ideal can vary with sleep debt, activity, stress, and schedule.
+Is this medical advice? No—this is an educational planning tool. If you have persistent sleep issues, consider a clinician.
+What’s the wake window? A small range around a recommended time so you can pick what’s realistic without losing the overall cycle timing.
+
+CTA:
+Try the calculator now → (link to /)
+
+⸻
+
+2) /sleep-cycle-calculator/
+
+Meta title: Sleep Cycle Calculator (90-Minute Cycles) | NightOwl
+Meta description: Use a sleep cycle calculator to find ideal bedtimes or wake times based on full cycles, sleep latency, and a flexible wake window.
+
+Page copy
+
+H1: Sleep Cycle Calculator
+A sleep cycle calculator helps you plan bedtimes and wake-up times by counting full sleep cycles. NightOwl starts with a typical 90-minute cycle and lets you adjust the timing so you can find options that feel more natural and less groggy.
+
+H2: What is a sleep cycle?
+Sleep cycles repeat through the night as your brain moves through lighter sleep, deeper sleep, and REM. A full cycle often averages about 90 minutes, but it can vary by person and by night.
+
+H2: Why waking at cycle boundaries can help
+Waking from deep sleep often triggers sleep inertia—the “foggy” feeling. Planning to wake closer to the end of a cycle can reduce the odds of waking at the worst moment.
+
+H2: How NightOwl calculates times
+NightOwl takes your target time and works backward or forward using:
+	•	Cycle length (default 90 minutes)
+	•	Sleep latency (time to fall asleep)
+	•	Wake window (a flexible range)
+
+H2: Best cycle counts (what most people choose)
+Many adults feel best with about 5–6 cycles (roughly 7.5–9 hours of sleep time, plus latency). If you’re short on time, 4 cycles can be a workable minimum.
+
+FAQ
+Why 90 minutes? It’s a common average. If your mornings feel consistently early/late, adjust cycle length slightly.
+How accurate is cycle timing? It’s a useful guide, not a guarantee—sleep stages aren’t perfectly predictable.
+What if I take a long time to fall asleep? Increase sleep latency so bedtime suggestions match reality.
+
+CTA:
+Open the sleep cycle calculator → (link to /)
+
+⸻
+
+3) /best-time-to-go-to-bed/
+
+Meta title: Best Time to Go to Bed | Sleep Calculator Guide | NightOwl
+Meta description: Find the best time to go to bed based on when you need to wake up, sleep cycles, sleep latency, and a wake window.
+
+Page copy
+
+H1: Best Time to Go to Bed
+The best time to go to bed depends on when you need to wake up, how long it takes you to fall asleep, and how many full sleep cycles you can fit in. A sleep cycle plan won’t be perfect every night, but it can make wake-ups feel smoother.
+
+H2: Start with your wake-up time
+Instead of guessing a bedtime, work backward from when you need to wake. Choose a cycle count that fits your schedule and gives you a little buffer for sleep latency.
+
+H2: Sleep latency matters (more than people think)
+If it takes you 20–30 minutes to fall asleep, your “in bed” time needs to be earlier than your “asleep” time. Adjusting latency makes recommended bedtimes more realistic.
+
+H2: How many cycles should you aim for?
+	•	6 cycles: full recharge for many people
+	•	5 cycles: a strong, realistic target
+	•	4 cycles: minimum option when time is tight
+Consistency often matters as much as the perfect number.
+
+H2: Use a wake window to reduce stress
+A wake window gives you a range instead of one exact minute. That’s helpful because real nights aren’t perfectly timed—and it makes the plan easier to stick to.
+
+FAQ
+Is it better to sleep earlier or longer? Most people benefit from both, but consistency and total sleep time usually win.
+What if I wake up before my alarm? That’s common. If you wake naturally and feel okay, you can get up—your body may be aligning to a schedule.
+How do I stop feeling groggy? Try shifting to a different cycle option and make sure latency is accurate.
+
+CTA:
+Get bedtimes for your wake time → (link to /)
+
+⸻
+
+4) /sleep-latency/
+
+Meta title: Sleep Latency: What It Is + How to Set It | NightOwl
+Meta description: Sleep latency is how long it takes to fall asleep. Learn typical ranges and how adjusting latency improves bedtime and wake time calculations.
+
+Page copy
+
+H1: Sleep Latency (Time to Fall Asleep)
+Sleep latency is the time it takes you to fall asleep after you get into bed. If your sleep calculator assumes you fall asleep instantly, your bedtimes may be too late. Setting a realistic latency makes your sleep plan much more accurate.
+
+H2: What’s a normal sleep latency?
+Many people are around 10–20 minutes, but it varies. Stress, caffeine, screens, naps, and irregular sleep schedules can increase it.
+
+H2: Why latency changes your recommended bedtime
+If you want 5 full cycles of sleep but you take 25 minutes to fall asleep, your “in bed” time should be about 25 minutes earlier than the “sleep cycles” math alone.
+
+H2: How to estimate your latency
+If you’re not sure, try this for a few nights:
+	•	note the time you put your phone down / lights out
+	•	estimate when you actually fell asleep
+You don’t need perfection—just a realistic average.
+
+H2: Tips that commonly reduce latency
+A wind-down routine, dimmer lighting, less late caffeine, and consistent wake times are common helpers. If latency is persistently very long, consider speaking with a professional.
+
+FAQ
+Why do I feel tired even if I’m in bed for 8 hours? Time in bed isn’t the same as time asleep. Latency and awakenings matter.
+Should I set latency to 0 if I fall asleep fast? You can, but many people still do better with 5–10 minutes.
+Does latency change night to night? Yes—use an average that matches most nights.
+
+CTA:
+Use sleep latency in the calculator → (link to /)
+
+⸻
+
+5) /wake-window/
+
+Meta title: Wake Window: Flexible Bedtime + Wake Ranges | NightOwl
+Meta description: A wake window is a flexible range around a recommended bedtime or wake time. Learn why it helps and how to use it with sleep cycles.
+
+Page copy
+
+H1: Wake Window (Why a Range Beats an Exact Minute)
+A wake window is a small flexible range around a recommended bedtime or wake-up time—like 10 to 15 minutes. It makes sleep planning easier because real life is messy, and sleep timing isn’t perfectly precise.
+
+H2: Why a wake window helps
+A single “perfect” time can be stressful or unrealistic. A wake window gives you options while keeping the overall cycle timing close enough to be useful.
+
+H2: How to choose your wake window
+	•	0–5 minutes: if you want precision
+	•	10–15 minutes: most practical
+	•	20–30 minutes: maximum flexibility
+If you tend to snooze or your routine varies, a slightly bigger window can help.
+
+H2: Wake window vs snoozing
+A wake window isn’t the same as snoozing. It’s a planned range so you can pick a time that fits your morning, rather than repeatedly restarting sleep.
+
+FAQ
+Does a wake window make the calculator less accurate? It adds flexibility without changing the core cycle math much.
+Should I use a wake window for bedtime too? Yes—aiming for a range can reduce stress.
+What’s a good default? 10 minutes is a strong default.
+
+CTA:
+Try wake windows in the calculator → (link to /)
+
+⸻
+
+6) /power-nap-calculator/
+
+Meta title: Nap Calculator: Coffee Nap, Power Nap, Full Cycle | NightOwl
+Meta description: Free nap calculator for coffee naps, power naps, and full-cycle naps. Get a wake window so you wake up feeling sharper.
+
+Page copy
+
+H1: Nap Calculator
+Naps can be a quick way to reset your energy—if the timing is right. NightOwl’s nap calculator helps you pick a nap length and shows a wake window so you can wake at a better moment.
+
+H2: Common nap types (and what they’re for)
+	•	Coffee nap (15 minutes): drink coffee, nap briefly, wake as caffeine kicks in
+	•	Power nap (20 minutes): quick boost with minimal grogginess for many people
+	•	Full cycle nap (90 minutes): longer nap that can include a full sleep cycle
+
+H2: Why naps can make you groggy
+Grogginess often happens when you wake from deeper sleep. Short naps can reduce that risk; longer naps can work better if you allow time for a full cycle.
+
+H2: How to use the nap calculator
+Pick a nap type, then aim for the suggested wake window. If you have an important meeting, choose the shortest option and give yourself a few minutes to fully wake up.
+
+FAQ
+Are naps bad for nighttime sleep? They can be if they’re late or long—try earlier in the day and keep them short if bedtime is affected.
+What’s the best nap length? Many people do well with 15–20 minutes; 90 minutes can work if you have time.
+Why does the nap calculator use a wake window? A range is easier to follow and reduces “perfect timing” stress.
+
+CTA:
+Use the nap calculator now → (link to /)
+
+⸻
+
+Strongly recommended bonus pages for AdSense (copy available if you want)
+
+AdSense often expects these:
+	•	/privacy/
+	•	/terms/
+	•	/about/ (or /contact/)
+
+If you want, I’ll generate clean, standard copy for those 3 pages too (fast).
