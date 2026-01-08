@@ -4,9 +4,14 @@
   box-sizing: border-box;
 }
 
+html {
+  background: #0f172a;
+}
+
 body {
   font-family: 'DM Sans', system-ui, sans-serif;
   background: radial-gradient(circle at top right, #1e1b4b 0%, #0f172a 100%);
+  background-attachment: fixed;
   color: #e2e8f0;
   line-height: 1.6;
   min-height: 100vh;
