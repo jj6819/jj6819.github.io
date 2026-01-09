@@ -2087,6 +2087,12 @@ ol.article-list li::before {
   object-fit: contain;
 }
 
+.ticket-branding-owl {
+  width: 40px;
+  height: auto;
+  object-fit: contain;
+}
+
 .ticket-url {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.7);
