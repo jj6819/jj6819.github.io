@@ -997,17 +997,11 @@ const sleepTicket = {
     }
   },
 
-  detectPersonality() {
-    const bedHour = app.mode === 'wake' ? 
-      Math.floor((app.selectedResult?.bedTime || 0) / 60) : 
-      Math.floor(app.to24Hour(app.hour, app.minute, app.period) / 60);
-    
-    const wakeHour = app.mode === 'wake' ? 
-      Math.floor(app.to24Hour(app.hour, app.minute, app.period) / 60) : 
-      Math.floor((app.selectedResult?.wakeTime || 0) / 60);
-    
+  detectPersonality(result) {
+    const bedHour = Math.floor((result?.bedTime || 0) / 60);
+    const wakeHour = Math.floor((result?.wakeTime || 0) / 60);
     const latency = app.settings.latency;
-    const cycles = app.selectedResult?.cycles || 5;
+    const cycles = result?.cycles || 5;
 
     // Priority-based personality detection
     if (bedHour >= 0 && bedHour < 4) return 'night-owl';
@@ -1028,7 +1022,10 @@ const sleepTicket = {
   },
 
   updateTicketPreview() {
-    const personalityKey = this.detectPersonality();
+    // Get the best result (5 cycles, middle option)
+    const result = app.selectedResult || this.getDefaultResult();
+    
+    const personalityKey = this.detectPersonality(result);
     this.currentPersonality = personalityKey;
     const personality = this.personalities[personalityKey];
     
@@ -1046,24 +1043,53 @@ const sleepTicket = {
     // Set times
     let bedtimeStr, wakeTimeStr, cyclesStr;
     
-    if (app.selectedResult) {
-      if (app.mode === 'wake') {
-        bedtimeStr = app.selectedResult.wakeWindowStr || app.selectedResult.bedTimeStr;
-        wakeTimeStr = app.formatTime(app.selectedResult.wakeTime);
-      } else {
-        bedtimeStr = app.formatTime(app.selectedResult.bedTime);
-        wakeTimeStr = app.selectedResult.wakeWindowStr || app.selectedResult.wakeTimeStr;
-      }
-      cyclesStr = `${app.selectedResult.cycles} cycles · ${app.selectedResult.duration}`;
+    if (app.mode === 'wake') {
+      bedtimeStr = result.wakeWindowStr || result.bedTimeStr;
+      wakeTimeStr = app.formatTime(app.to24Hour(app.hour, app.minute, app.period));
     } else {
-      bedtimeStr = '10:30 PM';
-      wakeTimeStr = '6:00 AM';
-      cyclesStr = '5 cycles · 7.5 hrs';
+      bedtimeStr = app.formatTime(app.to24Hour(app.hour, app.minute, app.period));
+      wakeTimeStr = result.wakeWindowStr || result.wakeTimeStr;
     }
+    cyclesStr = `${result.cycles} cycles · ${result.duration}`;
     
     document.getElementById('ticketBedtime').textContent = bedtimeStr;
     document.getElementById('ticketWakeTime').textContent = wakeTimeStr;
     document.getElementById('ticketCycles').textContent = cyclesStr;
+  },
+
+  getDefaultResult() {
+    // Calculate the 5-cycle result (middle option)
+    const startTime = app.to24Hour(app.hour, app.minute, app.period);
+    const cycles = 5;
+    const sleepDuration = app.settings.latency + cycles * app.settings.cycleLength;
+    
+    if (app.mode === 'wake') {
+      let bedTime = startTime - sleepDuration;
+      if (bedTime < 0) bedTime += 24 * 60;
+      const bedWindowEnd = (bedTime + app.settings.wakeWindow) % (24 * 60);
+      
+      return {
+        cycles: cycles,
+        bedTime: bedTime,
+        bedTimeStr: app.formatTime(bedTime),
+        wakeTime: startTime,
+        wakeWindowStr: `${app.formatTime(bedTime)} – ${app.formatTime(bedWindowEnd)}`,
+        duration: `${(sleepDuration / 60).toFixed(1)} hrs`
+      };
+    } else {
+      const wakeTime = (startTime + sleepDuration) % (24 * 60);
+      const wakeWindowEnd = (wakeTime + app.settings.wakeWindow) % (24 * 60);
+      
+      return {
+        cycles: cycles,
+        bedTime: startTime,
+        bedTimeStr: app.formatTime(startTime),
+        wakeTime: wakeTime,
+        wakeTimeStr: app.formatTime(wakeTime),
+        wakeWindowStr: `${app.formatTime(wakeTime)} – ${app.formatTime(wakeWindowEnd)}`,
+        duration: `${(sleepDuration / 60).toFixed(1)} hrs`
+      };
+    }
   },
 
   regenerateQuote() {
