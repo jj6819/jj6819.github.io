@@ -907,6 +907,18 @@ const sleepTicket = {
         "Late nights, deep thoughts",
         "Silence is the night owl's symphony",
         "While the world sleeps, we create"
+      ],
+      memeQuotes: [
+        "3 AM hits different when you're built different",
+        "Sleep? I don't know her",
+        "My bed is lava until 2 AM",
+        "Netflix: Are you still watching? Me: Always",
+        "One more episode... said no one just once",
+        "Morning people are suspicious",
+        "I'm not a night owl, I'm a vampire in training",
+        "Daylight is overrated anyway",
+        "My brain at 3 AM: Let's overthink everything",
+        "Sunrise? You mean my bedtime alarm?"
       ]
     },
     'early-bird': {
@@ -923,6 +935,18 @@ const sleepTicket = {
         "Morning people move mountains",
         "Seize the day before it begins",
         "The world is quiet at dawn — and it's all yours"
+      ],
+      memeQuotes: [
+        "5 AM gang where you at?",
+        "I wake up before my alarm. Yes, I'm insane",
+        "Breakfast at 6 AM hits different",
+        "Night owls fear me",
+        "I've done 3 tasks before you woke up",
+        "The gym at 5 AM is elite",
+        "My superpower? Waking up without coffee first",
+        "Sunrise watchers unite",
+        "I don't need an alarm, I have anxiety",
+        "Already annoying people by 7 AM"
       ]
     },
     'power-napper': {
@@ -937,6 +961,16 @@ const sleepTicket = {
         "The art of the strategic snooze",
         "Rest is not laziness, it's fuel",
         "Napping is a superpower in disguise"
+      ],
+      memeQuotes: [
+        "A 20 min nap that lasted 3 hours",
+        "Just resting my eyes... *wakes up at midnight*",
+        "Nap culture is the only culture",
+        "I'm not lazy, I'm energy efficient",
+        "My hobby? Competitive napping",
+        "Scientists say naps help. I'm basically a scientist",
+        "If napping was a sport, I'd be pro",
+        "Sorry I missed your call, I was in a meeting with my pillow"
       ]
     },
     'cycle-optimizer': {
@@ -951,6 +985,16 @@ const sleepTicket = {
         "Sleep is science, not luck",
         "The right timing changes everything",
         "Master your cycles, master your energy"
+      ],
+      memeQuotes: [
+        "I calculated exactly when to sleep. I'm basically a wizard",
+        "REM cycles are my love language",
+        "Sleep math is real math",
+        "I optimized my bedtime. My life is still a mess tho",
+        "Science said 5 cycles. I said yes",
+        "My spreadsheet for sleep has 47 rows",
+        "I don't just sleep, I engineer sleep",
+        "When you wake up refreshed because MATH"
       ]
     },
     'sleep-minimalist': {
@@ -965,6 +1009,16 @@ const sleepTicket = {
         "Make every hour count",
         "The art of doing more with less sleep",
         "Streamlined rest for busy minds"
+      ],
+      memeQuotes: [
+        "4 hours of sleep? That's a solid night",
+        "Sleep is for the weak. I'm the weak",
+        "I'll sleep when I'm dead (or next weekend)",
+        "Espresso is my personality",
+        "Running on vibes and 3 hours of sleep",
+        "Who needs 8 hours when you have caffeine?",
+        "My eye bags have eye bags",
+        "Sleep? In THIS economy?"
       ]
     },
     'deep-sleeper': {
@@ -979,6 +1033,16 @@ const sleepTicket = {
         "Sleep is the best meditation — Dalai Lama",
         "Heavy sleepers wake lightest",
         "Dive deep into the night"
+      ],
+      memeQuotes: [
+        "I sleep through earthquakes. Don't test me",
+        "7 alarms? That's cute. I need 12",
+        "My sleep is so deep, I forget who I am",
+        "Waking me up is a federal offense",
+        "I hibernated before it was cool",
+        "Sorry I missed your texts. I was in a coma (napping)",
+        "My bed and I are in a committed relationship",
+        "I don't sleep, I teleport to morning"
       ]
     },
     'quick-drifter': {
@@ -993,6 +1057,16 @@ const sleepTicket = {
         "Sleep comes easy to the peaceful mind",
         "Quick to sleep, quick to rise",
         "Effortless rest, endless energy"
+      ],
+      memeQuotes: [
+        "I fall asleep so fast it scares my partner",
+        "Pillow + head = instant KO",
+        "I'm not narcoleptic, I'm just talented",
+        "Insomnia? I don't know her",
+        "My superpower: sleeping anywhere, anytime",
+        "I fell asleep writing th...",
+        "Can't overthink if you're already unconscious",
+        "Speed sleeping champion since birth"
       ]
     }
   },
@@ -1017,7 +1091,8 @@ const sleepTicket = {
   },
 
   getRandomQuote(personalityKey) {
-    const quotes = this.personalities[personalityKey].quotes;
+    const personality = this.personalities[personalityKey];
+    const quotes = app.memeMode ? personality.memeQuotes : personality.quotes;
     return `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
   },
 
