@@ -1,0 +1,450 @@
+Absolutely — here’s **expanded, unique copy** for all 6 supporting pages, each with:
+
+* **1–2 real examples** (with numbers/times)
+* **Common mistakes**
+* **FAQ (8–10 Qs)**
+* **Internal links to 2–4 related pages + back to calculator**
+
+You can paste each page’s content into your existing template (nav + footer + styles). I’m using simple internal links like `/wake-window/` and `/`.
+
+---
+
+## `/sleep-calculator/` (expanded copy)
+
+### H1: Sleep Calculator
+
+NightOwl is a free sleep calculator that helps you choose realistic bedtimes and wake-up times using three practical ideas: **sleep cycles**, **sleep latency**, and a **wake window**. Instead of giving you one “perfect” time that’s hard to follow, it gives you a *range* so your plan still works when real life isn’t precise.
+
+If you’re here because you keep waking up groggy, the problem isn’t always “not enough sleep.” Often it’s **when you wake up within your sleep cycle**. You can feel very different waking from deep sleep vs. lighter sleep, even with the same total hours. This calculator aims to improve your odds of waking at a better moment.
+
+**Try the calculator now:** <a href="/">Open NightOwl Sleep Calc →</a>
+
+### H2: What this sleep calculator does
+
+NightOwl supports three planning modes in one place:
+
+* **Wake up at…** → You choose a wake time, and NightOwl suggests bedtimes that fit full sleep cycles.
+* **Bedtime now** → NightOwl uses the current time to suggest wake-up windows.
+* **Nap calculator** → Choose a short nap or full-cycle nap and get a “wake between” window.
+
+You can adjust:
+
+* **Sleep latency** (how long you take to fall asleep)
+* **Cycle length** (default 90 minutes, adjustable)
+* **Wake window** (the range around each recommended time)
+
+### H2: Example 1 — “I need to wake at 6:30 AM”
+
+Assume:
+
+* Sleep latency: **15 minutes**
+* Cycle length: **90 minutes**
+* Wake window: **10 minutes**
+
+If you aim for **5 cycles** (7.5 hours asleep), add 15 minutes latency = **7h 45m in bed**.
+6:30 AM − 7:45 = **10:45 PM** bedtime target. With a 10-minute wake window, aim for **10:35–10:55 PM**.
+
+If you aim for **6 cycles** (9 hours asleep), add 15 minutes latency = **9h 15m in bed**.
+6:30 AM − 9:15 = **9:15 PM** target → **9:05–9:25 PM** window.
+
+If you only have time for **4 cycles**, add latency = **6h 15m in bed**.
+6:30 AM − 6:15 = **12:15 AM** target → **12:05–12:25 AM** window.
+
+This is why NightOwl shows multiple options—some nights you can fit 6 cycles, others you can’t.
+
+### H2: Example 2 — “I’m going to bed now”
+
+If it’s **11:40 PM** and latency is **10 minutes**, you’re likely asleep around **11:50 PM**.
+A **90-minute** cycle means:
+
+* 4 cycles later: 11:50 + 6:00 = **5:50 AM** → wake window **5:50–6:00**
+* 5 cycles later: 11:50 + 7:30 = **7:20 AM** → **7:20–7:30**
+* 6 cycles later: 11:50 + 9:00 = **8:50 AM** → **8:50–9:00**
+
+### H2: Common mistakes (and how to fix them)
+
+1. **Forgetting sleep latency**
+   If you set latency too low, bedtimes will be too late. If you often lie awake, increase latency to 20–30 minutes.
+
+2. **Chasing the “perfect minute”**
+   Use a wake window so you’re not stressed by precision. Consistency beats perfection.
+
+3. **Assuming 90 minutes is exact**
+   If 5 cycles always feels slightly off, try 85 or 95 minutes. Your body isn’t identical to the average.
+
+4. **Trying to “sleep in” on weekends**
+   Big weekend shifts can cause **social jet lag**. Keep weekend wake time closer to weekdays when possible.
+
+### H2: FAQ
+
+**How much sleep do I need?** Many adults do best with ~7–9 hours, but your ideal depends on sleep debt and routine.
+**Is waking at the end of a cycle guaranteed?** No—sleep isn’t a stopwatch, but cycle planning improves odds.
+**What if I wake naturally before my alarm?** If you feel okay, get up; your body may be aligning.
+**Should I pick 5 or 6 cycles?** Most people choose 5 for practicality; 6 if you’re catching up or can go earlier.
+**What’s a wake window?** A flexible range around a recommended time (like ±10 minutes).
+**Why do I feel groggy after 8 hours?** You may be waking from deeper sleep, or your “8 hours” includes long latency/awakenings.
+**Do naps ruin night sleep?** Late or long naps can. Keep them earlier and choose shorter options if bedtime suffers.
+**Is this medical advice?** No—educational only. If you have persistent insomnia/snoring/daytime sleepiness, consider a clinician.
+
+### Internal links
+
+* Learn cycle math: <a href="/sleep-cycle-calculator/">Sleep Cycle Calculator</a>
+* Dial in your settings: <a href="/sleep-latency/">Sleep Latency</a> • <a href="/wake-window/">Wake Window</a>
+* Quick reset: <a href="/power-nap-calculator/">Nap Calculator</a>
+
+---
+
+## `/sleep-cycle-calculator/` (expanded copy)
+
+### H1: Sleep Cycle Calculator
+
+A sleep cycle calculator helps you plan bedtimes and wake times by counting **full sleep cycles** instead of only counting hours. Many people average a cycle length around **90 minutes**, but it varies by person and by night. That’s why NightOwl lets you adjust cycle length and sleep latency, and adds a wake window so you get flexible options.
+
+**Use the calculator:** <a href="/">Open NightOwl →</a>
+
+### H2: What is a sleep cycle?
+
+Sleep typically moves through repeating stages (lighter sleep, deeper sleep, REM). You don’t stay in one stage all night—you cycle through them. A “cycle” is one full loop through those stages. If you wake during deep sleep, you’re more likely to feel heavy and foggy (sleep inertia). Waking closer to the end of a cycle tends to feel smoother.
+
+### H2: Why 90 minutes (and why it’s adjustable)
+
+“90 minutes” is a helpful average, but not a law. Some people run a bit shorter, some longer, and cycle length can change across the night. If your recommended times repeatedly feel off, tweak cycle length by **5–10 minutes** and test for a few days.
+
+### H2: Example — wake at 7:00 AM, latency 10 minutes
+
+Assume:
+
+* Wake time: **7:00 AM**
+* Latency: **10 minutes**
+* Cycle length: **90 minutes**
+* Wake window: **10 minutes**
+
+5 cycles = 7.5 hours asleep. Add latency → **7h 40m in bed**.
+7:00 − 7:40 = **11:20 PM** bedtime → **11:10–11:30 PM** window.
+
+6 cycles = 9 hours asleep. Add latency → **9h 10m in bed**.
+7:00 − 9:10 = **9:50 PM** bedtime → **9:40–10:00 PM**.
+
+4 cycles = 6 hours asleep. Add latency → **6h 10m in bed**.
+7:00 − 6:10 = **12:50 AM** → **12:40–1:00 AM**.
+
+### H2: Choosing the right number of cycles
+
+A practical way to think about it:
+
+* **4 cycles:** minimum option when time is tight (many people still feel “okay”)
+* **5 cycles:** a strong default that fits life better
+* **6 cycles:** best when you can go earlier or are catching up
+* **7 cycles:** sometimes helpful when you’re sleep deprived, but not always realistic
+
+The “best” option is the one you can do consistently.
+
+### H2: Common mistakes
+
+1. **Not counting latency** → makes bedtime too late.
+2. **Switching schedules wildly** → causes sleep inertia and “jet lag” feelings.
+3. **Assuming cycles equal perfect sleep** → quality matters too (stress, caffeine, environment).
+4. **Using cycle timing to justify too little sleep** → cycle planning helps, but it’s not a substitute for enough total sleep.
+
+### H2: FAQ
+
+**Are sleep cycles always 90 minutes?** No—90 is an average. Try adjusting if results don’t match how you feel.
+**Is it better to wake at the end of a cycle?** Often yes, because you may avoid waking from deep sleep.
+**What if I wake up in the night?** That happens. The calculator is a guide, not a guarantee.
+**Do cycles change across the night?** They can. Early-night deep sleep is often more intense for many people.
+**How do I choose between 5 and 6 cycles?** Pick what fits your schedule, then keep it consistent for a week.
+**Does the wake window reduce accuracy?** It adds flexibility so your plan is actually usable.
+**What if I’m still groggy?** Try a different cycle option, adjust latency, and consider shifting your wake time.
+**Is this medical advice?** No—educational tool only.
+
+### Internal links
+
+* Broader overview: <a href="/sleep-calculator/">Sleep Calculator</a>
+* Timing realism: <a href="/sleep-latency/">Sleep Latency</a> • <a href="/wake-window/">Wake Window</a>
+* Add naps: <a href="/power-nap-calculator/">Power Nap Calculator</a>
+* Back to tool: <a href="/">Open Calculator →</a>
+
+---
+
+## `/best-time-to-go-to-bed/` (expanded copy)
+
+### H1: Best Time to Go to Bed
+
+The best time to go to bed is the one that helps you wake up feeling clear-headed and still fits your real schedule. A simple way to plan is: start with your wake-up time, then work backward using full sleep cycles and an estimate of your sleep latency. NightOwl does this automatically and gives you a wake window so you can aim for a range rather than one exact minute.
+
+**Get bedtimes now:** <a href="/">Use NightOwl →</a>
+
+### H2: Step 1 — pick your wake-up time first
+
+Most people choose bedtime based on “when they feel tired,” then set an alarm and hope for the best. Planning works better the other way around. Decide when you must wake up, then choose a bedtime window that fits an appropriate number of cycles.
+
+### H2: Step 2 — choose cycles that fit your life
+
+A useful rule of thumb:
+
+* **5 cycles** = ~7.5 hours asleep
+* **6 cycles** = ~9 hours asleep
+  (Then add your sleep latency on top.)
+
+5 cycles is often the “best compromise” because it’s realistic on weeknights. 6 cycles is great when you can go earlier.
+
+### H2: Example — wake at 6:15 AM (with realistic settings)
+
+Assume:
+
+* Wake time: **6:15 AM**
+* Latency: **20 minutes**
+* Cycle length: **90 minutes**
+* Wake window: **10 minutes**
+
+5 cycles (7.5h) + 20m latency = **7h 50m in bed**
+6:15 − 7:50 = **10:25 PM** → bedtime window **10:15–10:35 PM**
+
+6 cycles (9h) + 20m = **9h 20m in bed**
+6:15 − 9:20 = **8:55 PM** → **8:45–9:05 PM**
+
+4 cycles (6h) + 20m = **6h 20m in bed**
+6:15 − 6:20 = **11:55 PM** → **11:45–12:05 AM**
+
+### H2: Wake windows reduce stress and improve follow-through
+
+If you’ve ever missed a “perfect bedtime” by 7 minutes and felt like the plan was ruined, you’ve experienced why wake windows matter. A 10–15 minute range gives you flexibility without losing the structure.
+
+### H2: Common mistakes
+
+1. **Trying to “make up sleep” by sleeping in**
+   Huge weekend shifts can make Monday feel awful. Consider a smaller shift (NightOwl’s Social Jet Lag setting can help).
+
+2. **Ignoring caffeine and screens**
+   If latency is consistently high, adjust the setting and consider changing the routine, not just the math.
+
+3. **Over-optimizing one night**
+   The best bedtime is the one you can repeat. Consistency often beats occasional perfection.
+
+4. **Picking too few cycles repeatedly**
+   Cycle timing helps, but repeatedly choosing the minimum can accumulate sleep debt.
+
+### H2: FAQ
+
+**Is it better to go to bed earlier or sleep longer?** Both help, but consistency and total sleep time usually win.
+**What if I naturally wake before my alarm?** If you feel okay, get up. If tired, try a longer option.
+**How accurate are sleep cycle estimates?** Useful as a guide; sleep stages vary.
+**What if I only have 6 hours?** Try 4 cycles with accurate latency and a wake window, then prioritize an earlier night later.
+**Why do I wake up groggy?** Often deep-sleep wake-ups, irregular schedules, or poor sleep quality.
+**What’s a good default latency?** 10–20 minutes for many adults.
+**Should I change cycle length?** If results consistently don’t match how you feel, yes—try ±5–10 minutes.
+**Is this medical advice?** No.
+
+### Internal links
+
+* Cycle math: <a href="/sleep-cycle-calculator/">Sleep Cycle Calculator</a>
+* Make it realistic: <a href="/sleep-latency/">Sleep Latency</a> • <a href="/wake-window/">Wake Window</a>
+* Quick energy reset: <a href="/power-nap-calculator/">Power Nap Calculator</a>
+* Back to tool: <a href="/">Open Calculator →</a>
+
+---
+
+## `/sleep-latency/` (expanded copy)
+
+### H1: Sleep Latency
+
+Sleep latency is the time it takes you to fall asleep after you get into bed. It’s one of the most important “hidden variables” in sleep planning—because your body doesn’t start a sleep cycle the moment your head hits the pillow. NightOwl includes a latency setting so your recommended bedtimes and wake times match your real routine.
+
+**Use latency in the calculator:** <a href="/">Open NightOwl →</a>
+
+### H2: What’s a normal sleep latency?
+
+Many people fall asleep in about **10–20 minutes**, but it varies. Latency can increase with stress, caffeine, screens, late exercise, naps, and inconsistent wake times. Some nights you might fall asleep in 5 minutes; others might take 35. NightOwl works best when you set a realistic average.
+
+### H2: Why latency changes your bedtime more than you think
+
+If you want 5 full cycles (7.5 hours asleep) but your latency is 25 minutes, then your bedtime should be **25 minutes earlier** than a “cycles-only” plan. People often think they “slept 8 hours” because they were in bed for 8 hours, but a chunk of that time may not be actual sleep.
+
+### H2: Example — wake at 7:30 AM, 5 cycles
+
+* Cycle plan (5 cycles): **7h 30m asleep**
+* If latency = **10 minutes**, you need **7h 40m in bed** → bedtime about **11:50 PM**
+* If latency = **30 minutes**, you need **8h 00m in bed** → bedtime about **11:30 PM**
+
+That’s a 20-minute difference just from latency.
+
+### H2: How to estimate your latency (simple method)
+
+For 3–5 nights:
+
+1. note the time you *actually try to sleep* (lights out / phone down)
+2. estimate when you fell asleep
+3. average the results (rough is fine)
+
+If you’re unsure, start at **15 minutes** and adjust after a week.
+
+### H2: Common mistakes
+
+1. **Setting latency to 0** because you *want* to fall asleep instantly
+   Set what’s typical, not what’s ideal.
+
+2. **Not updating latency during stressful weeks**
+   If latency changes, your plan should change too.
+
+3. **Using bedtime “in bed” as bedtime “asleep”**
+   The calculator assumes cycles start after latency—make sure you’re consistent.
+
+4. **Ignoring middle-of-night awakenings**
+   NightOwl can’t perfectly model awakenings. If they’re frequent, focus on sleep quality improvements.
+
+### H2: FAQ
+
+**Is 30 minutes latency bad?** It’s common sometimes. If it’s frequent and frustrating, consider sleep hygiene and professional guidance.
+**Does latency include scrolling in bed?** If you scroll *before trying to sleep*, treat that as part of your routine—either reduce it or set latency higher.
+**What if my latency varies a lot?** Use an average, then use wake windows for flexibility.
+**Does alcohol affect latency?** It can—sometimes shorter latency but worse quality later.
+**Will changing cycle length fix grogginess more than latency?** Both matter. Start with latency because it directly shifts timing.
+**Should I use different latency on weekends?** You can, but consistency is usually better.
+**What if I fall asleep fast but still wake up groggy?** Try a different cycle option and consider wake time consistency.
+**Is this medical advice?** No—educational only.
+
+### Internal links
+
+* Core tool: <a href="/">Sleep Calculator</a>
+* Cycle tuning: <a href="/sleep-cycle-calculator/">Sleep Cycle Calculator</a>
+* Flexibility: <a href="/wake-window/">Wake Window</a>
+* Naps: <a href="/power-nap-calculator/">Power Nap Calculator</a>
+
+---
+
+## `/wake-window/` (expanded copy)
+
+### H1: Wake Window
+
+A wake window is a small time range around a recommended bedtime or wake time—like **10–15 minutes**—so you can pick a time that fits real life. NightOwl uses wake windows to reduce the pressure of “perfect timing” while still keeping you close to cycle-based wake-ups.
+
+**Try wake windows:** <a href="/">Open NightOwl →</a>
+
+### H2: Why a range works better than a single exact minute
+
+Sleep timing isn’t perfectly predictable. You might fall asleep a little earlier or later than planned, and your night can include brief awakenings. A single “perfect” minute can feel brittle. A wake window gives you flexibility without throwing away the structure.
+
+### H2: Example — wake time planning with a 10-minute window
+
+If NightOwl suggests a bedtime of **10:45 PM** with a **10-minute** wake window, you’re not locked into 10:45. You can aim for **10:35–10:55 PM**. That makes it much easier to follow when your routine isn’t exact.
+
+### H2: How to choose your wake window
+
+* **0–5 minutes:** you love precision and your routine is consistent
+* **10–15 minutes:** best balance for most people
+* **20–30 minutes:** flexible schedules, kids, shift changes, or inconsistent evenings
+
+If you find yourself constantly “missing the plan,” increase the wake window slightly rather than abandoning the method.
+
+### H2: Wake window vs snoozing
+
+A wake window is planned flexibility. Snoozing is repeated re-entry into sleep and can make you feel worse. If you want flexibility, choose a wake time *within your window* rather than repeatedly snoozing.
+
+### H2: Common mistakes
+
+1. **Using a wake window to justify huge variance**
+   A 10–15 minute window is helpful; a 2-hour window becomes meaningless.
+
+2. **Changing the window every day**
+   Pick a default (10 minutes) and keep it stable for a week so you can judge results.
+
+3. **Assuming a larger window equals better sleep**
+   The window is about usability, not sleep quality.
+
+4. **Ignoring latency while relying on windows**
+   Wake windows help flexibility, but accurate latency still matters.
+
+### H2: FAQ
+
+**Does a wake window reduce accuracy?** It trades tiny precision for real-world usability—usually a win.
+**What’s a good default?** 10 minutes.
+**Should I use a wake window for bedtime too?** Yes—bedtime can be a window just like wake time.
+**Can I set wake window to 0?** Yes, if you want exact times.
+**What if I’m still groggy within the window?** Try a different cycle option or adjust cycle length.
+**Does wake window help with insomnia?** It doesn’t treat insomnia, but it can reduce stress about exact timing.
+**Does waking at a cycle boundary always happen?** No, but you’re improving your odds.
+**Is this medical advice?** No.
+
+### Internal links
+
+* Make timing realistic: <a href="/sleep-latency/">Sleep Latency</a>
+* Cycle fundamentals: <a href="/sleep-cycle-calculator/">Sleep Cycle Calculator</a>
+* Bedtime guidance: <a href="/best-time-to-go-to-bed/">Best Time to Go to Bed</a>
+* Back to tool: <a href="/">Open Calculator →</a>
+
+---
+
+## `/power-nap-calculator/` (expanded copy)
+
+### H1: Power Nap Calculator
+
+A nap calculator helps you time naps so you wake up sharper, not groggier. NightOwl’s nap calculator gives you simple nap options—like a **coffee nap**, **power nap**, or **full-cycle nap**—and provides a wake window so you’re not stuck aiming for a single minute.
+
+**Use the nap calculator:** <a href="/">Open NightOwl →</a>
+
+### H2: Why naps sometimes backfire
+
+Naps can feel amazing, but waking from deeper sleep can cause sleep inertia—grogginess that lingers. Short naps reduce the chance of entering deep sleep. Longer naps can work better when you allow time for a full cycle.
+
+### H2: Three nap types (when to use each)
+
+**Coffee nap (15 minutes):**
+Drink coffee quickly, then nap. Many people wake up as caffeine starts to kick in.
+
+**Power nap (20 minutes):**
+A classic option that improves alertness for many people with lower grogginess risk.
+
+**Full-cycle nap (90 minutes):**
+Longer nap that can include a full sleep cycle. Useful if you have the time and want a deeper reset.
+
+### H2: Example — it’s 2:10 PM and you need a boost
+
+Assume wake window: **10 minutes**
+
+* 15-minute nap → wake around **2:25 PM** → window **2:25–2:35**
+* 20-minute nap → wake around **2:30 PM** → **2:30–2:40**
+* 90-minute nap → wake around **3:40 PM** → **3:40–3:50**
+
+If you have a meeting at 3:00 PM, the 15–20 minute options are safer than the 90-minute option.
+
+### H2: Timing tips that make naps work better
+
+* Nap earlier in the day if nighttime sleep suffers
+* Keep short naps short
+* If you do a long nap, plan time to fully wake up (water, light, movement)
+
+### H2: Common mistakes
+
+1. **Napping too late**
+   Late naps can push bedtime later and reduce sleep pressure.
+
+2. **Accidentally turning a power nap into a long nap**
+   Set an alarm, and use a wake window so you can choose a time that feels doable.
+
+3. **Expecting naps to replace real sleep**
+   Naps help, but they’re not the same as consistent nighttime sleep.
+
+4. **Choosing 90 minutes without enough buffer**
+   A full-cycle nap can be great, but give yourself time to wake up and reorient.
+
+### H2: FAQ
+
+**Is a 20-minute nap best?** Often, yes—simple and low grogginess risk for many people.
+**What’s a coffee nap?** Coffee first, then a short nap—many people wake up more alert.
+**Will naps ruin my sleep?** They can if long or late. Try earlier and shorter.
+**Why does NightOwl use a wake window?** A range is easier to follow and more realistic.
+**Should I nap if I slept badly last night?** A short nap can help, but prioritize an earlier bedtime tonight too.
+**Can I do multiple naps?** Some people can, but it may impact bedtime.
+**What if naps make me groggy no matter what?** Try shorter naps or a full-cycle nap, and avoid late naps.
+**Is this medical advice?** No—educational tool only.
+
+### Internal links
+
+* General tool: <a href="/sleep-calculator/">Sleep Calculator</a>
+* Bedtime planning: <a href="/best-time-to-go-to-bed/">Best Time to Go to Bed</a>
+* Flexibility: <a href="/wake-window/">Wake Window</a>
+* Back to tool: <a href="/">Open Calculator →</a>
+
+---
+
+If you want, I can also provide **SEO-ready meta titles/descriptions** for each page (optimized to avoid duplicate snippets), plus a **“Related articles” block** you can reuse on every page to strengthen internal linking.
