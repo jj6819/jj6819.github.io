@@ -1111,6 +1111,12 @@ const sleepTicket = {
     this.currentPersonality = personalityKey;
     const personality = this.personalities[personalityKey];
     
+    // Update title based on meme mode
+    const modalTitle = document.querySelector('.ticket-modal-title');
+    if (modalTitle) {
+      modalTitle.textContent = app.memeMode ? 'Your Sleep Ticket (Meme Mode)' : 'Your Sleep Ticket';
+    }
+    
     // Set background
     document.getElementById('ticketBg').className = `ticket-bg ${personalityKey}`;
     
