@@ -2044,7 +2044,7 @@ ol.article-list li::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 14px;
 }
 
 .ticket-time-row:last-child {
