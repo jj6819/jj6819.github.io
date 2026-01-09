@@ -2093,6 +2093,10 @@ ol.article-list li::before {
   object-fit: contain;
 }
 
+.ticket-branding-moon {
+  font-size: 24px;
+}
+
 .ticket-url {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.7);
