@@ -1022,8 +1022,15 @@ const sleepTicket = {
   },
 
   updateTicketPreview() {
-    // Get the best result (5 cycles, middle option)
-    const result = app.selectedResult || this.getDefaultResult();
+    // Get result - either from selected card or calculate default
+    let result;
+    
+    if (app.selectedResult !== null) {
+      // Get result from the selected card's data
+      result = this.getResultFromIndex(app.selectedResult);
+    } else {
+      result = this.getDefaultResult();
+    }
     
     const personalityKey = this.detectPersonality(result);
     this.currentPersonality = personalityKey;
@@ -1055,6 +1062,41 @@ const sleepTicket = {
     document.getElementById('ticketBedtime').textContent = bedtimeStr;
     document.getElementById('ticketWakeTime').textContent = wakeTimeStr;
     document.getElementById('ticketCycles').textContent = cyclesStr;
+  },
+
+  getResultFromIndex(index) {
+    // Calculate the result for the given index (0=4 cycles, 1=5 cycles, 2=6 cycles)
+    const startTime = app.to24Hour(app.hour, app.minute, app.period);
+    const cycles = 4 + index; // index 0=4, 1=5, 2=6
+    const sleepDuration = app.settings.latency + cycles * app.settings.cycleLength;
+    
+    if (app.mode === 'wake') {
+      let bedTime = startTime - sleepDuration;
+      if (bedTime < 0) bedTime += 24 * 60;
+      const bedWindowEnd = (bedTime + app.settings.wakeWindow) % (24 * 60);
+      
+      return {
+        cycles: cycles,
+        bedTime: bedTime,
+        bedTimeStr: app.formatTime(bedTime),
+        wakeTime: startTime,
+        wakeWindowStr: `${app.formatTime(bedTime)} – ${app.formatTime(bedWindowEnd)}`,
+        duration: `${(sleepDuration / 60).toFixed(1)} hrs`
+      };
+    } else {
+      const wakeTime = (startTime + sleepDuration) % (24 * 60);
+      const wakeWindowEnd = (wakeTime + app.settings.wakeWindow) % (24 * 60);
+      
+      return {
+        cycles: cycles,
+        bedTime: startTime,
+        bedTimeStr: app.formatTime(startTime),
+        wakeTime: wakeTime,
+        wakeTimeStr: app.formatTime(wakeTime),
+        wakeWindowStr: `${app.formatTime(wakeTime)} – ${app.formatTime(wakeWindowEnd)}`,
+        duration: `${(sleepDuration / 60).toFixed(1)} hrs`
+      };
+    }
   },
 
   getDefaultResult() {
