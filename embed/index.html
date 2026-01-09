@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>NightOwl Sleep Calculator - Embed</title>
+  
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    body { padding: 10px; }
+    .embed-footer {
+      text-align: center;
+      padding: 12px;
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 20px;
+    }
+    .embed-footer a {
+      color: #fbbf24;
+      text-decoration: none;
+    }
+    .embed-footer a:hover {
+      text-decoration: underline;
+    }
+    .container { padding-top: 0 !important; }
+    header { margin-bottom: 20px; padding-top: 10px; }
+    .share-btn, .embed-toggle-btn, #embedPanel, #shareCard { display: none !important; }
+  </style>
+</head>
+<body onload="createStars()">
+  <div class="stars-container" id="starsContainer"></div>
+
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">🌙</div><span class="brand-name">NightOwl</span>
+      </div>
+      <h1 class="title">Sleep Cycle Calculator</h1>
+      <p class="subtitle">Bedtimes + wake windows based on 90-minute cycles</p>
+    </header>
+
+    <div class="mode-tabs">
+      <button class="mode-btn active" data-mode="wake">
+        <span>⏰</span> Wake up at...
+      </button>
+      <button class="mode-btn" data-mode="sleep">
+        <span>🛏️</span> Bedtime now
+      </button>
+    </div>
+
+    <div class="main-content">
+      <div class="settings-toggle">
+        <button class="settings-toggle-btn" id="toggleSettings">Settings</button>
+      </div>
+
+      <div class="settings-grid" id="settingsGrid">
+        <div class="setting-group">
+          <label class="setting-label">Sleep Latency</label>
+          <input type="range" id="latency" min="0" max="60" value="10">
+          <div class="setting-value"><span id="latencyValue">10</span> min</div>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Cycle Length</label>
+          <input type="range" id="cycleLength" min="80" max="110" value="90">
+          <div class="setting-value"><span id="cycleLengthValue">90</span> min</div>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Wake Window</label>
+          <input type="range" id="wakeWindow" min="0" max="30" value="10">
+          <div class="setting-value"><span id="wakeWindowValue">10</span> min</div>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Time Format</label>
+          <div class="time-format-toggle">
+            <div class="toggle-switch active" id="timeFormatToggle">
+              <div class="toggle-option active" data-format="12">12h</div>
+              <div class="toggle-option" data-format="24">24h</div>
+            </div>
+          </div>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Meme Mode</label>
+          <div id="memeModeToggle" class="meme-toggle-container">
+            <div class="meme-toggle-thumb"></div>
+            <span class="meme-toggle-label">Normal</span>
+          </div>
+        </div>
+      </div>
+
+      <label class="label" id="timeLabel">I want to wake up at...</label>
+
+      <div class="time-picker-container">
+        <div class="time-picker" id="timePicker">
+          <div class="time-column" id="hourColumn" tabindex="0">
+            <div class="time-column-faded" id="hourAbove">12</div>
+            <div class="time-column-selected" id="hourSelected">01</div>
+            <div class="time-column-faded" id="hourBelow">02</div>
+            <div class="time-column-highlight"></div>
+          </div>
+          
+          <div class="time-column-separator">:</div>
+          
+          <div class="time-column" id="minuteColumn" tabindex="0">
+            <div class="time-column-faded" id="minuteAbove">59</div>
+            <div class="time-column-selected" id="minuteSelected">00</div>
+            <div class="time-column-faded" id="minuteBelow">01</div>
+            <div class="time-column-highlight"></div>
+          </div>
+          
+          <div class="time-column" id="periodColumn" tabindex="0">
+            <div class="time-column-faded" id="periodAbove">PM</div>
+            <div class="time-column-selected" id="periodSelected">AM</div>
+            <div class="time-column-faded" id="periodBelow">PM</div>
+            <div class="time-column-highlight"></div>
+          </div>
+
+          <div class="owl-perch" id="owlPerch">
+            <img src="/attached_assets/owl1_1767300759408.png" id="owlImg" alt="Owl" />
+          </div>
+        </div>
+      </div>
+
+      <div class="results" id="results">
+        <div class="results-label" id="resultsLabel">Go to bed at...</div>
+        <div class="results-list" id="resultsList"></div>
+      </div>
+
+      <section id="nap-calculator" class="seo-block">
+        <h2 class="results-label">Nap Calculator</h2>
+        <p style="font-size: 14px; color: #94a3b8; margin-bottom: 16px;">
+          Need a quick reset? Pick a nap type to get a recommended wake window based on the <strong>current time</strong>.
+        </p>
+
+        <div class="nap-controls">
+          <button class="nap-btn" data-nap="15">Coffee Nap (15m)</button>
+          <button class="nap-btn" data-nap="20">Power Nap (20m)</button>
+          <button class="nap-btn" data-nap="90">Full Cycle (90m)</button>
+        </div>
+
+        <div class="nap-output" id="napOutput" aria-live="polite">
+          Select a nap to see your wake window.
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="embed-footer">
+    Powered by <a href="https://nightowlsleepcalc.com/" target="_blank">NightOwl Sleep Calc</a>
+  </div>
+
+  <script src="/script.js"></script>
+</body>
+</html>
