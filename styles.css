@@ -1732,6 +1732,19 @@ footer .footer-disclaimer {
   margin-bottom: 12px;
 }
 
+.article-section a,
+.article-list a {
+  color: #818cf8;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+.article-section a:hover,
+.article-list a:hover {
+  color: #a5b4fc;
+}
+
 .article-list {
   list-style: none;
   padding: 0;
