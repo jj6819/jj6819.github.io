@@ -1067,7 +1067,8 @@ const sleepTicket = {
   getResultFromIndex(index) {
     // Calculate the result for the given index (0=4 cycles, 1=5 cycles, 2=6 cycles)
     const startTime = app.to24Hour(app.hour, app.minute, app.period);
-    const cycles = 4 + index; // index 0=4, 1=5, 2=6
+    const idx = parseInt(index) || 0;
+    const cycles = 4 + Math.min(idx, 2); // index 0=4, 1=5, 2=6 (capped at 2)
     const sleepDuration = app.settings.latency + cycles * app.settings.cycleLength;
     
     if (app.mode === 'wake') {
