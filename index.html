@@ -244,6 +244,7 @@
         <div class="results-list" id="resultsList"></div>
         
         <button class="share-btn" id="shareBtn" data-testid="button-share-link">Share Link</button>
+        <button class="ticket-toggle-btn" id="ticketToggle" data-testid="button-create-ticket">📱 Sleep Ticket</button>
         <button class="embed-toggle-btn" id="embedToggle" data-testid="button-embed-calculator">
           <span>&lt;/&gt;</span> Embed
         </button>
@@ -391,6 +392,49 @@
     <div class="footer-disclaimer">Educational tool only — not medical advice.</div>
   </footer>
 
+  <!-- Sleep Ticket Modal -->
+  <div id="ticketModal" class="ticket-modal" style="display: none;">
+    <div class="ticket-modal-content">
+      <button class="ticket-modal-close" id="ticketModalClose">&times;</button>
+      <h2 class="ticket-modal-title">Your Sleep Ticket</h2>
+      <p class="ticket-modal-subtitle">Share your sleep plan on Instagram Stories</p>
+      
+      <div class="ticket-preview-container">
+        <div id="ticketPreview" class="ticket-preview">
+          <div class="ticket-bg" id="ticketBg"></div>
+          <div class="ticket-content">
+            <div class="ticket-personality">
+              <img id="ticketIcon" class="ticket-icon" src="" alt="Personality icon" />
+              <span id="ticketPersonalityName" class="ticket-personality-name"></span>
+            </div>
+            <div id="ticketQuote" class="ticket-quote"></div>
+            <div class="ticket-times">
+              <div class="ticket-time-row">
+                <span class="ticket-time-label">Bedtime</span>
+                <span id="ticketBedtime" class="ticket-time-value"></span>
+              </div>
+              <div class="ticket-time-row">
+                <span class="ticket-time-label">Wake up</span>
+                <span id="ticketWakeTime" class="ticket-time-value"></span>
+              </div>
+            </div>
+            <div id="ticketCycles" class="ticket-cycles"></div>
+            <div class="ticket-branding">
+              <span class="ticket-logo">🦉</span>
+              <span class="ticket-url">nightowlsleepcalc.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="ticket-actions">
+        <button class="ticket-btn ticket-btn-secondary" id="regenerateQuoteBtn">🔄 New Quote</button>
+        <button class="ticket-btn ticket-btn-primary" id="downloadTicketBtn">📱 Download</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="/script.js"></script>
 </body>
 </html>

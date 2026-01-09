@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "html2canvas": "^1.4.1",
     "http-server": "^14.1.1"
   }
 }

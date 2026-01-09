@@ -887,4 +887,276 @@ function createStars() {
   }
 }
 
+// ========== SLEEP TICKET FEATURE ==========
+const sleepTicket = {
+  currentQuote: '',
+  currentPersonality: null,
+
+  personalities: {
+    'night-owl': {
+      name: 'Night Owl',
+      icon: '/attached_assets/generated_images/night_owl_personality_icon.png',
+      quotes: [
+        "The night is dark and full of dreams",
+        "Owls see what others sleep through",
+        "Creativity peaks when the world sleeps",
+        "The best ideas come after midnight",
+        "Night owls rule the quiet hours",
+        "Stars shine brightest for those awake to see",
+        "The moon understands what the sun cannot",
+        "Late nights, deep thoughts",
+        "Silence is the night owl's symphony",
+        "While the world sleeps, we create"
+      ]
+    },
+    'early-bird': {
+      name: 'Early Bird',
+      icon: '/attached_assets/generated_images/early_bird_personality_icon.png',
+      quotes: [
+        "The early bird gets the worm",
+        "Rise with the sun, shine with purpose",
+        "Morning magic starts the night before",
+        "Dawn is the promise of a new beginning",
+        "Early mornings, peaceful victories",
+        "The sunrise belongs to those who wake for it",
+        "First light, first win",
+        "Morning people move mountains",
+        "Seize the day before it begins",
+        "The world is quiet at dawn — and it's all yours"
+      ]
+    },
+    'power-napper': {
+      name: 'Power Napper',
+      icon: '/attached_assets/generated_images/power_napper_personality_icon.png',
+      quotes: [
+        "A quick nap fixes everything",
+        "Power naps are productivity hacks",
+        "20 minutes to recharge the world",
+        "Nap now, conquer later",
+        "Short sleep, big energy",
+        "The art of the strategic snooze",
+        "Rest is not laziness, it's fuel",
+        "Napping is a superpower in disguise"
+      ]
+    },
+    'cycle-optimizer': {
+      name: 'Cycle Optimizer',
+      icon: '/attached_assets/generated_images/cycle_optimizer_personality_icon.png',
+      quotes: [
+        "Sleep smarter, not longer",
+        "Cycles are the secret to waking refreshed",
+        "Precision rest for peak performance",
+        "Every cycle counts",
+        "Optimize your nights, own your mornings",
+        "Sleep is science, not luck",
+        "The right timing changes everything",
+        "Master your cycles, master your energy"
+      ]
+    },
+    'sleep-minimalist': {
+      name: 'Sleep Minimalist',
+      icon: '/attached_assets/generated_images/sleep_minimalist_personality_icon.png',
+      quotes: [
+        "Less sleep, more life — if done right",
+        "Quality over quantity",
+        "Minimalist nights, maximalist days",
+        "Sleep lean, dream big",
+        "Efficiency in rest",
+        "Make every hour count",
+        "The art of doing more with less sleep",
+        "Streamlined rest for busy minds"
+      ]
+    },
+    'deep-sleeper': {
+      name: 'Deep Sleeper',
+      icon: '/attached_assets/generated_images/deep_sleeper_personality_icon.png',
+      quotes: [
+        "Deep sleep heals everything",
+        "Sink into the night and emerge renewed",
+        "The deeper the sleep, the brighter the morning",
+        "Rest like you mean it",
+        "Dreams live in the deep",
+        "Sleep is the best meditation — Dalai Lama",
+        "Heavy sleepers wake lightest",
+        "Dive deep into the night"
+      ]
+    },
+    'quick-drifter': {
+      name: 'Quick Drifter',
+      icon: '/attached_assets/generated_images/quick_drifter_personality_icon.png',
+      quotes: [
+        "Asleep before the pillow settles",
+        "Drifting off is an art form",
+        "Fast asleep, well rested",
+        "The gift of easy sleep",
+        "No tossing, no turning, just dreams",
+        "Sleep comes easy to the peaceful mind",
+        "Quick to sleep, quick to rise",
+        "Effortless rest, endless energy"
+      ]
+    }
+  },
+
+  detectPersonality() {
+    const bedHour = app.mode === 'wake' ? 
+      Math.floor((app.selectedResult?.bedTime || 0) / 60) : 
+      Math.floor(app.to24Hour(app.hour, app.minute, app.period) / 60);
+    
+    const wakeHour = app.mode === 'wake' ? 
+      Math.floor(app.to24Hour(app.hour, app.minute, app.period) / 60) : 
+      Math.floor((app.selectedResult?.wakeTime || 0) / 60);
+    
+    const latency = app.settings.latency;
+    const cycles = app.selectedResult?.cycles || 5;
+
+    // Priority-based personality detection
+    if (bedHour >= 0 && bedHour < 4) return 'night-owl';
+    if (wakeHour >= 4 && wakeHour < 6) return 'early-bird';
+    if (latency <= 5) return 'quick-drifter';
+    if (latency >= 25) return 'deep-sleeper';
+    if (cycles <= 4) return 'sleep-minimalist';
+    if (cycles >= 6) return 'cycle-optimizer';
+    
+    // Default based on bedtime
+    if (bedHour >= 22 || bedHour < 1) return 'cycle-optimizer';
+    return 'night-owl';
+  },
+
+  getRandomQuote(personalityKey) {
+    const quotes = this.personalities[personalityKey].quotes;
+    return `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+  },
+
+  updateTicketPreview() {
+    const personalityKey = this.detectPersonality();
+    this.currentPersonality = personalityKey;
+    const personality = this.personalities[personalityKey];
+    
+    // Set background
+    document.getElementById('ticketBg').className = `ticket-bg ${personalityKey}`;
+    
+    // Set icon and name
+    document.getElementById('ticketIcon').src = personality.icon;
+    document.getElementById('ticketPersonalityName').textContent = personality.name;
+    
+    // Set quote
+    this.currentQuote = this.getRandomQuote(personalityKey);
+    document.getElementById('ticketQuote').textContent = this.currentQuote;
+    
+    // Set times
+    let bedtimeStr, wakeTimeStr, cyclesStr;
+    
+    if (app.selectedResult) {
+      if (app.mode === 'wake') {
+        bedtimeStr = app.selectedResult.wakeWindowStr || app.selectedResult.bedTimeStr;
+        wakeTimeStr = app.formatTime(app.selectedResult.wakeTime);
+      } else {
+        bedtimeStr = app.formatTime(app.selectedResult.bedTime);
+        wakeTimeStr = app.selectedResult.wakeWindowStr || app.selectedResult.wakeTimeStr;
+      }
+      cyclesStr = `${app.selectedResult.cycles} cycles · ${app.selectedResult.duration}`;
+    } else {
+      bedtimeStr = '10:30 PM';
+      wakeTimeStr = '6:00 AM';
+      cyclesStr = '5 cycles · 7.5 hrs';
+    }
+    
+    document.getElementById('ticketBedtime').textContent = bedtimeStr;
+    document.getElementById('ticketWakeTime').textContent = wakeTimeStr;
+    document.getElementById('ticketCycles').textContent = cyclesStr;
+  },
+
+  regenerateQuote() {
+    if (this.currentPersonality) {
+      this.currentQuote = this.getRandomQuote(this.currentPersonality);
+      document.getElementById('ticketQuote').textContent = this.currentQuote;
+    }
+  },
+
+  async downloadTicket() {
+    const ticketEl = document.getElementById('ticketPreview');
+    const downloadBtn = document.getElementById('downloadTicketBtn');
+    
+    downloadBtn.textContent = 'Generating...';
+    downloadBtn.disabled = true;
+    
+    try {
+      // Use html2canvas via CDN
+      const canvas = await html2canvas(ticketEl, {
+        scale: 4,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null
+      });
+      
+      const link = document.createElement('a');
+      link.download = `sleep-ticket-${Date.now()}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      
+      downloadBtn.textContent = 'Downloaded!';
+      setTimeout(() => {
+        downloadBtn.textContent = '📱 Download';
+        downloadBtn.disabled = false;
+      }, 2000);
+    } catch (err) {
+      console.error('Error generating ticket:', err);
+      downloadBtn.textContent = 'Error - Try Again';
+      setTimeout(() => {
+        downloadBtn.textContent = '📱 Download';
+        downloadBtn.disabled = false;
+      }, 2000);
+    }
+  },
+
+  openModal() {
+    this.updateTicketPreview();
+    document.getElementById('ticketModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  },
+
+  closeModal() {
+    document.getElementById('ticketModal').style.display = 'none';
+    document.body.style.overflow = '';
+  },
+
+  init() {
+    const ticketToggle = document.getElementById('ticketToggle');
+    const ticketModalClose = document.getElementById('ticketModalClose');
+    const ticketModal = document.getElementById('ticketModal');
+    const regenerateBtn = document.getElementById('regenerateQuoteBtn');
+    const downloadBtn = document.getElementById('downloadTicketBtn');
+
+    if (ticketToggle) {
+      ticketToggle.addEventListener('click', () => this.openModal());
+    }
+
+    if (ticketModalClose) {
+      ticketModalClose.addEventListener('click', () => this.closeModal());
+    }
+
+    if (ticketModal) {
+      ticketModal.addEventListener('click', (e) => {
+        if (e.target === ticketModal) this.closeModal();
+      });
+    }
+
+    if (regenerateBtn) {
+      regenerateBtn.addEventListener('click', () => this.regenerateQuote());
+    }
+
+    if (downloadBtn) {
+      downloadBtn.addEventListener('click', () => this.downloadTicket());
+    }
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && ticketModal?.style.display === 'flex') {
+        this.closeModal();
+      }
+    });
+  }
+};
+
+sleepTicket.init();
 app.init();
