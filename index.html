@@ -245,21 +245,6 @@
         
         <button class="share-btn" id="shareBtn" data-testid="button-share-link">Share Link</button>
         <button class="ticket-toggle-btn" id="ticketToggle" data-testid="button-create-ticket">📱 Sleep Ticket</button>
-        <button class="embed-toggle-btn" id="embedToggle" data-testid="button-embed-calculator">
-          <span>&lt;/&gt;</span> Embed
-        </button>
-
-        <div id="embedPanel" class="embed-panel" style="display: none;">
-          <div class="embed-panel-header">
-            <strong>Embed this Calculator</strong>
-            <button class="embed-close" id="embedClose">&times;</button>
-          </div>
-          <p>Copy and paste this code into your website:</p>
-          <div class="embed-code-wrapper">
-            <code id="embedCode">&lt;iframe src="https://nightowlsleepcalc.com/embed/" width="100%" height="600" frameborder="0"&gt;&lt;/iframe&gt;</code>
-            <button class="copy-embed-btn" id="copyEmbedBtn">Copy Code</button>
-          </div>
-        </div>
 
         <div id="shareCard" class="share-card-preview" style="display: none;">
           <div class="share-card-header">
@@ -377,6 +362,24 @@
             <p>No. This tool is educational. If you have persistent insomnia or severe daytime sleepiness, consider talking with a clinician.</p>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="embed-section">
+    <button class="embed-toggle-btn" id="embedToggle" data-testid="button-embed-calculator">
+      <span>&lt;/&gt;</span> Embed this Calculator
+    </button>
+
+    <div id="embedPanel" class="embed-panel" style="display: none;">
+      <div class="embed-panel-header">
+        <strong>Embed this Calculator</strong>
+        <button class="embed-close" id="embedClose">&times;</button>
+      </div>
+      <p>Copy and paste this code into your website:</p>
+      <div class="embed-code-wrapper">
+        <code id="embedCode">&lt;iframe src="https://nightowlsleepcalc.com/embed/" width="100%" height="600" frameborder="0"&gt;&lt;/iframe&gt;</code>
+        <button class="copy-embed-btn" id="copyEmbedBtn">Copy Code</button>
       </div>
     </div>
   </div>
