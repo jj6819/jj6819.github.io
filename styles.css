@@ -1365,6 +1365,12 @@ footer .footer-disclaimer {
     margin-top: 12px;
   }
 
+  .ticket-toggle-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+    margin-top: 12px;
+  }
+
   .info-toggle {
     padding: 14px;
     font-size: 14px;
@@ -1572,6 +1578,12 @@ footer .footer-disclaimer {
   }
 
   .share-btn {
+    padding: 9px 16px;
+    font-size: 12px;
+    margin-top: 8px;
+  }
+
+  .ticket-toggle-btn {
     padding: 9px 16px;
     font-size: 12px;
     margin-top: 8px;
