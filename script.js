@@ -1113,14 +1113,19 @@ const sleepTicket = {
     const cycles = result?.cycles || 5;
 
     // Priority-based personality detection
-    if (bedHour >= 0 && bedHour < 4) return 'night-owl';
-    if (wakeHour >= 4 && wakeHour < 6) return 'early-bird';
+    // 1. Latency-based (user setting) - highest priority
     if (latency <= 5) return 'quick-drifter';
     if (latency >= 25) return 'deep-sleeper';
+    
+    // 2. Cycle-based (user selection)
     if (cycles <= 4) return 'sleep-minimalist';
     if (cycles >= 6) return 'cycle-optimizer';
     
-    // Default based on bedtime
+    // 3. Time-based (calculated from results)
+    if (wakeHour >= 4 && wakeHour < 6) return 'early-bird';
+    if (bedHour >= 0 && bedHour < 4) return 'night-owl';
+    
+    // Default
     if (bedHour >= 22 || bedHour < 1) return 'cycle-optimizer';
     return 'night-owl';
   },
