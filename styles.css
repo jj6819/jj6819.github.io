@@ -91,7 +91,9 @@ header {
   letter-spacing: 1px;
 }
 
+/* TODO: Remove display:none once AdSense is approved */
 .ad-space {
+  display: none;
   background: rgba(15, 23, 42, 0.5);
   border: 1px solid rgba(99, 102, 241, 0.2);
   border-radius: 12px;
@@ -101,7 +103,6 @@ header {
   margin-bottom: 30px;
   font-size: 13px;
   min-height: 100px;
-  display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
