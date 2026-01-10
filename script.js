@@ -909,16 +909,21 @@ const sleepTicket = {
         "While the world sleeps, we create"
       ],
       memeQuotes: [
-        "3 AM hits different when you're built different",
-        "Sleep? I don't know her",
-        "My bed is lava until 2 AM",
-        "Netflix: Are you still watching? Me: Always",
-        "One more episode... said no one just once",
-        "Morning people are suspicious",
-        "I'm not a night owl, I'm a vampire in training",
-        "Daylight is overrated anyway",
-        "My brain at 3 AM: Let's overthink everything",
-        "Sunrise? You mean my bedtime alarm?"
+        "3 AM me has made some questionable life choices",
+        "Sleep schedule? I prefer chaos",
+        "My bed is lava until the sun comes up",
+        "Netflix asks if I'm still watching. Bold of them to assume I ever stopped",
+        "I'm not nocturnal, I'm just avoiding tomorrow",
+        "Morning people scare me and I don't trust them",
+        "The bags under my eyes are designer",
+        "My brain has no thoughts until 11 PM, then it writes a novel",
+        "I'm a night owl because my anxiety picks the schedule",
+        "4 AM me and 4 PM me are completely different people",
+        "I don't have a sleep schedule, I have sleep suggestions",
+        "Told myself I'd sleep early. It's 3 AM. We both knew I was lying",
+        "Productivity peaks when everyone stops texting me",
+        "Sunlight? In this economy?",
+        "I'm not tired, I'm just loading slowly"
       ]
     },
     'early-bird': {
@@ -937,16 +942,21 @@ const sleepTicket = {
         "The world is quiet at dawn — and it's all yours"
       ],
       memeQuotes: [
-        "5 AM gang where you at?",
-        "I wake up before my alarm. Yes, I'm insane",
-        "Breakfast at 6 AM hits different",
-        "Night owls fear me",
-        "I've done 3 tasks before you woke up",
-        "The gym at 5 AM is elite",
-        "My superpower? Waking up without coffee first",
-        "Sunrise watchers unite",
-        "I don't need an alarm, I have anxiety",
-        "Already annoying people by 7 AM"
+        "I've already judged you three times before your alarm went off",
+        "Woke up at 5 AM. Personality trait unlocked",
+        "My body just... does this. I didn't ask for it",
+        "Night owls: 'one more episode.' Me: 'one more sunrise'",
+        "I'm not a morning person, I'm a morning demon",
+        "Finished my to-do list before you finished your dream",
+        "The gym at 5 AM is just me and the demons",
+        "I see the sunrise every day. Not on purpose at first",
+        "Waking up early is free, yet so expensive",
+        "I peaked at 6 AM. It's been downhill since",
+        "Early bird gets the worm but also crippling loneliness at breakfast",
+        "I wake up before the coffee shop. This is my villain origin story",
+        "My alarm is decorative at this point",
+        "5 AM thoughts hit different when you've been up since 4",
+        "Being a morning person is just socially acceptable insomnia"
       ]
     },
     'power-napper': {
@@ -963,14 +973,19 @@ const sleepTicket = {
         "Napping is a superpower in disguise"
       ],
       memeQuotes: [
-        "A 20 min nap that lasted 3 hours",
-        "Just resting my eyes... *wakes up at midnight*",
-        "Nap culture is the only culture",
-        "I'm not lazy, I'm energy efficient",
-        "My hobby? Competitive napping",
-        "Scientists say naps help. I'm basically a scientist",
-        "If napping was a sport, I'd be pro",
-        "Sorry I missed your call, I was in a meeting with my pillow"
+        "20 minute nap turned into a 4 hour coma. Classic",
+        "Just resting my eyes... *wakes up in a different decade*",
+        "Naps are just free trial versions of death",
+        "I'm not lazy, I'm horizontally productive",
+        "Took a power nap. Woke up with no power",
+        "My naps have plot twists",
+        "If napping was in the Olympics, I'd make my country proud",
+        "Sorry I missed your call, my pillow needed me",
+        "I nap so hard I wake up in a different mood",
+        "Quick nap before my nap",
+        "Napping is self care and I'm very caring",
+        "I don't snooze, I strategically delay consciousness",
+        "My naps have their own weather system"
       ]
     },
     'cycle-optimizer': {
@@ -987,14 +1002,19 @@ const sleepTicket = {
         "Master your cycles, master your energy"
       ],
       memeQuotes: [
-        "I calculated exactly when to sleep. I'm basically a wizard",
-        "REM cycles are my love language",
-        "Sleep math is real math",
-        "I optimized my bedtime. My life is still a mess tho",
-        "Science said 5 cycles. I said yes",
-        "My spreadsheet for sleep has 47 rows",
-        "I don't just sleep, I engineer sleep",
-        "When you wake up refreshed because MATH"
+        "I calculated exactly when to sleep. My therapist is concerned",
+        "REM cycles are my love language. Nobody swipes right",
+        "Sleep math is real math and I'm the professor",
+        "Optimized my bedtime. Still emotionally unavailable",
+        "Science said 5 cycles. I said bet",
+        "My spreadsheet for sleep has tabs. Multiple tabs",
+        "I don't just sleep, I perform scheduled unconsciousness",
+        "Woke up refreshed because I respect the algorithm",
+        "My sleep is peer-reviewed",
+        "I treat bedtime like a board meeting",
+        "Accidentally explained sleep cycles on a first date. There was no second date",
+        "I have a PhD in lying down strategically",
+        "My circadian rhythm has a LinkedIn"
       ]
     },
     'sleep-minimalist': {
@@ -1011,14 +1031,19 @@ const sleepTicket = {
         "Streamlined rest for busy minds"
       ],
       memeQuotes: [
-        "4 hours of sleep? That's a solid night",
-        "Sleep is for the weak. I'm the weak",
-        "I'll sleep when I'm dead (or next weekend)",
-        "Espresso is my personality",
-        "Running on vibes and 3 hours of sleep",
-        "Who needs 8 hours when you have caffeine?",
-        "My eye bags have eye bags",
-        "Sleep? In THIS economy?"
+        "4 hours of sleep? That's basically hibernation",
+        "Sleep is for the weak. Unfortunately, I am weak",
+        "I'll sleep when I'm dead, which at this rate is Tuesday",
+        "Espresso isn't a drink, it's a coping mechanism",
+        "Running on vibes, spite, and 3 hours of sleep",
+        "8 hours is for people with nothing to worry about",
+        "My eye bags are carrying my entire personality",
+        "Sleep? In THIS economy? In THIS mental state?",
+        "I function on coffee and poor decisions",
+        "Less sleep more... actually no, just less sleep",
+        "My body runs on airplane mode",
+        "I'm not sleep deprived, I'm just built wrong",
+        "4 hours felt like 8 if you don't think about it"
       ]
     },
     'deep-sleeper': {
@@ -1035,14 +1060,19 @@ const sleepTicket = {
         "Dive deep into the night"
       ],
       memeQuotes: [
-        "I sleep through earthquakes. Don't test me",
-        "7 alarms? That's cute. I need 12",
-        "My sleep is so deep, I forget who I am",
-        "Waking me up is a federal offense",
-        "I hibernated before it was cool",
-        "Sorry I missed your texts. I was in a coma (napping)",
-        "My bed and I are in a committed relationship",
-        "I don't sleep, I teleport to morning"
+        "I sleep through earthquakes, alarms, and my responsibilities",
+        "12 alarms. Snoozed all of them. Felt nothing",
+        "My sleep is so deep, I astral project",
+        "Waking me up is violence and I will press charges",
+        "I don't sleep, I enter the void",
+        "Missed your call, text, and the entire morning",
+        "My bed and I are in a toxic but committed relationship",
+        "I teleport to morning. Side effects include confusion",
+        "I sleep like I'm getting paid for it",
+        "Once slept through a fire alarm. Still here somehow",
+        "My snooze button filed a restraining order",
+        "I hibernate professionally",
+        "Sleep so deep I need GPS to find consciousness"
       ]
     },
     'quick-drifter': {
@@ -1059,14 +1089,19 @@ const sleepTicket = {
         "Effortless rest, endless energy"
       ],
       memeQuotes: [
-        "I fall asleep so fast it scares my partner",
-        "Pillow + head = instant KO",
-        "I'm not narcoleptic, I'm just talented",
-        "Insomnia? I don't know her",
-        "My superpower: sleeping anywhere, anytime",
+        "I fall asleep so fast it's basically a medical condition",
+        "Pillow + head = immediate shutdown",
+        "I'm not narcoleptic, I'm just extremely efficient",
+        "Insomnia could never. She doesn't know me",
+        "I can fall asleep anywhere. It's a problem actually",
         "I fell asleep writing th...",
-        "Can't overthink if you're already unconscious",
-        "Speed sleeping champion since birth"
+        "Can't overthink if you're unconscious in 3 seconds",
+        "Speed sleeping since the womb",
+        "My brain has a 5 second power-off timer",
+        "People hate me for this one simple trick",
+        "I don't count sheep, sheep count on me",
+        "Asleep before my head hits the pillow. Literally",
+        "My sleep latency is negative at this point"
       ]
     }
   },
