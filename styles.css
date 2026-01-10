@@ -2053,8 +2053,8 @@ ol.article-list li::before {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 14px;
-  gap: 4px;
+  margin-bottom: 10px;
+  gap: 2px;
 }
 
 .ticket-time-row:last-child {
@@ -2062,7 +2062,7 @@ ol.article-list li::before {
 }
 
 .ticket-time-label {
-  font-size: 12px;
+  font-size: 11px;
   color: rgba(255, 255, 255, 0.7);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -2070,10 +2070,11 @@ ol.article-list li::before {
 
 .ticket-time-value {
   font-family: 'Poppins', sans-serif;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 600;
   color: #ffffff;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .ticket-cycles {
