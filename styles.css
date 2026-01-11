@@ -822,6 +822,7 @@ input[type="range"] {
   margin-top: 16px;
   display: inline-block;
   line-height: 1;
+  vertical-align: top;
 }
 
 .share-btn:hover {
@@ -1917,6 +1918,7 @@ ol.article-list li::before {
   margin-top: 16px;
   display: inline-block;
   line-height: 1;
+  vertical-align: top;
 }
 
 .ticket-toggle-btn:hover {
