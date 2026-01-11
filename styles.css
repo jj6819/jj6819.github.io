@@ -1582,12 +1582,16 @@ footer .footer-disclaimer {
     padding: 9px 16px;
     font-size: 12px;
     margin-top: 8px;
+    height: 36px;
+    box-sizing: border-box;
   }
 
   .ticket-toggle-btn {
     padding: 9px 16px;
     font-size: 12px;
     margin-top: 8px;
+    height: 36px;
+    box-sizing: border-box;
   }
 
   .info-toggle {
