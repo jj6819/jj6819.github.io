@@ -287,7 +287,7 @@ const app = {
     // Share Button
     const shareMeme = ["Copy my sleep plan", "Share this wisdom", "Send to a friend who’s tired", "Export bedtime propaganda"];
     const shareBtn = document.getElementById('shareBtn');
-    shareBtn.textContent = isMeme ? shareMeme[Math.floor(Math.random() * shareMeme.length)] : "Share Link";
+    shareBtn.textContent = isMeme ? shareMeme[Math.floor(Math.random() * shareMeme.length)] : "🔗 Share Link";
 
     // Footer
     const disclaimer = document.querySelector('.footer-disclaimer');
