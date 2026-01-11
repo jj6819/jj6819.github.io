@@ -34,7 +34,7 @@ const app = {
   },
 
   setupEventListeners() {
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 5; i++) {
       const toggleId = `infoToggle${i === 1 ? '' : i}`;
       const sectionId = `infoSection${i === 1 ? '' : i}`;
       const toggleEl = document.getElementById(toggleId);
@@ -45,7 +45,7 @@ const app = {
           const isExpanded = infoSection.style.display !== 'none';
           
           // Close all other panels
-          for (let j = 1; j <= 4; j++) {
+          for (let j = 1; j <= 5; j++) {
             if (j === i) continue;
             const otherSection = document.getElementById(`infoSection${j === 1 ? '' : j}`);
             const otherToggle = document.getElementById(`infoToggle${j === 1 ? '' : j}`);
