@@ -1299,8 +1299,9 @@ const sleepTicket = {
   async downloadTicket() {
     const ticketEl = document.getElementById('ticketPreview');
     const downloadBtn = document.getElementById('downloadTicketBtn');
+    const defaultHTML = '<span class="btn-icon">📱</span><span class="btn-text">Download</span>';
     
-    downloadBtn.textContent = 'Generating...';
+    downloadBtn.innerHTML = '<span class="btn-icon">⏳</span><span class="btn-text">Generating...</span>';
     downloadBtn.disabled = true;
     
     try {
@@ -1317,16 +1318,16 @@ const sleepTicket = {
       link.href = canvas.toDataURL('image/png');
       link.click();
       
-      downloadBtn.textContent = 'Downloaded!';
+      downloadBtn.innerHTML = '<span class="btn-icon">✅</span><span class="btn-text">Downloaded!</span>';
       setTimeout(() => {
-        downloadBtn.textContent = '📱 Download';
+        downloadBtn.innerHTML = defaultHTML;
         downloadBtn.disabled = false;
       }, 2000);
     } catch (err) {
       console.error('Error generating ticket:', err);
-      downloadBtn.textContent = 'Error - Try Again';
+      downloadBtn.innerHTML = '<span class="btn-icon">⚠️</span><span class="btn-text">Try Again</span>';
       setTimeout(() => {
-        downloadBtn.textContent = '📱 Download';
+        downloadBtn.innerHTML = defaultHTML;
         downloadBtn.disabled = false;
       }, 2000);
     }
