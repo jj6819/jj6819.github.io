@@ -926,7 +926,7 @@ const sleepTicket = {
     },
     'deep-sleeper': {
       name: 'Snore Lord',
-      icon: '/attached_assets/generated_images/snore_lord_personality_icon.png'
+      icon: '/attached_assets/generated_images/snore_lord_with_circle.png'
     },
     'quick-drifter': {
       name: 'Instant KO',
