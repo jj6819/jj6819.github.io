@@ -2077,7 +2077,8 @@ ol.article-list li::before {
   font-size: 11px;
   color: rgba(255, 255, 255, 0.7);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  word-spacing: 2px;
 }
 
 .ticket-time-value {
