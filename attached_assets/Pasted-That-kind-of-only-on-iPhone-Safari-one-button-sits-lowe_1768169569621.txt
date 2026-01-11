@@ -1,0 +1,48 @@
+That kind of “only on iPhone Safari one button sits lower” is most often **baseline alignment** + **different inline content metrics** (especially **emoji/icons**).
+
+In your screenshot, the two buttons are the same height, but the **right one is being vertically offset downward**—that’s exactly what happens when the *row* is aligning items by **text baseline** (or inline-block baseline), and Safari calculates the baseline differently because the second button contains that 📱 emoji/icon.
+
+### Most likely causes
+
+1. **Parent is `display:flex` with `align-items: baseline`** (Tailwind: `items-baseline`)
+   Safari aligns the *text baselines*; emoji/font metrics differ → one flex item gets pushed down.
+
+2. **Buttons are `inline-block` (or inline elements) and you didn’t set `vertical-align`**
+   Inline/inline-block defaults to baseline alignment, so different content (emoji) can shift the element.
+
+3. **Different `line-height` / icon font-size between the two buttons**
+   If the emoji/icon has a different font-size/line-height than the text, Safari’s line box math can differ.
+
+### Fixes (pick the one that matches your layout)
+
+**If the buttons are in a flex row:**
+
+```css
+.buttonRow { display: flex; align-items: center; gap: 16px; } /* not baseline */
+```
+
+(Tailwind: `flex items-center gap-4` and remove `items-baseline`)
+
+**If the buttons are inline-block:**
+
+```css
+.button { display: inline-block; vertical-align: middle; }
+```
+
+**Make the icon not affect baseline math:**
+
+```css
+.button { display: inline-flex; align-items: center; line-height: 1; }
+.button .icon { display: inline-flex; width: 1.2em; height: 1.2em; }
+```
+
+Even better: replace emoji with an **SVG icon** sized consistently.
+
+### Quick way to confirm
+
+Inspect the **parent container** of the two buttons in Safari Web Inspector and check:
+
+* `align-items: baseline` (or `items-baseline`)
+* or the buttons being `inline-block` without `vertical-align`
+
+If you paste the HTML/CSS (or Tailwind classes) for the button wrapper and each button, I can point to the exact line causing the offset.
