@@ -891,6 +891,17 @@ function createStars() {
 const sleepTicket = {
   currentQuote: '',
   currentPersonality: null,
+  challengeIndex: -1,
+  challengeStickers: [
+    "Post yours 👇",
+    "Your turn 😈",
+    "Tag your sleep twin",
+    "What's your type?",
+    "Rate my sleep 1-10",
+    "I dare you",
+    "Roast my schedule",
+    "Reply with yours"
+  ],
 
   personalities: {
     'night-owl': {
@@ -1263,6 +1274,28 @@ const sleepTicket = {
     }
   },
 
+  cycleChallenge() {
+    const challengeEl = document.getElementById('ticketChallenge');
+    if (!challengeEl) return;
+    
+    this.challengeIndex++;
+    if (this.challengeIndex >= this.challengeStickers.length) {
+      this.challengeIndex = 0;
+    }
+    
+    challengeEl.textContent = this.challengeStickers[this.challengeIndex];
+    challengeEl.style.display = 'block';
+  },
+
+  resetChallenge() {
+    this.challengeIndex = -1;
+    const challengeEl = document.getElementById('ticketChallenge');
+    if (challengeEl) {
+      challengeEl.style.display = 'none';
+      challengeEl.textContent = '';
+    }
+  },
+
   async downloadTicket() {
     const ticketEl = document.getElementById('ticketPreview');
     const downloadBtn = document.getElementById('downloadTicketBtn');
@@ -1300,6 +1333,7 @@ const sleepTicket = {
   },
 
   openModal() {
+    this.resetChallenge();
     this.updateTicketPreview();
     document.getElementById('ticketModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
@@ -1333,6 +1367,11 @@ const sleepTicket = {
 
     if (regenerateBtn) {
       regenerateBtn.addEventListener('click', () => this.regenerateQuote());
+    }
+
+    const challengeBtn = document.getElementById('challengeBtn');
+    if (challengeBtn) {
+      challengeBtn.addEventListener('click', () => this.cycleChallenge());
     }
 
     if (downloadBtn) {
