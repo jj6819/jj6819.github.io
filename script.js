@@ -903,6 +903,37 @@ const sleepTicket = {
     "Reply with yours"
   ],
 
+  memePersonalities: {
+    'night-owl': {
+      name: 'Doomscroller',
+      icon: '/attached_assets/generated_images/cute_doomscroller_icon.png'
+    },
+    'early-bird': {
+      name: 'Morning Psycho',
+      icon: '/attached_assets/generated_images/morning_psycho_personality_icon.png'
+    },
+    'power-napper': {
+      name: 'Desk Sleeper',
+      icon: '/attached_assets/generated_images/desk_sleeper_warm_icon.png'
+    },
+    'cycle-optimizer': {
+      name: 'Sleep Nerd',
+      icon: '/attached_assets/generated_images/sleep_nerd_v2_icon.png'
+    },
+    'sleep-minimalist': {
+      name: 'Chaos Goblin',
+      icon: '/attached_assets/generated_images/cute_chaos_goblin_icon.png'
+    },
+    'deep-sleeper': {
+      name: 'Snore Lord',
+      icon: '/attached_assets/generated_images/snore_lord_personality_icon.png'
+    },
+    'quick-drifter': {
+      name: 'Instant KO',
+      icon: '/attached_assets/generated_images/instant_ko_sleep_icon.png'
+    }
+  },
+
   personalities: {
     'night-owl': {
       name: 'Night Owl',
@@ -1161,6 +1192,7 @@ const sleepTicket = {
     const personalityKey = this.detectPersonality(result);
     this.currentPersonality = personalityKey;
     const personality = this.personalities[personalityKey];
+    const memePersonality = this.memePersonalities[personalityKey];
     
     // Update title based on meme mode
     const modalTitle = document.querySelector('.ticket-modal-title');
@@ -1171,9 +1203,14 @@ const sleepTicket = {
     // Set background
     document.getElementById('ticketBg').className = `ticket-bg ${personalityKey}`;
     
-    // Set icon and name
-    document.getElementById('ticketIcon').src = personality.icon;
-    document.getElementById('ticketPersonalityName').textContent = personality.name;
+    // Set icon and name - use meme version if meme mode is on
+    if (app.memeMode && memePersonality) {
+      document.getElementById('ticketIcon').src = memePersonality.icon;
+      document.getElementById('ticketPersonalityName').textContent = memePersonality.name;
+    } else {
+      document.getElementById('ticketIcon').src = personality.icon;
+      document.getElementById('ticketPersonalityName').textContent = personality.name;
+    }
     
     // Set quote
     this.currentQuote = this.getRandomQuote(personalityKey);
