@@ -814,14 +814,13 @@ input[type="range"] {
   align-items: center;
   gap: 12px;
   margin-top: 16px;
-  flex-wrap: wrap;
 }
 
 .share-btn {
   background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
   color: white;
   border: none;
-  padding: 12px 24px;
+  padding: 0 24px;
   border-radius: 8px;
   font-weight: 600;
   font-size: 14px;
@@ -829,7 +828,11 @@ input[type="range"] {
   transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  gap: 6px;
   line-height: 1;
+  height: 44px;
+  flex: 1;
 }
 
 .share-btn:hover {
@@ -1908,7 +1911,7 @@ ol.article-list li::before {
   background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   color: white;
   border: none;
-  padding: 12px 24px;
+  padding: 0 24px;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
@@ -1916,7 +1919,11 @@ ol.article-list li::before {
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  gap: 6px;
   line-height: 1;
+  height: 44px;
+  flex: 1;
 }
 
 .ticket-toggle-btn:hover {

@@ -1,0 +1,53 @@
+Two different things can make that happen on iPhone Safari, and **both are visible in your buttons**:
+
+### 1) The buttons are sizing to their content (so “Sleep Ticket” will be bigger)
+
+If you haven’t forced equal widths, **auto-sized buttons will naturally be different widths** because:
+
+* “Sleep Ticket” is longer text than “Share Link”
+* the 📱 emoji glyph is also wider than 🔗 on iOS
+
+On desktop you might not notice as much because emoji metrics differ by platform.
+
+**Fix (make them equal width):**
+
+* Give both buttons `flex: 1` (Tailwind: `flex-1`) or set a fixed width.
+
+```html
+<div class="flex gap-4">
+  <button class="flex-1 ...">...</button>
+  <button class="flex-1 ...">...</button>
+</div>
+```
+
+### 2) iOS emoji can change the line box height (making one look taller/bigger)
+
+Even with `inline-flex`, if your button’s height is still “content-driven”, the **emoji font (Apple Color Emoji)** can produce a slightly different line-height box than normal text, which can make one button appear taller/puffier.
+
+**Fix (lock height + neutralize line-height):**
+
+* Set an explicit height (or consistent vertical padding)
+* Force `line-height: 1` on the button and the icon/text
+* Wrap the emoji in a sized span
+
+Tailwind example:
+
+```html
+<div class="flex items-center gap-4">
+  <button class="flex-1 inline-flex items-center justify-center gap-2 h-12 px-6 rounded-2xl leading-none">
+    <span class="w-5 h-5 flex items-center justify-center text-[18px] leading-none">🔗</span>
+    <span class="leading-none">Share Link</span>
+  </button>
+
+  <button class="flex-1 inline-flex items-center justify-center gap-2 h-12 px-6 rounded-2xl leading-none">
+    <span class="w-5 h-5 flex items-center justify-center text-[18px] leading-none">📱</span>
+    <span class="leading-none">Sleep Ticket</span>
+  </button>
+</div>
+```
+
+### Best long-term fix
+
+Replace emoji with an **SVG/icon** (emoji metrics vary the most across platforms).
+
+If you paste the exact classes/styles on the wrapper + both buttons, I can tell you which of the two is the main culprit in your case (width vs height).
