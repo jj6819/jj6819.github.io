@@ -1514,26 +1514,10 @@ const jetLagPlanner = {
     
     const shareBtn = document.getElementById('jetLagShareBtn');
     if (shareBtn) shareBtn.addEventListener('click', () => this.sharePlan());
-    
-    // Toggles
-    this.setupToggle('planeSleepToggle');
-    this.setupToggle('strategyToggle');
   },
 
   setupToggle(id) {
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.addEventListener('click', (e) => {
-      const option = e.target.closest('.toggle-option');
-      if(option) {
-        el.querySelectorAll('.toggle-option').forEach(opt => opt.classList.remove('active'));
-        option.classList.add('active');
-        el.dataset.value = option.dataset.val;
-      }
-    });
-    // Set initial value
-    const active = el.querySelector('.active');
-    if (active) el.dataset.value = active.dataset.val;
+    // Legacy support or remove if unused
   },
 
   addSegment() {
@@ -1626,7 +1610,7 @@ const jetLagPlanner = {
     const finalSegment = this.segments[this.segments.length - 1];
     const destZone = finalSegment.arriveTime.zoneName;
     
-    const canSleepOnPlane = document.getElementById('planeSleepToggle').dataset.value === 'yes';
+    const canSleepOnPlane = document.querySelector('input[name="planeSleep"]:checked').value === 'yes';
 
     this.segments.forEach((seg, index) => {
       // 1. Departure Event

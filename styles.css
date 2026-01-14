@@ -2645,3 +2645,42 @@ ol.article-list li::before {
 #jetLagMode {
   width: 100%;
 }
+
+/* Radio Toggle Group - Replaces custom JS toggle */
+.radio-toggle-group {
+  display: inline-flex;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 30px; /* Pill shape */
+  padding: 4px;
+  position: relative;
+  width: fit-content;
+}
+
+.radio-toggle-group input[type="radio"] {
+  display: none; /* Hide default radio */
+}
+
+.radio-toggle-group label {
+  padding: 10px 24px;
+  cursor: pointer;
+  border-radius: 24px;
+  color: #94a3b8;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radio-toggle-group input[type="radio"]:checked + label {
+  background: #4f46e5;
+  color: white;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.radio-toggle-group label:hover:not(:checked) {
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.05);
+}

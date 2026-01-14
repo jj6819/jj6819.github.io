@@ -399,6 +399,7 @@
   <!-- Jet Lag Planner Mode -->
   <div id="jetLagMode" style="display: none;">
     <div class="main-content">
+      <div style="max-width: 760px; margin: 0 auto;">
       <p class="jetlag-intro">Enter your flight details to get a personalized sleep schedule to beat jet lag.</p>
       
       <div id="segmentList" class="segment-list">
@@ -410,16 +411,20 @@
       <div class="jetlag-options">
         <div class="option-row">
           <label>Can sleep on plane?</label>
-          <div class="toggle-switch" id="planeSleepToggle">
-            <div class="toggle-option active" data-val="yes">Yes</div>
-            <div class="toggle-option" data-val="no">No</div>
+          <div class="radio-toggle-group">
+            <input type="radio" id="planeSleep_yes" name="planeSleep" value="yes" checked>
+            <label for="planeSleep_yes">Yes</label>
+            <input type="radio" id="planeSleep_no" name="planeSleep" value="no">
+            <label for="planeSleep_no">No</label>
           </div>
         </div>
         <div class="option-row">
           <label>Strategy</label>
-          <div class="toggle-switch" id="strategyToggle">
-            <div class="toggle-option active" data-val="cycles">Cycles</div>
-            <div class="toggle-option" data-val="naps">Naps</div>
+          <div class="radio-toggle-group">
+            <input type="radio" id="strategy_cycles" name="strategy" value="cycles" checked>
+            <label for="strategy_cycles">Cycles</label>
+            <input type="radio" id="strategy_naps" name="strategy" value="naps">
+            <label for="strategy_naps">Naps</label>
           </div>
         </div>
       </div>
@@ -433,6 +438,7 @@
           <button class="share-btn" id="jetLagShareBtn">🔗 Share Plan</button>
           <button class="ticket-toggle-btn" id="jetLagTicketBtn">📱 Jet Lag Ticket</button>
         </div>
+      </div>
       </div>
     </div>
   </div>
