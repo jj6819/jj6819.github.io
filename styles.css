@@ -2521,7 +2521,17 @@ ol.article-list li::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  gap: 16px;
+}
+
+.option-row label {
+  flex: 1;
+}
+
+.jetlag-options .toggle-switch {
+  flex: 0 0 auto;
+  min-width: 140px;
 }
 
 .option-row:last-child {

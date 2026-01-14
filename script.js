@@ -1172,13 +1172,30 @@ const sleepTicket = {
     return 'night-owl';
   },
 
+  travelQuotes: [
+    "I haven't been everywhere, but it's on my list.",
+    "Jet lag is just your soul catching up to your body.",
+    "I followed my heart and it led me to the airport.",
+    "Time zones are just a suggestion.",
+    "Adventure awaits (after a nap).",
+    "Collect moments, not things. And maybe some sleep.",
+    "Travel is the only thing you buy that makes you richer.",
+    "Waking up in a new city is the best feeling in the world.",
+    "My favorite thing to do is go where I've never been.",
+    "Work, Travel, Save, Repeat (and Sleep)."
+  ],
+
   getRandomQuote(personalityKey) {
+    if (this.isJetLag) {
+      return `"${this.travelQuotes[Math.floor(Math.random() * this.travelQuotes.length)]}"`;
+    }
     const personality = this.personalities[personalityKey];
     const quotes = app.memeMode ? personality.memeQuotes : personality.quotes;
     return `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
   },
 
   updateTicketPreview() {
+    this.isJetLag = false;
     // Get result - either from selected card or calculate default
     let result;
     
@@ -1679,6 +1696,9 @@ const jetLagPlanner = {
   openTicketModal() {
     if (!this.currentPlan) return;
     
+    // Set flag on sleepTicket so regeneration works
+    sleepTicket.isJetLag = true;
+    
     const ticketModal = document.getElementById('ticketModal');
     const ticketBg = document.getElementById('ticketBg');
     const ticketIcon = document.getElementById('ticketIcon');
@@ -1693,9 +1713,9 @@ const jetLagPlanner = {
     
     // Set Ticket Content
     ticketBg.className = 'ticket-bg bg-gradient-3'; 
-    ticketIcon.src = '/attached_assets/owl1_1767300759408.png';
+    ticketIcon.src = '/attached_assets/generated_images/cute_3d_pilot_owl_icon.png';
     ticketPersonalityName.textContent = `Jet Lag: ${this.currentPlan.destCity}`;
-    ticketQuote.textContent = "Time zones are just a suggestion.";
+    ticketQuote.textContent = sleepTicket.getRandomQuote();
     
     ticketBedtime.textContent = this.currentPlan.bedTime;
     ticketWakeTime.textContent = this.currentPlan.wakeTime;
