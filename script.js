@@ -1322,7 +1322,7 @@ const sleepTicket = {
   },
 
   regenerateQuote() {
-    if (this.currentPersonality) {
+    if (this.currentPersonality || this.isJetLag) {
       this.currentQuote = this.getRandomQuote(this.currentPersonality);
       document.getElementById('ticketQuote').textContent = this.currentQuote;
     }

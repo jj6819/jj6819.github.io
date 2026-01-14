@@ -2622,3 +2622,26 @@ ol.article-list li::before {
   margin-left: 8px;
   color: #e2e8f0;
 }
+
+.jetlag-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 600px) {
+  .jetlag-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+.jetlag-options .option-row {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure Jet Lag Mode matches Sleep Calc width behavior */
+#jetLagMode {
+  width: 100%;
+}
