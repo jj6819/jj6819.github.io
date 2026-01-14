@@ -1427,3 +1427,280 @@ const sleepTicket = {
 
 sleepTicket.init();
 app.init();
+
+/* ========== JET LAG PLANNER ========== */
+const jetLagPlanner = {
+  segments: [],
+  airports: {
+    "LHR": { city: "London", tz: "Europe/London" },
+    "JFK": { city: "New York", tz: "America/New_York" },
+    "LAX": { city: "Los Angeles", tz: "America/Los_Angeles" },
+    "SFO": { city: "San Francisco", tz: "America/Los_Angeles" },
+    "HND": { city: "Tokyo", tz: "Asia/Tokyo" },
+    "SYD": { city: "Sydney", tz: "Australia/Sydney" },
+    "DXB": { city: "Dubai", tz: "Asia/Dubai" },
+    "CDG": { city: "Paris", tz: "Europe/Paris" },
+    "SIN": { city: "Singapore", tz: "Asia/Singapore" },
+    "FRA": { city: "Frankfurt", tz: "Europe/Berlin" },
+    "AMS": { city: "Amsterdam", tz: "Europe/Amsterdam" },
+    "IST": { city: "Istanbul", tz: "Europe/Istanbul" },
+    "HKG": { city: "Hong Kong", tz: "Asia/Hong_Kong" },
+    "ICN": { city: "Seoul", tz: "Asia/Seoul" },
+    "BKK": { city: "Bangkok", tz: "Asia/Bangkok" },
+    "DEL": { city: "New Delhi", tz: "Asia/Kolkata" },
+    "YYZ": { city: "Toronto", tz: "America/Toronto" },
+    "ORD": { city: "Chicago", tz: "America/Chicago" },
+    "DFW": { city: "Dallas", tz: "America/Chicago" },
+    "DEN": { city: "Denver", tz: "America/Denver" }
+  },
+
+  init() {
+    this.setupModeSwitch();
+    this.setupEventListeners();
+    this.addSegment(); // Add initial segment
+  },
+
+  setupModeSwitch() {
+    const modeBtns = document.querySelectorAll('.app-mode-btn');
+    const sleepMode = document.getElementById('sleepCalcMode');
+    const jetLagMode = document.getElementById('jetLagMode');
+
+    modeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mode = btn.dataset.appMode;
+        
+        // Update tabs
+        modeBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Toggle Content
+        if (mode === 'calculator') {
+          sleepMode.style.display = 'block';
+          jetLagMode.style.display = 'none';
+        } else {
+          sleepMode.style.display = 'none';
+          jetLagMode.style.display = 'block';
+        }
+      });
+    });
+  },
+
+  setupEventListeners() {
+    const addSegBtn = document.getElementById('addSegmentBtn');
+    if (addSegBtn) addSegBtn.addEventListener('click', () => this.addSegment());
+    
+    const genBtn = document.getElementById('generateJetLagBtn');
+    if (genBtn) genBtn.addEventListener('click', () => this.generatePlan());
+    
+    const ticketBtn = document.getElementById('jetLagTicketBtn');
+    if (ticketBtn) ticketBtn.addEventListener('click', () => this.openTicketModal());
+    
+    // Toggles
+    this.setupToggle('planeSleepToggle');
+    this.setupToggle('strategyToggle');
+  },
+
+  setupToggle(id) {
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('click', (e) => {
+      if(e.target.classList.contains('toggle-option')) {
+        el.querySelectorAll('.toggle-option').forEach(opt => opt.classList.remove('active'));
+        e.target.classList.add('active');
+        el.dataset.value = e.target.dataset.val;
+      }
+    });
+    // Set initial value
+    const active = el.querySelector('.active');
+    if (active) el.dataset.value = active.dataset.val;
+  },
+
+  addSegment() {
+    const list = document.getElementById('segmentList');
+    if (!list) return;
+    const div = document.createElement('div');
+    div.className = 'segment-card';
+    div.innerHTML = `
+      <div class="segment-header">
+        <span>Flight Segment</span>
+        ${list.children.length > 0 ? `<button class="remove-segment" onclick="this.parentElement.parentElement.remove()">×</button>` : ''}
+      </div>
+      <div class="segment-inputs">
+        <div class="input-group">
+          <label>From (Airport Code)</label>
+          <input type="text" class="input-field airport-input" placeholder="e.g. JFK" maxlength="3" oninput="this.value = this.value.toUpperCase()">
+        </div>
+        <div class="input-group">
+          <label>To (Airport Code)</label>
+          <input type="text" class="input-field airport-input" placeholder="e.g. LHR" maxlength="3" oninput="this.value = this.value.toUpperCase()">
+        </div>
+      </div>
+      <div class="segment-inputs">
+        <div class="input-group">
+          <label>Departure (Local Time)</label>
+          <input type="datetime-local" class="input-field depart-time">
+        </div>
+        <div class="input-group">
+          <label>Arrival (Local Time)</label>
+          <input type="datetime-local" class="input-field arrive-time">
+        </div>
+      </div>
+    `;
+    list.appendChild(div);
+  },
+
+  generatePlan() {
+    // Collect Data
+    const cards = document.querySelectorAll('.segment-card');
+    this.segments = [];
+    
+    if (typeof luxon === 'undefined') {
+        alert('Timezone library loading...'); 
+        return;
+    }
+    const DateTime = luxon.DateTime;
+
+    let valid = true;
+
+    cards.forEach(card => {
+      const from = card.querySelector('.input-group:nth-child(1) input').value;
+      const to = card.querySelector('.input-group:nth-child(2) input').value;
+      const departStr = card.querySelector('.depart-time').value;
+      const arriveStr = card.querySelector('.arrive-time').value;
+
+      if (!from || !to || !departStr || !arriveStr) {
+        valid = false;
+        return;
+      }
+
+      if (!this.airports[from] || !this.airports[to]) {
+        alert(`Unknown airport code: ${!this.airports[from] ? from : to}. Try major hubs like JFK, LHR, LAX.`);
+        valid = false;
+        return;
+      }
+
+      // Create DateTime objects with Timezones
+      const departTime = DateTime.fromISO(departStr, { zone: this.airports[from].tz });
+      const arriveTime = DateTime.fromISO(arriveStr, { zone: this.airports[to].tz });
+
+      this.segments.push({
+        from, to, departTime, arriveTime
+      });
+    });
+
+    if (!valid) {
+        if (this.segments.length === 0) alert("Please fill in all flight details.");
+        return;
+    }
+
+    this.calculateSchedule();
+  },
+
+  calculateSchedule() {
+    const timeline = document.getElementById('jetLagTimeline');
+    timeline.innerHTML = '';
+    const results = document.getElementById('jetLagResults');
+    results.style.display = 'block';
+
+    const finalSegment = this.segments[this.segments.length - 1];
+    const destZone = finalSegment.arriveTime.zoneName;
+    
+    const canSleepOnPlane = document.getElementById('planeSleepToggle').dataset.value === 'yes';
+
+    this.segments.forEach((seg, index) => {
+      // 1. Departure Event
+      this.addTimelineItem(seg.departTime.setZone(destZone), `Depart ${seg.from}`, `Flight to ${seg.to}`, destZone);
+
+      // 2. In-flight sleep
+      const flightDuration = seg.arriveTime.diff(seg.departTime, 'minutes').minutes;
+      
+      if (canSleepOnPlane && flightDuration > 180) {
+         // Suggest sleep starting 1 hour after takeoff
+         const sleepStart = seg.departTime.plus({ minutes: 60 });
+         // Wake up 90 mins before landing
+         const sleepEnd = seg.arriveTime.minus({ minutes: 90 });
+         
+         if (sleepEnd > sleepStart) {
+            const duration = sleepEnd.diff(sleepStart, 'minutes').minutes;
+            const cycles = Math.floor(duration / 90);
+            
+            if (cycles > 0) {
+               this.addTimelineItem(sleepStart.setZone(destZone), 
+                 `Sleep on Plane (${cycles} cycles)`, 
+                 `~${Math.round(cycles * 1.5)} hours. Wear mask & earplugs.`, 
+                 destZone
+               );
+            }
+         }
+      }
+
+      // 3. Arrival
+      this.addTimelineItem(seg.arriveTime.setZone(destZone), `Arrive ${seg.to}`, `Land at local time ${seg.arriveTime.toFormat('HH:mm')}`, destZone);
+    });
+
+    // 4. First Night Sleep
+    const arrival = finalSegment.arriveTime;
+    let bedTime = arrival.set({ hour: 22, minute: 0 });
+    
+    if (arrival.hour >= 22 || arrival.hour < 4) {
+       // Late arrival, go to bed soon
+       bedTime = arrival.plus({ hours: 1 }); // 1 hour to settle
+    } else if (arrival > bedTime) {
+       // Arrived after 10pm? (Already handled above unless next day)
+       bedTime = bedTime.plus({ days: 1 });
+    }
+
+    this.addTimelineItem(bedTime.setZone(destZone), `Goal Bedtime`, `Sync with ${this.airports[finalSegment.to].city} time`, destZone);
+    
+    // Scroll to results
+    results.scrollIntoView({ behavior: 'smooth' });
+    
+    // Store for ticket
+    this.currentPlan = {
+      destCity: this.airports[finalSegment.to].city,
+      bedTime: bedTime.toFormat('h:mm a'),
+      wakeTime: bedTime.plus({ hours: 7.5 }).toFormat('h:mm a')
+    };
+  },
+
+  addTimelineItem(timeObj, title, desc, zone) {
+    const timeline = document.getElementById('jetLagTimeline');
+    const div = document.createElement('div');
+    div.className = 'timeline-block';
+    div.innerHTML = `
+      <div class="timeline-dot"></div>
+      <div class="timeline-time">${timeObj.toFormat('MMM dd, HH:mm')} (${timeObj.zoneName.split('/')[1]})</div>
+      <div class="timeline-title">${title}</div>
+      <div class="timeline-desc">${desc}</div>
+    `;
+    timeline.appendChild(div);
+  },
+
+  openTicketModal() {
+    if (!this.currentPlan) return;
+    
+    const ticketModal = document.getElementById('ticketModal');
+    const ticketBg = document.getElementById('ticketBg');
+    const ticketIcon = document.getElementById('ticketIcon');
+    const ticketPersonalityName = document.getElementById('ticketPersonalityName');
+    const ticketQuote = document.getElementById('ticketQuote');
+    const ticketBedtime = document.getElementById('ticketBedtime');
+    const ticketWakeTime = document.getElementById('ticketWakeTime');
+    const ticketCycles = document.getElementById('ticketCycles');
+
+    // Reuse existing modal but modify content
+    ticketModal.style.display = 'flex';
+    
+    // Set Ticket Content
+    ticketBg.className = 'ticket-bg bg-gradient-3'; 
+    ticketIcon.src = '/attached_assets/owl1_1767300759408.png';
+    ticketPersonalityName.textContent = `Jet Lag: ${this.currentPlan.destCity}`;
+    ticketQuote.textContent = "Time zones are just a suggestion.";
+    
+    ticketBedtime.textContent = this.currentPlan.bedTime;
+    ticketWakeTime.textContent = this.currentPlan.wakeTime;
+    ticketCycles.textContent = "Sync Strategy";
+  }
+};
+
+jetLagPlanner.init();

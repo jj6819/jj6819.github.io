@@ -113,6 +113,7 @@
   <meta name="google-adsense-account" content="ca-pub-2078168053570687">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2078168053570687"
      crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
 </head>
 <body onload="createStars()">
   <div class="stars-container" id="starsContainer"></div>
@@ -158,6 +159,13 @@
       </script>
     </div>
 
+    <!-- App Mode Switch -->
+    <div class="app-mode-switch">
+      <button class="app-mode-btn active" data-app-mode="calculator">Sleep Calculator</button>
+      <button class="app-mode-btn" data-app-mode="jetlag">Jet Lag Planner</button>
+    </div>
+
+    <div id="sleepCalcMode">
     <div class="mode-tabs">
       <button class="mode-btn active" data-mode="wake">
         <span>⏰</span> Wake up at...
@@ -383,6 +391,46 @@
             <p>Challenge stickers are interactive prompts you can add to your Sleep Ticket—things like "Post yours 👇" or "Roast my schedule." They're designed to spark engagement when you share your ticket on social media. Tap the Challenge button in the Sleep Ticket modal to cycle through different options.</p>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+  </div> <!-- Close sleepCalcMode -->
+
+  <!-- Jet Lag Planner Mode -->
+  <div id="jetLagMode" style="display: none;">
+    <p class="jetlag-intro">Enter your flight details to get a personalized sleep schedule to beat jet lag.</p>
+    
+    <div id="segmentList" class="segment-list">
+      <!-- Segments added dynamically -->
+    </div>
+
+    <button id="addSegmentBtn" class="add-segment-btn">+ Add Flight Segment</button>
+
+    <div class="jetlag-options">
+      <div class="option-row">
+        <label>Can sleep on plane?</label>
+        <div class="toggle-switch active" id="planeSleepToggle">
+          <div class="toggle-option active" data-val="yes">Yes</div>
+          <div class="toggle-option" data-val="no">No</div>
+        </div>
+      </div>
+      <div class="option-row">
+        <label>Strategy</label>
+        <div class="toggle-switch active" id="strategyToggle">
+          <div class="toggle-option active" data-val="cycles">Cycles</div>
+          <div class="toggle-option" data-val="naps">Naps</div>
+        </div>
+      </div>
+    </div>
+
+    <button id="generateJetLagBtn" class="generate-btn">Generate Plan ✈️</button>
+
+    <div id="jetLagResults" style="display: none;">
+      <div class="timeline-container" id="jetLagTimeline"></div>
+      
+      <div class="results-buttons">
+        <button class="share-btn" id="jetLagShareBtn">🔗 Share Plan</button>
+        <button class="ticket-toggle-btn" id="jetLagTicketBtn">📱 Jet Lag Ticket</button>
       </div>
     </div>
   </div>
