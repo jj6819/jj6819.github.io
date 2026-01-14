@@ -398,39 +398,41 @@
 
   <!-- Jet Lag Planner Mode -->
   <div id="jetLagMode" style="display: none;">
-    <p class="jetlag-intro">Enter your flight details to get a personalized sleep schedule to beat jet lag.</p>
-    
-    <div id="segmentList" class="segment-list">
-      <!-- Segments added dynamically -->
-    </div>
-
-    <button id="addSegmentBtn" class="add-segment-btn">+ Add Flight Segment</button>
-
-    <div class="jetlag-options">
-      <div class="option-row">
-        <label>Can sleep on plane?</label>
-        <div class="toggle-switch active" id="planeSleepToggle">
-          <div class="toggle-option active" data-val="yes">Yes</div>
-          <div class="toggle-option" data-val="no">No</div>
-        </div>
-      </div>
-      <div class="option-row">
-        <label>Strategy</label>
-        <div class="toggle-switch active" id="strategyToggle">
-          <div class="toggle-option active" data-val="cycles">Cycles</div>
-          <div class="toggle-option" data-val="naps">Naps</div>
-        </div>
-      </div>
-    </div>
-
-    <button id="generateJetLagBtn" class="generate-btn">Generate Plan ✈️</button>
-
-    <div id="jetLagResults" style="display: none;">
-      <div class="timeline-container" id="jetLagTimeline"></div>
+    <div class="main-content">
+      <p class="jetlag-intro">Enter your flight details to get a personalized sleep schedule to beat jet lag.</p>
       
-      <div class="results-buttons">
-        <button class="share-btn" id="jetLagShareBtn">🔗 Share Plan</button>
-        <button class="ticket-toggle-btn" id="jetLagTicketBtn">📱 Jet Lag Ticket</button>
+      <div id="segmentList" class="segment-list">
+        <!-- Segments added dynamically -->
+      </div>
+
+      <button id="addSegmentBtn" class="add-segment-btn">+ Add Flight Segment</button>
+
+      <div class="jetlag-options">
+        <div class="option-row">
+          <label>Can sleep on plane?</label>
+          <div class="toggle-switch active" id="planeSleepToggle">
+            <div class="toggle-option active" data-val="yes">Yes</div>
+            <div class="toggle-option" data-val="no">No</div>
+          </div>
+        </div>
+        <div class="option-row">
+          <label>Strategy</label>
+          <div class="toggle-switch active" id="strategyToggle">
+            <div class="toggle-option active" data-val="cycles">Cycles</div>
+            <div class="toggle-option" data-val="naps">Naps</div>
+          </div>
+        </div>
+      </div>
+
+      <button id="generateJetLagBtn" class="generate-btn">Generate Plan ✈️</button>
+
+      <div id="jetLagResults" style="display: none;">
+        <div class="timeline-container" id="jetLagTimeline"></div>
+        
+        <div class="results-buttons">
+          <button class="share-btn" id="jetLagShareBtn">🔗 Share Plan</button>
+          <button class="ticket-toggle-btn" id="jetLagTicketBtn">📱 Jet Lag Ticket</button>
+        </div>
       </div>
     </div>
   </div>

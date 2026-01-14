@@ -1512,6 +1512,9 @@ const jetLagPlanner = {
     const ticketBtn = document.getElementById('jetLagTicketBtn');
     if (ticketBtn) ticketBtn.addEventListener('click', () => this.openTicketModal());
     
+    const shareBtn = document.getElementById('jetLagShareBtn');
+    if (shareBtn) shareBtn.addEventListener('click', () => this.sharePlan());
+    
     // Toggles
     this.setupToggle('planeSleepToggle');
     this.setupToggle('strategyToggle');
@@ -1521,10 +1524,11 @@ const jetLagPlanner = {
     const el = document.getElementById(id);
     if(!el) return;
     el.addEventListener('click', (e) => {
-      if(e.target.classList.contains('toggle-option')) {
+      const option = e.target.closest('.toggle-option');
+      if(option) {
         el.querySelectorAll('.toggle-option').forEach(opt => opt.classList.remove('active'));
-        e.target.classList.add('active');
-        el.dataset.value = e.target.dataset.val;
+        option.classList.add('active');
+        el.dataset.value = option.dataset.val;
       }
     });
     // Set initial value
@@ -1678,6 +1682,26 @@ const jetLagPlanner = {
       bedTime: bedTime.toFormat('h:mm a'),
       wakeTime: bedTime.plus({ hours: 7.5 }).toFormat('h:mm a')
     };
+  },
+
+  sharePlan() {
+    if (!this.currentPlan) return;
+    const text = `✈️ My Jet Lag Plan for ${this.currentPlan.destCity}:\n` +
+                 `Bedtime: ${this.currentPlan.bedTime}\n` +
+                 `Wake Up: ${this.currentPlan.wakeTime}\n` +
+                 `Strategy: ${this.currentPlan.cycles}\n` +
+                 `\nGenerate yours at nightowlsleepcalc.com`;
+    
+    if (navigator.share) {
+      navigator.share({ title: 'Jet Lag Plan', text: text, url: 'https://nightowlsleepcalc.com' }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('jetLagShareBtn');
+        const originalText = btn.innerHTML;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.innerHTML = originalText, 2000);
+      });
+    }
   },
 
   addTimelineItem(timeObj, title, desc, zone) {
