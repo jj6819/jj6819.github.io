@@ -1689,6 +1689,7 @@ const jetLagPlanner = {
     const destZone = finalSegment.arriveTime.zoneName;
     
     const canSleepOnPlane = document.querySelector('input[name="planeSleep"]:checked').value === 'yes';
+    const strategy = document.querySelector('input[name="strategy"]:checked').value;
 
     this.segments.forEach((seg, index) => {
       // 1. Departure Event
@@ -1731,15 +1732,34 @@ const jetLagPlanner = {
     } else if (arrival.hour >= 5 && arrival.hour < 12) {
        // Morning arrival (5am-12pm): Try to stay awake until early evening
        bedTime = arrival.set({ hour: 20, minute: 30 }); // 8:30 PM
+       
+       // If "Nap Strategy" selected and exhausted (no plane sleep), suggest nap
+       if (strategy === 'naps' && !canSleepOnPlane) {
+           this.addTimelineItem(arrival.plus({ hours: 1 }).setZone(destZone), 
+               `Power Nap`, `20 minutes only to recharge without ruining tonight's sleep.`, destZone);
+           // Push bedtime slightly later since they napped
+           bedTime = bedTime.plus({ minutes: 30 });
+       }
     } else if (arrival.hour >= 12 && arrival.hour < 17) {
        // Afternoon arrival (12pm-5pm): Standard bedtime
        bedTime = arrival.set({ hour: 22, minute: 0 }); // 10:00 PM
+       
+       // If exhausted, pull bedtime earlier
+       if (!canSleepOnPlane) {
+           bedTime = bedTime.minus({ hours: 1 }); // 9:00 PM
+       }
     } else {
        // Evening arrival (5pm-11:59pm): Wind down for ~3 hours
        bedTime = arrival.plus({ hours: 3 });
+       
+       // If exhausted, shorten wind down
+       if (!canSleepOnPlane) {
+           bedTime = arrival.plus({ hours: 2 });
+       }
+
        // But don't stay up past 2am if possible, and don't sleep before 10pm if arriving early evening
        if (bedTime.hour >= 2 && bedTime.day !== arrival.day) {
-           bedTime = arrival.plus({ hours: 2 }); // Cap wind down if it pushes too late
+           bedTime = arrival.plus({ hours: 1.5 }); // Cap wind down if it pushes too late
        }
     }
 
@@ -1757,7 +1777,8 @@ const jetLagPlanner = {
     this.currentPlan = {
       destCity: this.airports[finalSegment.to].city,
       bedTime: bedTime.toFormat('h:mm a'),
-      wakeTime: bedTime.plus({ hours: 7.5 }).toFormat('h:mm a')
+      wakeTime: bedTime.plus({ hours: 7.5 }).toFormat('h:mm a'),
+      cycles: strategy === 'naps' ? "Nap Strategy" : "Cycle Strategy"
     };
   },
 
@@ -1820,7 +1841,7 @@ const jetLagPlanner = {
     
     ticketBedtime.textContent = this.currentPlan.bedTime;
     ticketWakeTime.textContent = this.currentPlan.wakeTime;
-    ticketCycles.textContent = "Sync Strategy";
+    ticketCycles.textContent = this.currentPlan.cycles || "Sync Strategy";
   }
 };
 
