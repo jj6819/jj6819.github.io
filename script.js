@@ -1692,8 +1692,14 @@ const jetLagPlanner = {
     const strategy = document.querySelector('input[name="strategy"]:checked').value;
 
     this.segments.forEach((seg, index) => {
+      // Capture Origin Time string before converting
+      const originTimeStr = seg.departTime.toFormat('HH:mm');
+      
       // 1. Departure Event
-      this.addTimelineItem(seg.departTime.setZone(destZone), `Depart ${seg.from}`, `Flight to ${seg.to}`, destZone);
+      this.addTimelineItem(seg.departTime.setZone(destZone), 
+          `Depart ${seg.from}`, 
+          `Flight to ${seg.to} (Local time: ${originTimeStr})`, 
+          destZone);
 
       // 2. In-flight sleep
       const flightDuration = seg.arriveTime.diff(seg.departTime, 'minutes').minutes;
@@ -1701,6 +1707,8 @@ const jetLagPlanner = {
       if (canSleepOnPlane && flightDuration > 180) {
          // Suggest sleep starting 1 hour after takeoff
          const sleepStart = seg.departTime.plus({ minutes: 60 });
+         const sleepStartOriginStr = sleepStart.toFormat('HH:mm');
+
          // Wake up 90 mins before landing
          const sleepEnd = seg.arriveTime.minus({ minutes: 90 });
          
@@ -1711,7 +1719,7 @@ const jetLagPlanner = {
             if (cycles > 0) {
                this.addTimelineItem(sleepStart.setZone(destZone), 
                  `Sleep on Plane (${cycles} cycles)`, 
-                 `~${Math.round(cycles * 1.5)} hours. Wear mask & earplugs.`, 
+                 `~${Math.round(cycles * 1.5)} hours. Start at ${sleepStartOriginStr} (Origin time). Wear mask & earplugs.`, 
                  destZone
                );
             }
