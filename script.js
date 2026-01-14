@@ -1721,16 +1721,31 @@ const jetLagPlanner = {
       this.addTimelineItem(seg.arriveTime.setZone(destZone), `Arrive ${seg.to}`, `Land at local time ${seg.arriveTime.toFormat('HH:mm')}`, destZone);
     });
 
-    // 4. First Night Sleep
+    // 4. First Night Sleep Calculation
     const arrival = finalSegment.arriveTime;
-    let bedTime = arrival.set({ hour: 22, minute: 0 });
-    
-    if (arrival.hour >= 22 || arrival.hour < 4) {
-       // Late arrival, go to bed soon
-       bedTime = arrival.plus({ hours: 1 }); // 1 hour to settle
-    } else if (arrival > bedTime) {
-       // Arrived after 10pm? (Already handled above unless next day)
-       bedTime = bedTime.plus({ days: 1 });
+    let bedTime;
+
+    if (arrival.hour >= 0 && arrival.hour < 5) {
+       // Late night arrival (12am-5am): Sleep ASAP
+       bedTime = arrival.plus({ hours: 1.5 });
+    } else if (arrival.hour >= 5 && arrival.hour < 12) {
+       // Morning arrival (5am-12pm): Try to stay awake until early evening
+       bedTime = arrival.set({ hour: 20, minute: 30 }); // 8:30 PM
+    } else if (arrival.hour >= 12 && arrival.hour < 17) {
+       // Afternoon arrival (12pm-5pm): Standard bedtime
+       bedTime = arrival.set({ hour: 22, minute: 0 }); // 10:00 PM
+    } else {
+       // Evening arrival (5pm-11:59pm): Wind down for ~3 hours
+       bedTime = arrival.plus({ hours: 3 });
+       // But don't stay up past 2am if possible, and don't sleep before 10pm if arriving early evening
+       if (bedTime.hour >= 2 && bedTime.day !== arrival.day) {
+           bedTime = arrival.plus({ hours: 2 }); // Cap wind down if it pushes too late
+       }
+    }
+
+    // Ensure bedtime is in the future
+    if (bedTime < arrival) {
+        bedTime = bedTime.plus({ days: 1 });
     }
 
     this.addTimelineItem(bedTime.setZone(destZone), `Goal Bedtime`, `Sync with ${this.airports[finalSegment.to].city} time`, destZone);
