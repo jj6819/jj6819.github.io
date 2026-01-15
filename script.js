@@ -740,6 +740,13 @@ const app = {
           // Scroll to calculator
           jetLagBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+      } else if (mode === 'caffeine') {
+        const caffeineBtn = document.querySelector('[data-app-mode="caffeine"]');
+        if (caffeineBtn) {
+          caffeineBtn.click();
+          // Scroll to calculator
+          caffeineBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }
     }
     if (params.has('hour')) this.hour = Math.max(1, Math.min(12, parseInt(params.get('hour')) || 1));

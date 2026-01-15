@@ -722,9 +722,7 @@ input[type="range"] {
 }
 
 .faq-item strong {
-  display: block;
   color: #a5b4fc;
-  margin-bottom: 4px;
 }
 
 @media (max-width: 480px) {
