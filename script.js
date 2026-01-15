@@ -1565,6 +1565,22 @@ const jetLagPlanner = {
     this.setupModeSwitch();
     this.setupEventListeners();
     this.addSegment();
+    this.setupAirportAutocomplete();
+  },
+
+  setupAirportAutocomplete() {
+    // Create datalist
+    let datalist = document.getElementById('airport-codes');
+    if (!datalist) {
+      datalist = document.createElement('datalist');
+      datalist.id = 'airport-codes';
+      document.body.appendChild(datalist);
+    }
+    
+    // Populate datalist
+    datalist.innerHTML = Object.entries(this.airports).map(([code, data]) => 
+      `<option value="${code}">${data.city}</option>`
+    ).join('');
   },
 
   // Ensure setupModeSwitch and other methods are defined here if not already
@@ -1626,11 +1642,11 @@ const jetLagPlanner = {
       <div class="segment-inputs">
         <div class="input-group">
           <label>From (Airport Code)</label>
-          <input type="text" class="input-field airport-input" placeholder="e.g. JFK" maxlength="3" oninput="this.value = this.value.toUpperCase()">
+          <input type="text" class="input-field airport-input" placeholder="e.g. JFK" maxlength="3" list="airport-codes" oninput="this.value = this.value.toUpperCase()">
         </div>
         <div class="input-group">
           <label>To (Airport Code)</label>
-          <input type="text" class="input-field airport-input" placeholder="e.g. LHR" maxlength="3" oninput="this.value = this.value.toUpperCase()">
+          <input type="text" class="input-field airport-input" placeholder="e.g. LHR" maxlength="3" list="airport-codes" oninput="this.value = this.value.toUpperCase()">
         </div>
       </div>
       <div class="segment-inputs">
