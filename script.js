@@ -18,6 +18,7 @@ const app = {
     this.initialized = true;
 
     this.memeMode = false;
+    this.redMode = false;
     this.timeFormat = '12';
     
     this.setupEventListeners();
@@ -181,7 +182,11 @@ const app = {
     }
 
     document.querySelectorAll('.toggle-option').forEach(btn => {
-      btn.addEventListener('click', (e) => this.setTimeFormat(e.target.dataset.format));
+      if (btn.dataset.format) {
+        btn.addEventListener('click', (e) => this.setTimeFormat(e.target.dataset.format));
+      } else if (btn.dataset.red) {
+        btn.addEventListener('click', (e) => this.setRedMode(e.target.dataset.red));
+      }
     });
 
     const memeModeToggle = document.getElementById('memeModeToggle');
@@ -239,6 +244,25 @@ const app = {
         btn.classList.add('active');
       });
     });
+  },
+
+  setRedMode(status) {
+    this.redMode = status === 'on';
+    
+    document.querySelectorAll('#redModeToggle .toggle-option').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.red === status);
+    });
+    
+    const toggle = document.getElementById('redModeToggle');
+    if (toggle) toggle.classList.toggle('active', this.redMode);
+    
+    if (this.redMode) {
+      document.documentElement.classList.add('red-mode');
+    } else {
+      document.documentElement.classList.remove('red-mode');
+    }
+    
+    this.saveSettings();
   },
 
   setMemeMode(status) {
@@ -723,7 +747,8 @@ const app = {
     localStorage.setItem('sleepSettings', JSON.stringify({
       settings: this.settings,
       timeFormat: this.timeFormat,
-      memeMode: this.memeMode
+      memeMode: this.memeMode,
+      redMode: this.redMode
     }));
   },
 
@@ -891,6 +916,10 @@ const app = {
         
         // Force Meme Mode OFF on every refresh as requested
         this.memeMode = false;
+        
+        // Load Red Mode
+        this.redMode = data.redMode || false;
+        this.setRedMode(this.redMode ? 'on' : 'off');
         
         // Update UI
         const latencyVal = document.getElementById('latencyValue');

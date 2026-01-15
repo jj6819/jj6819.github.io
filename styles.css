@@ -2733,3 +2733,36 @@ ol.article-list li::before {
   color: #e2e8f0;
   background: rgba(255, 255, 255, 0.05);
 }
+
+/* Red Mode (Astronomy Mode) */
+html.red-mode {
+  filter: sepia(100%) hue-rotate(-50deg) saturate(600%) brightness(0.6);
+  background: #000;
+}
+
+html.red-mode img {
+  opacity: 0.8;
+}
+
+html.red-mode .toggle-option.active,
+html.red-mode .mode-btn.active,
+html.red-mode .cta-button,
+html.red-mode .share-btn,
+html.red-mode .ticket-toggle-btn {
+  background: #ff0000 !important;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+  color: #000 !important;
+  border-color: #ff0000 !important;
+}
+
+html.red-mode .app-mode-btn.active {
+    background: #ff0000;
+    color: black;
+    box-shadow: 0 0 10px rgba(255,0,0,0.5);
+}
+
+html.red-mode .setting-value,
+html.red-mode .nav-link.active,
+html.red-mode .result-time {
+  color: #ff4444;
+}
