@@ -1791,7 +1791,13 @@ const jetLagPlanner = {
         bedTime = bedTime.plus({ days: 1 });
     }
 
-    this.addTimelineItem(bedTime.setZone(destZone), `Goal Bedtime`, `Your target bedtime in ${this.airports[finalSegment.to].city} to reset your body clock. Try to stay awake until then!`, destZone);
+    this.addTimelineItem(
+      bedTime.setZone(destZone), 
+      `Goal Bedtime`, 
+      `Your target bedtime in ${this.airports[finalSegment.to].city} to reset your body clock. Try to stay awake until then! <br><br>👉 <strong>Tap "Jet Lag Ticket" below to save this goal.</strong>`, 
+      destZone,
+      true // isGoal flag
+    );
     
     // Scroll to results
     results.scrollIntoView({ behavior: 'smooth' });
@@ -1825,14 +1831,14 @@ const jetLagPlanner = {
     }
   },
 
-  addTimelineItem(timeObj, title, desc, zone) {
+  addTimelineItem(timeObj, title, desc, zone, isGoal = false) {
     const timeline = document.getElementById('jetLagTimeline');
     const div = document.createElement('div');
-    div.className = 'timeline-block';
+    div.className = `timeline-block ${isGoal ? 'goal-block' : ''}`;
     div.innerHTML = `
       <div class="timeline-dot"></div>
       <div class="timeline-time">${timeObj.toFormat('MMM dd, HH:mm')} (${timeObj.zoneName.split('/')[1]})</div>
-      <div class="timeline-title">${title}</div>
+      <div class="timeline-title">${title} ${isGoal ? '🏁' : ''}</div>
       <div class="timeline-desc">${desc}</div>
     `;
     timeline.appendChild(div);
