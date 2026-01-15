@@ -1947,97 +1947,25 @@ const jetLagPlanner = {
     ticketBedtime.textContent = this.currentPlan.bedTime;
     ticketWakeTime.textContent = this.currentPlan.wakeTime;
     ticketCycles.textContent = this.currentPlan.cycles || "Sync Strategy";
-  },
-
-  init() {
-    // Mode Switching Logic
-    const modeBtns = document.querySelectorAll('.app-mode-btn');
-    const calcSection = document.getElementById('sleepCalcMode');
-    const jetLagSection = document.getElementById('jetLagMode');
-
-    modeBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const mode = btn.dataset.appMode;
-        
-        // Update Buttons
-        modeBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        // Update Sections
-        if (mode === 'calculator') {
-          if (calcSection) calcSection.style.display = 'block';
-          if (jetLagSection) jetLagSection.style.display = 'none';
-        } else if (mode === 'jetlag') {
-          if (calcSection) calcSection.style.display = 'none';
-          if (jetLagSection) jetLagSection.style.display = 'block';
-        }
-      });
-    });
-
-    // Add Segment Button
-    const addBtn = document.getElementById('addSegmentBtn');
-    if (addBtn) {
-      addBtn.addEventListener('click', () => this.addSegment());
-    }
-
-    // Generate Button
-    const genBtn = document.getElementById('generateJetLagBtn');
-    if (genBtn) {
-      genBtn.addEventListener('click', () => this.generatePlan());
-    }
-
-    // Share Button
-    const shareBtn = document.getElementById('jetLagShareBtn');
-    if (shareBtn) {
-      shareBtn.addEventListener('click', () => this.sharePlan());
-    }
-
-    // Ticket Button
-    const ticketBtn = document.getElementById('jetLagTicketBtn');
-    if (ticketBtn) {
-        ticketBtn.addEventListener('click', () => this.openTicketModal());
-    }
-
-    // Add first segment by default
-    this.addSegment();
-  },
-
-  addSegment() {
-    const list = document.getElementById('segmentList');
-    if (!list) return;
-
-    const div = document.createElement('div');
-    div.className = 'segment-card';
-    div.innerHTML = `
-      <div class="segment-header">
-        <span class="segment-number">Flight ${this.segments.length + 1}</span>
-        <button class="remove-segment" onclick="this.closest('.segment-card').remove()">×</button>
-      </div>
-      <div class="segment-inputs">
-        <div class="input-group">
-          <label>From (Airport Code)</label>
-          <input type="text" class="input-field" placeholder="JFK" maxlength="3" oninput="this.value = this.value.toUpperCase()">
-        </div>
-        <div class="input-group">
-          <label>To (Airport Code)</label>
-          <input type="text" class="input-field" placeholder="LHR" maxlength="3" oninput="this.value = this.value.toUpperCase()">
-        </div>
-      </div>
-      <div class="segment-inputs">
-        <div class="input-group">
-          <label>Departure (Local Time)</label>
-          <input type="datetime-local" class="input-field depart-time">
-        </div>
-        <div class="input-group">
-          <label>Arrival (Local Time)</label>
-          <input type="datetime-local" class="input-field arrive-time">
-        </div>
-      </div>
-    `;
-    list.appendChild(div);
   }
 };
 
-sleepTicket.init();
-jetLagPlanner.init();
-app.init();
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    if (typeof sleepTicket !== 'undefined') sleepTicket.init();
+  } catch (e) {
+    console.error("Error init sleepTicket", e);
+  }
+  
+  try {
+    if (typeof jetLagPlanner !== 'undefined') jetLagPlanner.init();
+  } catch (e) {
+    console.error("Error init jetLagPlanner", e);
+  }
+
+  try {
+    if (typeof app !== 'undefined') app.init();
+  } catch (e) {
+    console.error("Error init app", e);
+  }
+});
