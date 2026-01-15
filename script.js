@@ -1401,6 +1401,11 @@ const sleepTicket = {
   openModal() {
     this.resetChallenge();
     this.updateTicketPreview();
+    
+    // Reset subtitle for sleep calculator mode
+    const subtitle = document.getElementById('ticketSubtitle');
+    if (subtitle) subtitle.textContent = "Share your sleep personality on Instagram Stories";
+
     document.getElementById('ticketModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
   },
@@ -1874,11 +1879,15 @@ const jetLagPlanner = {
     const ticketBedtime = document.getElementById('ticketBedtime');
     const ticketWakeTime = document.getElementById('ticketWakeTime');
     const ticketCycles = document.getElementById('ticketCycles');
+    const ticketSubtitle = document.getElementById('ticketSubtitle');
 
     const ticketBedtimeLabel = document.getElementById('ticketBedtimeLabel');
 
     // Reuse existing modal but modify content
     ticketModal.style.display = 'flex';
+
+    // Update subtitle for jet lag mode
+    if (ticketSubtitle) ticketSubtitle.textContent = "Share your jet lag ticket on Instagram Stories";
     
     // Set Ticket Content
     ticketBg.className = 'ticket-bg bg-gradient-3'; 
