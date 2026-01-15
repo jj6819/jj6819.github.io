@@ -17,23 +17,11 @@ const app = {
     this.memeMode = false;
     this.timeFormat = '12';
     
-    // Setup mode switching first so elements exist
-    if (this.setupModeSwitch) {
-        this.setupModeSwitch();
-    }
-    
     this.setupEventListeners();
     this.loadSettings();
     this.loadFromUrl();
     this.updateMemeUI();
     this.calculate();
-    
-    // Add initial segment if none exist
-    if (this.segments && this.segments.length === 0) {
-      if (this.addSegment) this.addSegment();
-    } else if (!document.querySelector('.segment-card')) {
-       if (this.addSegment) this.addSegment();
-    }
     
     document.getElementById('year').textContent = new Date().getFullYear();
     
@@ -1573,6 +1561,12 @@ const jetLagPlanner = {
   // End of airports object
   },
 
+  init() {
+    this.setupModeSwitch();
+    this.setupEventListeners();
+    this.addSegment();
+  },
+
   // Ensure setupModeSwitch and other methods are defined here if not already
   setupModeSwitch() {
     const modeBtns = document.querySelectorAll('.app-mode-btn');
@@ -1874,4 +1868,4 @@ const jetLagPlanner = {
   }
 };
 
-app.init();
+jetLagPlanner.init();
