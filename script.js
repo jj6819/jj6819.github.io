@@ -18,7 +18,9 @@ const app = {
     this.timeFormat = '12';
     
     // Setup mode switching first so elements exist
-    this.setupModeSwitch();
+    if (this.setupModeSwitch) {
+        this.setupModeSwitch();
+    }
     
     this.setupEventListeners();
     this.loadSettings();
@@ -28,9 +30,9 @@ const app = {
     
     // Add initial segment if none exist
     if (this.segments && this.segments.length === 0) {
-      this.addSegment();
+      if (this.addSegment) this.addSegment();
     } else if (!document.querySelector('.segment-card')) {
-       this.addSegment();
+       if (this.addSegment) this.addSegment();
     }
     
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -1568,18 +1570,16 @@ const jetLagPlanner = {
     "CAI": { city: "Cairo", tz: "Africa/Cairo" },
     "LOS": { city: "Lagos", tz: "Africa/Lagos" },
     "ADD": { city: "Addis Ababa", tz: "Africa/Addis_Ababa" }
+  // End of airports object
   },
 
-  init() {
-    this.setupModeSwitch();
-    this.setupEventListeners();
-    this.addSegment(); // Add initial segment
-  },
-
+  // Ensure setupModeSwitch and other methods are defined here if not already
   setupModeSwitch() {
     const modeBtns = document.querySelectorAll('.app-mode-btn');
     const sleepMode = document.getElementById('sleepCalcMode');
     const jetLagMode = document.getElementById('jetLagMode');
+
+    if (!modeBtns.length) return;
 
     modeBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1591,11 +1591,11 @@ const jetLagPlanner = {
 
         // Toggle Content
         if (mode === 'calculator') {
-          sleepMode.style.display = 'block';
-          jetLagMode.style.display = 'none';
+          if(sleepMode) sleepMode.style.display = 'block';
+          if(jetLagMode) jetLagMode.style.display = 'none';
         } else {
-          sleepMode.style.display = 'none';
-          jetLagMode.style.display = 'block';
+          if(sleepMode) sleepMode.style.display = 'none';
+          if(jetLagMode) jetLagMode.style.display = 'block';
         }
       });
     });
@@ -1874,4 +1874,4 @@ const jetLagPlanner = {
   }
 };
 
-jetLagPlanner.init();
+app.init();
