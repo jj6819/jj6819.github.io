@@ -47,27 +47,37 @@ const app = {
 
     pairs.forEach(pair => {
       const btn = document.getElementById(pair.btn);
-      const section = document.getElementById(pair.content);
       
-      if (btn && section) {
-        btn.onclick = (e) => {
+      if (btn) {
+        // Remove old listeners just in case
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+        
+        newBtn.addEventListener('click', (e) => {
           e.preventDefault();
-          const wasOpen = section.style.display === 'block';
           
-          // Close all
+          // Get the current section
+          const section = document.getElementById(pair.content);
+          if (!section) return;
+
+          const isCurrentlyOpen = section.style.display === 'block';
+
+          // Close ALL sections
           pairs.forEach(p => {
              const s = document.getElementById(p.content);
              const b = document.getElementById(p.btn);
+             // Note: we need to find the current live button because we replaced it
+             // but simpler is to just query by ID since ID is unique
              if (s) s.style.display = 'none';
              if (b) b.classList.remove('expanded');
           });
 
-          // Toggle current
-          if (!wasOpen) {
+          // Toggle THIS one if it wasn't open
+          if (!isCurrentlyOpen) {
             section.style.display = 'block';
-            btn.classList.add('expanded');
+            newBtn.classList.add('expanded');
           }
-        };
+        });
       }
     });
 
