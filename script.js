@@ -1791,7 +1791,7 @@ const jetLagPlanner = {
         bedTime = bedTime.plus({ days: 1 });
     }
 
-    this.addTimelineItem(bedTime.setZone(destZone), `Goal Bedtime`, `Sync with ${this.airports[finalSegment.to].city} time`, destZone);
+    this.addTimelineItem(bedTime.setZone(destZone), `Goal Bedtime`, `Your target bedtime in ${this.airports[finalSegment.to].city} to reset your body clock. Try to stay awake until then!`, destZone);
     
     // Scroll to results
     results.scrollIntoView({ behavior: 'smooth' });
