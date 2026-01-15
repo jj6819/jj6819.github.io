@@ -16,11 +16,23 @@ const app = {
   init() {
     this.memeMode = false;
     this.timeFormat = '12';
+    
+    // Setup mode switching first so elements exist
+    this.setupModeSwitch();
+    
     this.setupEventListeners();
     this.loadSettings();
     this.loadFromUrl();
     this.updateMemeUI();
     this.calculate();
+    
+    // Add initial segment if none exist
+    if (this.segments && this.segments.length === 0) {
+      this.addSegment();
+    } else if (!document.querySelector('.segment-card')) {
+       this.addSegment();
+    }
+    
     document.getElementById('year').textContent = new Date().getFullYear();
     
     // Mobile nav toggle
