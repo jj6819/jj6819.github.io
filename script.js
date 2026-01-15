@@ -93,12 +93,20 @@ const app = {
     const copyEmbedBtn = document.getElementById('copyEmbedBtn');
 
     if (embedToggle) {
-      embedToggle.addEventListener('click', () => {
-        embedPanel.style.display = embedPanel.style.display === 'none' ? 'block' : 'none';
-        if (embedPanel.style.display === 'block') {
-          embedPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-      });
+        // Clone to clear listeners
+        const newEmbedToggle = embedToggle.cloneNode(true);
+        embedToggle.parentNode.replaceChild(newEmbedToggle, embedToggle);
+        
+        newEmbedToggle.addEventListener('click', (e) => {
+            e.preventDefault(); // Just in case
+            if (embedPanel) {
+                const isHidden = embedPanel.style.display === 'none' || embedPanel.style.display === '';
+                embedPanel.style.display = isHidden ? 'block' : 'none';
+                if (isHidden) {
+                    embedPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
+        });
     }
 
     if (embedClose) {
@@ -135,39 +143,62 @@ const app = {
       }
     });
 
-    document.getElementById('toggleSettings').addEventListener('click', () => {
-      document.getElementById('settingsGrid').classList.toggle('show');
-    });
+    const toggleSettingsBtn = document.getElementById('toggleSettings');
+    if (toggleSettingsBtn) {
+        // Clone to remove old listeners
+        const newBtn = toggleSettingsBtn.cloneNode(true);
+        toggleSettingsBtn.parentNode.replaceChild(newBtn, toggleSettingsBtn);
+        
+        newBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const grid = document.getElementById('settingsGrid');
+            if (grid) {
+                grid.classList.toggle('show');
+            }
+        });
+    }
 
-    document.getElementById('latency').addEventListener('input', (e) => {
-      this.settings.latency = parseInt(e.target.value);
-      document.getElementById('latencyValue').textContent = this.settings.latency;
-      this.saveSettings();
-      this.calculate();
-    });
+    const latencyInput = document.getElementById('latency');
+    if (latencyInput) {
+        latencyInput.addEventListener('input', (e) => {
+            this.settings.latency = parseInt(e.target.value);
+            document.getElementById('latencyValue').textContent = this.settings.latency;
+            this.saveSettings();
+            this.calculate();
+        });
+    }
 
-    document.getElementById('cycleLength').addEventListener('input', (e) => {
-      this.settings.cycleLength = parseInt(e.target.value);
-      document.getElementById('cycleLengthValue').textContent = this.settings.cycleLength;
-      this.saveSettings();
-      this.calculate();
-    });
+    const cycleLengthInput = document.getElementById('cycleLength');
+    if (cycleLengthInput) {
+        cycleLengthInput.addEventListener('input', (e) => {
+            this.settings.cycleLength = parseInt(e.target.value);
+            document.getElementById('cycleLengthValue').textContent = this.settings.cycleLength;
+            this.saveSettings();
+            this.calculate();
+        });
+    }
 
-    document.getElementById('wakeWindow').addEventListener('input', (e) => {
-      this.settings.wakeWindow = parseInt(e.target.value);
-      document.getElementById('wakeWindowValue').textContent = this.settings.wakeWindow;
-      this.saveSettings();
-      this.calculate();
-    });
+    const wakeWindowInput = document.getElementById('wakeWindow');
+    if (wakeWindowInput) {
+        wakeWindowInput.addEventListener('input', (e) => {
+            this.settings.wakeWindow = parseInt(e.target.value);
+            document.getElementById('wakeWindowValue').textContent = this.settings.wakeWindow;
+            this.saveSettings();
+            this.calculate();
+        });
+    }
 
     document.querySelectorAll('.toggle-option').forEach(btn => {
       btn.addEventListener('click', (e) => this.setTimeFormat(e.target.dataset.format));
     });
 
-    document.getElementById('memeModeToggle').addEventListener('click', () => {
-      const isCurrentlyOff = !this.memeMode;
-      this.setMemeMode(isCurrentlyOff ? 'on' : 'off');
-    });
+    const memeModeToggle = document.getElementById('memeModeToggle');
+    if (memeModeToggle) {
+        memeModeToggle.addEventListener('click', () => {
+            const isCurrentlyOff = !this.memeMode;
+            this.setMemeMode(isCurrentlyOff ? 'on' : 'off');
+        });
+    }
 
     ['hourColumn', 'minuteColumn', 'periodColumn'].forEach(id => {
       const col = document.getElementById(id);
@@ -179,10 +210,13 @@ const app = {
       }
     });
 
-    document.getElementById('timePicker').addEventListener('wheel', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-    });
+    const timePicker = document.getElementById('timePicker');
+    if (timePicker) {
+        timePicker.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    }
 
     // --- Nap Calculator ---
     document.querySelectorAll(".nap-btn").forEach(btn => {
