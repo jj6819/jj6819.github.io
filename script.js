@@ -1503,11 +1503,9 @@ const sleepTicket = {
   }
 };
 
-sleepTicket.init();
-app.init();
-
 /* ========== JET LAG PLANNER ========== */
 const jetLagPlanner = {
+  initialized: false,
   segments: [],
   airports: {
     // North America
@@ -1608,10 +1606,12 @@ const jetLagPlanner = {
     "CAI": { city: "Cairo", tz: "Africa/Cairo" },
     "LOS": { city: "Lagos", tz: "Africa/Lagos" },
     "ADD": { city: "Addis Ababa", tz: "Africa/Addis_Ababa" }
-  // End of airports object
   },
 
   init() {
+    if (this.initialized) return;
+    this.initialized = true;
+
     this.setupModeSwitch();
     this.setupEventListeners();
     this.addSegment();
@@ -1633,7 +1633,6 @@ const jetLagPlanner = {
     ).join('');
   },
 
-  // Ensure setupModeSwitch and other methods are defined here if not already
   setupModeSwitch() {
     const modeBtns = document.querySelectorAll('.app-mode-btn');
     const sleepMode = document.getElementById('sleepCalcMode');
@@ -1675,10 +1674,6 @@ const jetLagPlanner = {
     if (shareBtn) shareBtn.addEventListener('click', () => this.sharePlan());
   },
 
-  setupToggle(id) {
-    // Legacy support or remove if unused
-  },
-
   addSegment() {
     const list = document.getElementById('segmentList');
     if (!list) return;
@@ -1686,8 +1681,8 @@ const jetLagPlanner = {
     div.className = 'segment-card';
     div.innerHTML = `
       <div class="segment-header">
-        <span>Flight Segment</span>
-        ${list.children.length > 0 ? `<button class="remove-segment" onclick="this.parentElement.parentElement.remove()">×</button>` : ''}
+        <span class="segment-number">Flight ${this.segments.length + 1}</span>
+        <button class="remove-segment" onclick="this.closest('.segment-card').remove()">×</button>
       </div>
       <div class="segment-inputs">
         <div class="input-group">
@@ -1956,7 +1951,7 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (e) {
     console.error("Error init sleepTicket", e);
   }
-  
+
   try {
     if (typeof jetLagPlanner !== 'undefined') jetLagPlanner.init();
   } catch (e) {
