@@ -684,7 +684,16 @@ const app = {
     const params = new URLSearchParams(window.location.search);
     if (params.has('mode')) {
       const mode = params.get('mode');
-      if (mode === 'wake' || mode === 'sleep') this.setMode(mode);
+      if (mode === 'wake' || mode === 'sleep') {
+        this.setMode(mode);
+      } else if (mode === 'jetlag') {
+        const jetLagBtn = document.querySelector('[data-app-mode="jetlag"]');
+        if (jetLagBtn) {
+          jetLagBtn.click();
+          // Scroll to calculator
+          jetLagBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
     }
     if (params.has('hour')) this.hour = Math.max(1, Math.min(12, parseInt(params.get('hour')) || 1));
     if (params.has('minute')) this.minute = Math.max(0, Math.min(59, parseInt(params.get('minute')) || 0));
