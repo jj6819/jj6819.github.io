@@ -1724,7 +1724,7 @@ const jetLagPlanner = {
 
     this.segments.forEach((seg, index) => {
       // Capture Origin Time string before converting
-      const originTimeStr = seg.departTime.toFormat('HH:mm');
+      const originTimeStr = seg.departTime.toFormat('h:mm a');
       
       // 1. Departure Event
       this.addTimelineItem(seg.departTime.setZone(destZone), 
@@ -1738,7 +1738,7 @@ const jetLagPlanner = {
       if (canSleepOnPlane && flightDuration > 180) {
          // Suggest sleep starting 1 hour after takeoff
          const sleepStart = seg.departTime.plus({ minutes: 60 });
-         const sleepStartOriginStr = sleepStart.toFormat('HH:mm');
+         const sleepStartOriginStr = sleepStart.toFormat('h:mm a');
 
          // Wake up 90 mins before landing
          const sleepEnd = seg.arriveTime.minus({ minutes: 90 });
@@ -1758,7 +1758,7 @@ const jetLagPlanner = {
       }
 
       // 3. Arrival
-      this.addTimelineItem(seg.arriveTime.setZone(destZone), `Arrive ${seg.to}`, `Land at local time ${seg.arriveTime.toFormat('HH:mm')}`, destZone);
+      this.addTimelineItem(seg.arriveTime.setZone(destZone), `Arrive ${seg.to}`, `Land at local time ${seg.arriveTime.toFormat('h:mm a')}`, destZone);
     });
 
     // 4. First Night Sleep Calculation
@@ -1853,7 +1853,7 @@ const jetLagPlanner = {
     div.className = `timeline-block ${isGoal ? 'goal-block' : ''}`;
     div.innerHTML = `
       <div class="timeline-dot"></div>
-      <div class="timeline-time">${timeObj.toFormat('MMM dd, HH:mm')} (${timeObj.zoneName.split('/')[1]})</div>
+      <div class="timeline-time">${timeObj.toFormat('MMM dd, h:mm a')} (${timeObj.zoneName.split('/')[1]})</div>
       <div class="timeline-title">${title} ${isGoal ? '🏁' : ''}</div>
       <div class="timeline-desc">${desc}</div>
     `;
