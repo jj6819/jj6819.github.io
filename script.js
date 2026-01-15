@@ -36,31 +36,32 @@ const app = {
   },
 
   setupEventListeners() {
-    for (let i = 1; i <= 5; i++) {
-      const toggleId = `infoToggle${i === 1 ? '' : i}`;
-      const sectionId = `infoSection${i === 1 ? '' : i}`;
-      const toggleEl = document.getElementById(toggleId);
-      
-      if (toggleEl) {
-        toggleEl.addEventListener('click', () => {
-          const infoSection = document.getElementById(sectionId);
-          const isExpanded = infoSection.style.display !== 'none';
+    // Info Toggles (Expandable Sections)
+    document.querySelectorAll('.info-toggle').forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        const toggleBtn = e.currentTarget;
+        // The section is the next element sibling
+        const content = toggleBtn.nextElementSibling;
+        
+        if (content && content.classList.contains('info-section')) {
+          const isCurrentlyOpen = content.style.display === 'block';
           
-          // Close all other panels
-          for (let j = 1; j <= 5; j++) {
-            if (j === i) continue;
-            const otherSection = document.getElementById(`infoSection${j === 1 ? '' : j}`);
-            const otherToggle = document.getElementById(`infoToggle${j === 1 ? '' : j}`);
-            if (otherSection) otherSection.style.display = 'none';
-            if (otherToggle) otherToggle.classList.remove('expanded');
+          // Close all other panels first (Accordion behavior)
+          document.querySelectorAll('.info-section').forEach(section => {
+            section.style.display = 'none';
+          });
+          document.querySelectorAll('.info-toggle').forEach(btn => {
+            btn.classList.remove('expanded');
+          });
+
+          // If it wasn't open, open it now
+          if (!isCurrentlyOpen) {
+            content.style.display = 'block';
+            toggleBtn.classList.add('expanded');
           }
-          
-          // Toggle current panel
-          infoSection.style.display = isExpanded ? 'none' : 'block';
-          toggleEl.classList.toggle('expanded');
-        });
-      }
-    }
+        }
+      });
+    });
 
     document.querySelectorAll('.mode-btn').forEach(btn => {
       btn.addEventListener('click', (e) => this.setMode(e.target.closest('.mode-btn').dataset.mode));
