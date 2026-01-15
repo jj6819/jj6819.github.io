@@ -2053,10 +2053,13 @@ ol.article-list li::before {
 
 .ticket-personality-name {
   font-family: 'Poppins', sans-serif;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
   color: #ffffff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  line-height: 1.3;
+  padding: 0 8px;
 }
 
 .ticket-quote {
