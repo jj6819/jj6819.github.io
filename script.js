@@ -1884,7 +1884,7 @@ const jetLagPlanner = {
     ticketBg.className = 'ticket-bg bg-gradient-3'; 
     ticketIcon.src = '/attached_assets/generated_images/cute_3d_pilot_owl_icon.png';
     // Use innerHTML to allow styling "Jet Lag" and City separately
-    ticketPersonalityName.innerHTML = `<div class="ticket-header-small">Jet Lag:</div><div class="ticket-dest-large">${this.currentPlan.destCity}</div>`;
+    ticketPersonalityName.innerHTML = `<div class="ticket-header-small">Jet Lag</div><div class="ticket-dest-large">${this.currentPlan.destCity}</div>`;
     ticketQuote.textContent = sleepTicket.getRandomQuote();
     
     // Explicitly set the label to GOAL BEDTIME for clarity
