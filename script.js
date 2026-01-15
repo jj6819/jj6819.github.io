@@ -14,6 +14,9 @@ const app = {
   lastWheelTime: 0,
 
   init() {
+    if (this.initialized) return;
+    this.initialized = true;
+
     this.memeMode = false;
     this.timeFormat = '12';
     
@@ -23,7 +26,8 @@ const app = {
     this.updateMemeUI();
     this.calculate();
     
-    document.getElementById('year').textContent = new Date().getFullYear();
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
     
     // Mobile nav toggle
     const navToggle = document.getElementById('navToggle');
@@ -49,11 +53,7 @@ const app = {
       const btn = document.getElementById(pair.btn);
       
       if (btn) {
-        // Remove old listeners just in case
-        const newBtn = btn.cloneNode(true);
-        btn.parentNode.replaceChild(newBtn, btn);
-        
-        newBtn.addEventListener('click', (e) => {
+        btn.addEventListener('click', (e) => {
           e.preventDefault();
           
           // Get the current section
@@ -66,8 +66,6 @@ const app = {
           pairs.forEach(p => {
              const s = document.getElementById(p.content);
              const b = document.getElementById(p.btn);
-             // Note: we need to find the current live button because we replaced it
-             // but simpler is to just query by ID since ID is unique
              if (s) s.style.display = 'none';
              if (b) b.classList.remove('expanded');
           });
@@ -75,7 +73,7 @@ const app = {
           // Toggle THIS one if it wasn't open
           if (!isCurrentlyOpen) {
             section.style.display = 'block';
-            newBtn.classList.add('expanded');
+            btn.classList.add('expanded');
           }
         });
       }
@@ -85,7 +83,8 @@ const app = {
       btn.addEventListener('click', (e) => this.setMode(e.target.closest('.mode-btn').dataset.mode));
     });
 
-    document.getElementById('shareBtn').addEventListener('click', () => this.shareLink());
+    const shareBtn = document.getElementById('shareBtn');
+    if (shareBtn) shareBtn.addEventListener('click', () => this.shareLink());
 
     const embedToggle = document.getElementById('embedToggle');
     const embedPanel = document.getElementById('embedPanel');
@@ -93,12 +92,8 @@ const app = {
     const copyEmbedBtn = document.getElementById('copyEmbedBtn');
 
     if (embedToggle) {
-        // Clone to clear listeners
-        const newEmbedToggle = embedToggle.cloneNode(true);
-        embedToggle.parentNode.replaceChild(newEmbedToggle, embedToggle);
-        
-        newEmbedToggle.addEventListener('click', (e) => {
-            e.preventDefault(); // Just in case
+        embedToggle.addEventListener('click', (e) => {
+            e.preventDefault();
             if (embedPanel) {
                 const isHidden = embedPanel.style.display === 'none' || embedPanel.style.display === '';
                 embedPanel.style.display = isHidden ? 'block' : 'none';
@@ -111,7 +106,7 @@ const app = {
 
     if (embedClose) {
       embedClose.addEventListener('click', () => {
-        embedPanel.style.display = 'none';
+        if (embedPanel) embedPanel.style.display = 'none';
       });
     }
 
@@ -139,17 +134,14 @@ const app = {
       }
       // Open/Close Settings with 'S'
       if (e.key.toLowerCase() === 's' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') {
-        document.getElementById('settingsGrid').classList.toggle('show');
+        const grid = document.getElementById('settingsGrid');
+        if (grid) grid.classList.toggle('show');
       }
     });
 
     const toggleSettingsBtn = document.getElementById('toggleSettings');
     if (toggleSettingsBtn) {
-        // Clone to remove old listeners
-        const newBtn = toggleSettingsBtn.cloneNode(true);
-        toggleSettingsBtn.parentNode.replaceChild(newBtn, toggleSettingsBtn);
-        
-        newBtn.addEventListener('click', (e) => {
+        toggleSettingsBtn.addEventListener('click', (e) => {
             e.preventDefault();
             const grid = document.getElementById('settingsGrid');
             if (grid) {
