@@ -1859,6 +1859,8 @@ const jetLagPlanner = {
     const ticketWakeTime = document.getElementById('ticketWakeTime');
     const ticketCycles = document.getElementById('ticketCycles');
 
+    const ticketBedtimeLabel = document.getElementById('ticketBedtimeLabel');
+
     // Reuse existing modal but modify content
     ticketModal.style.display = 'flex';
     
@@ -1867,6 +1869,9 @@ const jetLagPlanner = {
     ticketIcon.src = '/attached_assets/generated_images/cute_3d_pilot_owl_icon.png';
     ticketPersonalityName.textContent = `Jet Lag: ${this.currentPlan.destCity}`;
     ticketQuote.textContent = sleepTicket.getRandomQuote();
+    
+    // Explicitly set the label to GOAL BEDTIME for clarity
+    if (ticketBedtimeLabel) ticketBedtimeLabel.textContent = "GOAL BEDTIME";
     
     ticketBedtime.textContent = this.currentPlan.bedTime;
     ticketWakeTime.textContent = this.currentPlan.wakeTime;
