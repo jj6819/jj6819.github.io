@@ -1960,6 +1960,11 @@ const caffeineCalc = {
     const bedtimeInput = document.getElementById('caffeineBedtime').value;
     const mg = parseInt(document.getElementById('caffeineSource').value);
     
+    // Get beverage name for label
+    const sourceSelect = document.getElementById('caffeineSource');
+    const selectedText = sourceSelect.options[sourceSelect.selectedIndex].text;
+    const beverageName = selectedText.split(' (')[0]; // "Coffee", "Black Tea", etc.
+    
     if (!bedtimeInput) return;
 
     // Convert bedtime to minutes from midnight
@@ -1995,10 +2000,13 @@ const caffeineCalc = {
     const resultEl = document.getElementById('caffeineResults');
     const timeEl = document.getElementById('caffeineCutoffTime');
     const leftEl = document.getElementById('caffeineLeft');
+    const labelEl = document.getElementById('caffeineResultLabel');
     
     if (resultEl && timeEl) {
       timeEl.textContent = formatter.format(cutoffDate);
       if(leftEl) leftEl.textContent = `less than ${targetMg}mg`;
+      if(labelEl) labelEl.textContent = `Latest ${beverageName} Time`;
+      
       resultEl.style.display = 'block';
       resultEl.classList.add('glow');
       setTimeout(() => resultEl.classList.remove('glow'), 600);

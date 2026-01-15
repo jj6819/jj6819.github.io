@@ -164,7 +164,7 @@
     <div class="app-mode-switch">
       <button class="app-mode-btn active" data-app-mode="calculator">Sleep Calculator</button>
       <button class="app-mode-btn" data-app-mode="jetlag">Jet Lag Planner</button>
-      <button class="app-mode-btn" data-app-mode="caffeine">☕ Caffeine</button>
+      <button class="app-mode-btn" data-app-mode="caffeine">Caffeine Cutoff</button>
     </div>
 
     <div id="sleepCalcMode">
@@ -475,7 +475,7 @@
         <div id="caffeineResults" style="display: none; margin-top: 32px; text-align: center;">
           <div class="result-card selected" style="max-width: 500px; margin: 0 auto;">
             <div class="result-time" id="caffeineCutoffTime">--:-- PM</div>
-            <div class="result-window" style="color: #fbbf24;">Latest Coffee Time</div>
+            <div class="result-window" id="caffeineResultLabel" style="color: #fbbf24;">Latest Coffee Time</div>
             <div class="result-explanation">
               Stop caffeine by this time to ensure <span id="caffeineLeft">less than 25mg</span> is left in your system by bedtime.
             </div>
