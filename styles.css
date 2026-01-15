@@ -2501,6 +2501,7 @@ ol.article-list li::before {
   color: white;
   font-family: inherit;
   font-size: 14px;
+  display: block;
 }
 
 @media (max-width: 480px) {
