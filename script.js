@@ -1637,6 +1637,7 @@ const jetLagPlanner = {
     const modeBtns = document.querySelectorAll('.app-mode-btn');
     const sleepMode = document.getElementById('sleepCalcMode');
     const jetLagMode = document.getElementById('jetLagMode');
+    const caffeineMode = document.getElementById('caffeineMode');
 
     if (!modeBtns.length) return;
 
@@ -1652,9 +1653,15 @@ const jetLagPlanner = {
         if (mode === 'calculator') {
           if(sleepMode) sleepMode.style.display = 'block';
           if(jetLagMode) jetLagMode.style.display = 'none';
-        } else {
+          if(caffeineMode) caffeineMode.style.display = 'none';
+        } else if (mode === 'jetlag') {
           if(sleepMode) sleepMode.style.display = 'none';
           if(jetLagMode) jetLagMode.style.display = 'block';
+          if(caffeineMode) caffeineMode.style.display = 'none';
+        } else if (mode === 'caffeine') {
+          if(sleepMode) sleepMode.style.display = 'none';
+          if(jetLagMode) jetLagMode.style.display = 'none';
+          if(caffeineMode) caffeineMode.style.display = 'block';
         }
       });
     });
@@ -1943,6 +1950,62 @@ const jetLagPlanner = {
   }
 };
 
+const caffeineCalc = {
+  init() {
+    const btn = document.getElementById('calcCaffeineBtn');
+    if (btn) btn.addEventListener('click', () => this.calculate());
+  },
+
+  calculate() {
+    const bedtimeInput = document.getElementById('caffeineBedtime').value;
+    const mg = parseInt(document.getElementById('caffeineSource').value);
+    
+    if (!bedtimeInput) return;
+
+    // Convert bedtime to minutes from midnight
+    const [h, m] = bedtimeInput.split(':').map(Number);
+    let bedtimeMins = h * 60 + m;
+    
+    // Caffeine Half-life logic
+    // We want < 25mg remaining at bedtime to sleep well (arbitrary but safe threshold)
+    // Formula: Final = Initial * (1/2)^(time/halfLife)
+    // We need to solve for 'time': time = halfLife * log2(Initial/Final)
+    
+    const halfLife = 5; // hours
+    const targetMg = 20; // safe threshold
+    
+    // How many half-lives to get to target?
+    // time = 5 * Math.log2(mg / 20)
+    
+    const hoursNeeded = halfLife * Math.log2(mg / targetMg);
+    const minsNeeded = hoursNeeded * 60;
+    
+    // If bedtime is 11pm (23:00), and we need 10 hours buffer
+    // Cutoff = Bedtime - minsNeeded
+    
+    let cutoffMins = bedtimeMins - minsNeeded;
+    if (cutoffMins < 0) cutoffMins += 24 * 60; // Handle previous day wrapping
+    
+    const cutoffDate = new Date();
+    cutoffDate.setHours(Math.floor(cutoffMins / 60));
+    cutoffDate.setMinutes(Math.floor(cutoffMins % 60));
+    
+    const formatter = new Intl.DateTimeFormat([], { hour: 'numeric', minute: '2-digit' });
+    
+    const resultEl = document.getElementById('caffeineResults');
+    const timeEl = document.getElementById('caffeineCutoffTime');
+    const leftEl = document.getElementById('caffeineLeft');
+    
+    if (resultEl && timeEl) {
+      timeEl.textContent = formatter.format(cutoffDate);
+      if(leftEl) leftEl.textContent = `less than ${targetMg}mg`;
+      resultEl.style.display = 'block';
+      resultEl.classList.add('glow');
+      setTimeout(() => resultEl.classList.remove('glow'), 600);
+    }
+  }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   try {
     if (typeof sleepTicket !== 'undefined') sleepTicket.init();
@@ -1954,6 +2017,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof jetLagPlanner !== 'undefined') jetLagPlanner.init();
   } catch (e) {
     console.error("Error init jetLagPlanner", e);
+  }
+
+  try {
+    if (typeof caffeineCalc !== 'undefined') caffeineCalc.init();
+  } catch (e) {
+    console.error("Error init caffeineCalc", e);
   }
 
   try {

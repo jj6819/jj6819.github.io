@@ -164,6 +164,7 @@
     <div class="app-mode-switch">
       <button class="app-mode-btn active" data-app-mode="calculator">Sleep Calculator</button>
       <button class="app-mode-btn" data-app-mode="jetlag">Jet Lag Planner</button>
+      <button class="app-mode-btn" data-app-mode="caffeine">☕ Caffeine</button>
     </div>
 
     <div id="sleepCalcMode">
@@ -440,6 +441,50 @@
           <button class="ticket-toggle-btn" id="jetLagTicketBtn">📱 Jet Lag Ticket</button>
         </div>
       </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Caffeine Mode -->
+  <div id="caffeineMode" style="display: none;">
+    <div class="main-content">
+      <div style="max-width: 760px; margin: 0 auto;">
+        <p class="jetlag-intro">Calculate the latest time you should drink coffee to avoid ruining your sleep.</p>
+
+        <div class="settings-grid show" style="margin-bottom: 24px;">
+          <div class="setting-group">
+            <label class="setting-label">I usually go to bed at...</label>
+            <input type="time" id="caffeineBedtime" class="input-field" value="23:00" style="font-size: 18px;">
+          </div>
+          
+          <div class="setting-group">
+            <label class="setting-label">Caffeine Source</label>
+            <select id="caffeineSource" class="input-field">
+              <option value="95">Coffee (8oz) - 95mg</option>
+              <option value="64">Espresso (Double) - 64mg</option>
+              <option value="47">Black Tea (8oz) - 47mg</option>
+              <option value="30">Green Tea (8oz) - 30mg</option>
+              <option value="111">Energy Drink (12oz) - 111mg</option>
+              <option value="34">Cola (12oz) - 34mg</option>
+            </select>
+          </div>
+        </div>
+
+        <button id="calcCaffeineBtn" class="generate-btn">Calculate Cutoff Time ☕</button>
+
+        <div id="caffeineResults" style="display: none; margin-top: 32px; text-align: center;">
+          <div class="result-card selected" style="max-width: 500px; margin: 0 auto;">
+            <div class="result-time" id="caffeineCutoffTime">--:-- PM</div>
+            <div class="result-window" style="color: #fbbf24;">Latest Coffee Time</div>
+            <div class="result-explanation">
+              Stop caffeine by this time to ensure <span id="caffeineLeft">less than 25mg</span> is left in your system by bedtime.
+            </div>
+          </div>
+          
+          <div style="margin-top: 24px; font-size: 14px; color: #94a3b8; line-height: 1.6;">
+            <p><strong>Why?</strong> Caffeine has a half-life of about 5 hours. If you drink it later, it blocks your adenosine receptors, making it harder to fall into deep sleep.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
