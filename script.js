@@ -258,8 +258,10 @@ const app = {
     
     if (this.redMode) {
       document.documentElement.classList.add('red-mode');
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000000');
     } else {
       document.documentElement.classList.remove('red-mode');
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0b1220');
     }
     
     this.saveSettings();
