@@ -1868,4 +1868,6 @@ const jetLagPlanner = {
   }
 };
 
+sleepTicket.init();
 jetLagPlanner.init();
+app.init();
