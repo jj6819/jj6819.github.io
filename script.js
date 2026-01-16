@@ -1643,6 +1643,7 @@ const jetLagPlanner = {
   setupModeSwitch() {
     const modeBtns = document.querySelectorAll('.app-mode-btn');
     const sleepMode = document.getElementById('sleepCalcMode');
+    const napMode = document.getElementById('napMode');
     const jetLagMode = document.getElementById('jetLagMode');
     const caffeineMode = document.getElementById('caffeineMode');
 
@@ -1657,17 +1658,18 @@ const jetLagPlanner = {
         btn.classList.add('active');
 
         // Toggle Content
+        if (sleepMode) sleepMode.style.display = 'none';
+        if (napMode) napMode.style.display = 'none';
+        if (jetLagMode) jetLagMode.style.display = 'none';
+        if (caffeineMode) caffeineMode.style.display = 'none';
+
         if (mode === 'calculator') {
           if(sleepMode) sleepMode.style.display = 'block';
-          if(jetLagMode) jetLagMode.style.display = 'none';
-          if(caffeineMode) caffeineMode.style.display = 'none';
+        } else if (mode === 'nap') {
+          if(napMode) napMode.style.display = 'block';
         } else if (mode === 'jetlag') {
-          if(sleepMode) sleepMode.style.display = 'none';
           if(jetLagMode) jetLagMode.style.display = 'block';
-          if(caffeineMode) caffeineMode.style.display = 'none';
         } else if (mode === 'caffeine') {
-          if(sleepMode) sleepMode.style.display = 'none';
-          if(jetLagMode) jetLagMode.style.display = 'none';
           if(caffeineMode) caffeineMode.style.display = 'block';
         }
       });

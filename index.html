@@ -164,6 +164,7 @@
     <!-- App Mode Switch -->
     <div class="app-mode-switch">
       <button class="app-mode-btn active" data-app-mode="calculator">Sleep Calculator</button>
+      <button class="app-mode-btn" data-app-mode="nap">Nap Calculator</button>
       <button class="app-mode-btn" data-app-mode="jetlag">Jet Lag Planner</button>
       <button class="app-mode-btn" data-app-mode="caffeine">Caffeine Cutoff</button>
     </div>
@@ -277,24 +278,6 @@
         </div>
       </div>
 
-      <section id="nap-calculator" class="seo-block">
-        <h2 class="results-label">Nap Calculator</h2>
-        <p style="font-size: 14px; color: #94a3b8; margin-bottom: 16px;">
-          Need a quick reset? Pick a nap type to get a recommended wake window based on the <strong>current time</strong>.
-          <br><span style="font-style: italic; font-size: 12px;">(Tip: a short nap can boost alertness without ruining bedtime.)</span>
-        </p>
-
-        <div class="nap-controls">
-          <button class="nap-btn" data-nap="15">Coffee Nap (15m)</button>
-          <button class="nap-btn" data-nap="20">Power Nap (20m)</button>
-          <button class="nap-btn" data-nap="90">Full Cycle (90m)</button>
-        </div>
-
-        <div class="nap-output" id="napOutput" aria-live="polite">
-          Select a nap to see your wake window.
-        </div>
-      </section>
-
       <div class="seo-content-moat">
         <button type="button" class="info-toggle" id="infoToggle">
           <span class="info-title">Sleep Calculator: Find the best time to go to bed or wake up</span>
@@ -398,6 +381,43 @@
     </div>
   </div>
   </div> <!-- Close sleepCalcMode -->
+
+  <!-- Nap Calculator Mode -->
+  <div id="napMode" style="display: none;">
+    <div class="main-content">
+      <div style="max-width: 760px; margin: 0 auto;">
+        <p class="jetlag-intro">Need a quick reset? Pick a nap type to get a recommended wake window based on the <strong>current time</strong>.</p>
+        
+        <div class="nap-controls" style="margin-top: 30px;">
+          <button class="nap-btn" data-nap="15">Coffee Nap (15m)</button>
+          <button class="nap-btn" data-nap="20">Power Nap (20m)</button>
+          <button class="nap-btn" data-nap="90">Full Cycle (90m)</button>
+        </div>
+
+        <div class="nap-output" id="napOutput" aria-live="polite" style="margin-top: 30px; margin-bottom: 30px;">
+          Select a nap to see your wake window.
+        </div>
+        
+        <div class="info-section" style="display: block; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+          <h3 class="inner-section-title">Quick Nap Guide</h3>
+          <div class="example-grid-simple">
+             <div class="example-item">
+               <h4>Coffee Nap (15m)</h4>
+               <p>Drink coffee, then nap immediately. Wake up right as the caffeine kicks in.</p>
+             </div>
+             <div class="example-item">
+               <h4>Power Nap (20m)</h4>
+               <p>Boosts alertness and motor performance without entering deep sleep (no grogginess).</p>
+             </div>
+             <div class="example-item">
+               <h4>Full Cycle (90m)</h4>
+               <p>Includes all sleep stages (including REM). Best for creativity and emotional reset, but takes longer to wake up from.</p>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Jet Lag Planner Mode -->
   <div id="jetLagMode" style="display: none;">
