@@ -2878,3 +2878,22 @@ ol.article-list li::before {
     width: 100%;
   }
 }
+@media (max-width: 600px) {
+  .mode-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 6px;
+  }
+
+  .mode-btn {
+    padding: 10px 8px;
+    font-size: 13px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    min-height: 70px;
+    line-height: 1.3;
+  }
+}
