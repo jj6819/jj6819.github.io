@@ -2492,6 +2492,8 @@ ol.article-list li::before {
 
 .input-field {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   background: rgba(15, 23, 42, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
@@ -2500,6 +2502,8 @@ ol.article-list li::before {
   font-family: inherit;
   font-size: 14px;
   display: block;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 @media (max-width: 480px) {
