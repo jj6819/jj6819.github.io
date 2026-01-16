@@ -747,6 +747,13 @@ const app = {
           // Scroll to calculator
           caffeineBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+      } else if (mode === 'nap') {
+        const napBtn = document.querySelector('[data-app-mode="nap"]');
+        if (napBtn) {
+          napBtn.click();
+          // Scroll to calculator
+          napBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }
     }
     if (params.has('hour')) this.hour = Math.max(1, Math.min(12, parseInt(params.get('hour')) || 1));
