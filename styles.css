@@ -2897,3 +2897,40 @@ ol.article-list li::before {
     line-height: 1.3;
   }
 }
+/* Fix for top-level tabs (Sleep, Nap, Jet Lag, Caffeine) on mobile */
+@media (max-width: 600px) {
+  .app-mode-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .app-mode-btn {
+    white-space: normal;
+    text-align: center;
+    height: auto;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+    padding: 8px 4px;
+  }
+
+  /* Revert inner mode tabs (Wake up / Bedtime) to original flex layout */
+  .mode-tabs {
+    display: flex;
+    grid-template-columns: none;
+    gap: 12px;
+  }
+
+  .mode-btn {
+    flex-direction: row;
+    min-height: auto;
+    font-size: 14px;
+    text-align: left;
+    justify-content: center;
+  }
+}
