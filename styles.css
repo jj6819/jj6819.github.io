@@ -2473,7 +2473,7 @@ ol.article-list li::before {
   margin-bottom: 12px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .segment-inputs {
     grid-template-columns: 1fr;
   }
