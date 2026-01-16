@@ -2778,3 +2778,42 @@ ol.article-list li::before {
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
+.feature-block-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.feature-block {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px;
+  transition: transform 0.2s ease;
+}
+
+.feature-block:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+.feature-icon {
+  display: block;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.feature-block strong {
+  display: block;
+  color: #fff;
+  margin-bottom: 8px;
+  font-size: 1.05em;
+}
+
+.feature-block p {
+  color: #94a3b8;
+  font-size: 0.9em;
+  margin: 0;
+  line-height: 1.5;
+}
