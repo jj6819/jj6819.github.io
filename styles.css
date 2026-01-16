@@ -2934,31 +2934,3 @@ ol.article-list li::before {
     justify-content: center;
   }
 }
-
-/* Optimize Jet Lag inputs for mobile to save vertical space */
-@media (max-width: 600px) {
-  .segment-inputs {
-    grid-template-columns: 1fr 1fr !important;
-    column-gap: 10px;
-    row-gap: 10px;
-  }
-
-  /* Critical for grid items to handle content properly in small columns */
-  .segment-inputs .input-group {
-    min-width: 0;
-  }
-
-  /* Adjust labels for small screens */
-  .segment-inputs label {
-    font-size: 11px !important;
-    line-height: 1.2;
-    min-height: 2.4em; /* Ensure alignment if one label wraps and other doesn't */
-    display: flex;
-    align-items: flex-end; /* Align text to bottom of label area */
-  }
-
-  /* Tweak input padding */
-  .segment-inputs .input-field {
-    padding: 10px 8px; /* Slightly tighter padding */
-  }
-}
