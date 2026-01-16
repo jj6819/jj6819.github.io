@@ -428,7 +428,7 @@ const app = {
     e.preventDefault();
     e.stopPropagation();
     const now = Date.now();
-    if (now - this.lastWheelTime < 150) return;
+    if (now - this.lastWheelTime < 300) return; // Slowed down from 150ms
     this.lastWheelTime = now;
     const direction = e.deltaY > 0 ? 1 : -1;
     if (columnId === 'periodColumn' && this.timeFormat === '12') {
@@ -457,7 +457,7 @@ const app = {
   handleTouchMove(e, columnId) {
     if (!e.currentTarget.touchStartY) return;
     const diff = e.touches[0].clientY - e.currentTarget.touchStartY;
-    if (Math.abs(diff) > 20) {
+    if (Math.abs(diff) > 40) { // Increased threshold from 20px for slower sensitivity
       const direction = diff > 0 ? -1 : 1;
       if (columnId === 'periodColumn' && this.timeFormat === '12') {
         this.period = direction > 0 ? 'PM' : 'AM';
