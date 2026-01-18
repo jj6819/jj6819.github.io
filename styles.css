@@ -65,8 +65,22 @@ header {
   margin-bottom: 16px;
 }
 
-.logo {
-  font-size: 24px;
+.nav-logo-img {
+  height: 24px;
+  width: auto;
+  display: block;
+}
+
+.logo-img {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .brand-name {
