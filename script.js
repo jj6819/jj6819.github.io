@@ -976,7 +976,7 @@ const sleepTicket = {
   memePersonalities: {
     'night-owl': {
       name: 'Doomscroller',
-      icon: '/attached_assets/NightOwl_logo2_1768776420360.png'
+      icon: '/attached_assets/generated_images/cute_doomscroller_icon.png'
     },
     'early-bird': {
       name: 'Morning Psycho',
@@ -1007,7 +1007,7 @@ const sleepTicket = {
   personalities: {
     'night-owl': {
       name: 'Night Owl',
-      icon: '/attached_assets/NightOwl_logo2_1768776420360.png',
+      icon: '/attached_assets/generated_images/night_owl_personality_icon.png',
       quotes: [
         "The night is dark and full of dreams",
         "Owls see what others sleep through",
@@ -1276,7 +1276,7 @@ const sleepTicket = {
       result = this.getDefaultResult();
     }
     
-    const personalityKey = this.isJetLag ? 'night-owl' : this.detectPersonality(result);
+    const personalityKey = this.detectPersonality(result);
     this.currentPersonality = personalityKey;
     const personality = this.personalities[personalityKey];
     const memePersonality = this.memePersonalities[personalityKey];
@@ -1284,17 +1284,14 @@ const sleepTicket = {
     // Update title based on meme mode
     const modalTitle = document.querySelector('.ticket-modal-title');
     if (modalTitle) {
-      modalTitle.textContent = this.isJetLag ? 'Your Jet Lag Ticket' : (app.memeMode ? 'Your Sleep Ticket (Meme Mode)' : 'Your Sleep Ticket');
+      modalTitle.textContent = app.memeMode ? 'Your Sleep Ticket (Meme Mode)' : 'Your Sleep Ticket';
     }
     
     // Set background
-    document.getElementById('ticketBg').className = `ticket-bg ${personalityKey}${this.isJetLag ? ' jetlag' : ''}`;
+    document.getElementById('ticketBg').className = `ticket-bg ${personalityKey}`;
     
-    // Set icon and name - use meme version if meme mode is on, or logo for jetlag
-    if (this.isJetLag) {
-      document.getElementById('ticketIcon').src = '/attached_assets/NightOwl_logo2_1768776420360.png';
-      document.getElementById('ticketPersonalityName').textContent = 'Frequent Flyer';
-    } else if (app.memeMode && memePersonality) {
+    // Set icon and name - use meme version if meme mode is on
+    if (app.memeMode && memePersonality) {
       document.getElementById('ticketIcon').src = memePersonality.icon;
       document.getElementById('ticketPersonalityName').textContent = memePersonality.name;
     } else {
