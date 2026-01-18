@@ -2162,18 +2162,15 @@ ol.article-list li::before {
 .ticket-branding {
   display: flex;
   align-items: center;
-  gap: 6px;
-  opacity: 0.8;
-}
-
-.ticket-logo {
-  font-size: 18px;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
 }
 
 .ticket-logo-img {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
+  height: 20px;
+  width: auto;
+  display: block;
 }
 
 .ticket-branding-owl {
