@@ -13,7 +13,6 @@ const app = {
   scrollVelocity: 0,
   lastWheelTime: 0,
 
-  tomorrowMode: 'sharp',
   init() {
     if (this.initialized) return;
     this.initialized = true;
@@ -21,9 +20,7 @@ const app = {
     this.memeMode = false;
     this.timeFormat = '12';
     
-    // Load Tomorrow Mode
-    const savedTM = localStorage.getItem('nightowl_tomorrow_mode');
-    if (savedTM) this.tomorrowMode = savedTM;
+    this.setupEventListeners();
     this.loadSettings();
     this.loadFromUrl();
     this.updateMemeUI();
@@ -580,74 +577,39 @@ const app = {
 
     this.renderResults(results);
     this.updateZzz();
-
-    // Setup Tomorrow Mode Listeners
-    const tmBtns = document.querySelectorAll('.tm-btn');
-    if (tmBtns.length) {
-      tmBtns.forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.tm === this.tomorrowMode);
-        btn.addEventListener('click', () => {
-          this.tomorrowMode = btn.dataset.tm;
-          localStorage.setItem('nightowl_tomorrow_mode', this.tomorrowMode);
-          tmBtns.forEach(b => b.classList.toggle('active', b.dataset.tm === this.tomorrowMode));
-          this.calculate();
-        });
-      });
-    }
   },
 
-  chooseRecommended(results) {
-    const mode = this.tomorrowMode;
-    const findByCycles = (n) => results.find(r => r.cycles === n);
+  updateZzz() {
+    const existing = document.querySelector('.zzz-container');
+    const owlImg = document.getElementById('owlImg');
     
-    if (mode === 'sharp') return findByCycles(6) || findByCycles(5) || findByCycles(4);
-    
-    if (mode === 'survive') {
-      const c5 = findByCycles(5);
-      const c4 = findByCycles(4);
-      
-      const now = new Date();
-      const currentMins = now.getHours() * 60 + now.getMinutes();
-      
-      if (c5 && currentMins > (c5.bedTime + this.settings.wakeWindow)) {
-        return c4 || c5;
+    if (this.mode === 'sleep') {
+      if (owlImg) {
+        owlImg.src = "/attached_assets/owl2_1767300759408.png";
       }
-      return c5 || c4;
+      
+      if (!existing) {
+        const container = document.createElement('div');
+        container.className = 'zzz-container';
+        container.innerHTML = `
+          <span class="zzz" style="font-size: 14px;">z</span>
+          <span class="zzz">z</span>
+          <span class="zzz">z</span>
+        `;
+        document.getElementById('timePicker').appendChild(container);
+      }
+    } else {
+      if (owlImg) {
+        owlImg.src = "/attached_assets/owl1_1767300759408.png";
+      }
+      if (existing) existing.remove();
     }
-    
-    return findByCycles(6) || findByCycles(5) || findByCycles(4);
-  },
-
-  updateTMNote(recommended) {
-    const noteEl = document.getElementById('tmNote');
-    if (!noteEl) return;
-    
-    const mode = this.tomorrowMode;
-    let text = "";
-    
-    const wakeTimeMins = recommended.wakeTime;
-    const napTimeMins = (wakeTimeMins + 7 * 60) % (24 * 60);
-    const napTimeStr = this.formatTime(napTimeMins);
-
-    if (mode === 'sharp') {
-      text = `🎯 Recommended: 6 cycles for peak brain performance. Stay hydrated!`;
-    } else if (mode === 'survive') {
-      text = `🔥 Survival Mode: Prioritizing essential rest. Try a 20-min power nap around ${napTimeStr} to stay alert.`;
-    } else if (mode === 'recover') {
-      text = `🧘 Recovery: Getting full rest. A 90-min recovery cycle around ${napTimeStr} is highly recommended.`;
-    }
-    
-    noteEl.textContent = text;
-    noteEl.classList.add('show');
   },
 
   renderResults(results) {
     const isMeme = this.memeMode;
-    const recommended = this.chooseRecommended(results);
-    this.updateTMNote(recommended);
-
     const listHtml = results.map((r, i) => {
-      const isRecommended = r.cycles === recommended.cycles;
+      const isBest = Math.abs(r.cycles - 5) === 0;
       const resultTime = this.mode === 'wake' ? r.bedTimeStr : r.wakeTimeStr;
       const isSelected = this.selectedResult === i;
       const windowLabel = this.mode === 'wake' ? 'Go to bed between:' : 'Wake between:';
@@ -667,16 +629,16 @@ const app = {
         }
       }
 
-      let bestBadge = isRecommended ? "★ Recommended" : "★ Best Option";
+      let bestBadge = "★ Best Option";
       if (isMeme) {
         const badges = ["⭐ Least Painful", "⭐ Top Pick", "⭐ Main Quest", "⭐ Optimal Owl Choice"];
         bestBadge = badges[i % badges.length];
       }
 
       return `
-        <button class="result-card ${isSelected ? 'selected' : ''} ${isRecommended ? 'recommended' : ''}" data-index="${i}">
+        <button class="result-card ${isSelected ? 'selected' : ''} ${isBest ? 'best' : ''}" data-index="${i}">
           <div class="copy-btn" title="Copy to clipboard" data-index="${i}">📋</div>
-          ${isRecommended ? `<div class="badge-meme" style="font-size: 11px; color: #fbbf24; font-weight: 600; text-transform: uppercase; margin-bottom: 8px;">${bestBadge}</div>` : ''}
+          ${isBest ? `<div class="badge-meme" style="font-size: 11px; color: #fbbf24; font-weight: 600; text-transform: uppercase; margin-bottom: 8px;">${bestBadge}</div>` : ''}
           <div class="result-time">${resultTime}</div>
           ${showWindow ? `<div class="result-window">${windowLabel} ${r.wakeWindowStr}</div>` : ''}
           <div class="result-details">
@@ -710,11 +672,6 @@ const app = {
         card.classList.add('glow');
         setTimeout(() => card.classList.remove('glow'), 600);
         this.selectedResult = index;
-        
-        // Update ticket preview when a result is selected
-        if (typeof sleepTicket !== 'undefined') {
-          sleepTicket.updateTicketPreview();
-        }
       });
     });
 
@@ -1361,18 +1318,6 @@ const sleepTicket = {
     document.getElementById('ticketBedtime').textContent = bedtimeStr;
     document.getElementById('ticketWakeTime').textContent = wakeTimeStr;
     document.getElementById('ticketCycles').textContent = cyclesStr;
-
-    // Tomorrow Mode display on ticket
-    const tmModeEl = document.getElementById('ticketTMMode');
-    if (tmModeEl) {
-      const modeLabels = {
-        'sharp': 'Need to be sharp',
-        'survive': 'Just survive',
-        'recover': 'Recovery day'
-      };
-      tmModeEl.textContent = `Mode: ${modeLabels[app.tomorrowMode]}`;
-      tmModeEl.style.display = 'block';
-    }
   },
 
   getResultFromIndex(index) {
