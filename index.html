@@ -253,6 +253,16 @@
         </div>
       </div>
 
+      <div class="tomorrow-mode" id="tomorrowModeContainer">
+        <div class="tm-label">Tomorrow's Goal</div>
+        <div class="tm-buttons" role="tablist" aria-label="Tomorrow Mode">
+          <button class="tm-btn active" data-tm="sharp" type="button" data-testid="button-tm-sharp">🎯 Need to be sharp</button>
+          <button class="tm-btn" data-tm="survive" type="button" data-testid="button-tm-survive">☕ Just survive</button>
+          <button class="tm-btn" data-tm="recover" type="button" data-testid="button-tm-recover">🛌 Recovery day</button>
+        </div>
+        <div id="tmNote" class="tm-note" hidden></div>
+      </div>
+
       <div class="results" id="results">
         <div class="results-label" id="resultsLabel">Go to bed at...</div>
         <div class="results-list" id="resultsList"></div>

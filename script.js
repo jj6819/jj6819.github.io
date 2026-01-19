@@ -20,6 +20,7 @@ const app = {
     this.memeMode = false;
     this.timeFormat = '12';
     
+    this.tomorrowMode = 'sharp';
     this.setupEventListeners();
     this.loadSettings();
     this.loadFromUrl();
@@ -191,6 +192,10 @@ const app = {
             this.setMemeMode(isCurrentlyOff ? 'on' : 'off');
         });
     }
+
+    document.querySelectorAll('.tm-btn').forEach(btn => {
+      btn.addEventListener('click', () => this.setTomorrowMode(btn.dataset.tm));
+    });
 
     ['hourColumn', 'minuteColumn', 'periodColumn'].forEach(id => {
       const col = document.getElementById(id);
@@ -608,10 +613,49 @@ const app = {
 
   renderResults(results) {
     const isMeme = this.memeMode;
+    const tmMode = this.tomorrowMode || 'sharp';
+
+    // Tomorrow Mode Logic: Recommended Cycle
+    let recommendedCycle = 5; 
+    if (tmMode === 'sharp') recommendedCycle = 6;
+    if (tmMode === 'recover') recommendedCycle = 6;
+
+    if (tmMode === 'survive') {
+      const now = luxon.DateTime.local();
+      const c5 = results.find(r => r.cycles === 5);
+      if (c5) {
+        const bedTimeDT = luxon.DateTime.local().startOf('day').plus({ minutes: c5.bedTime });
+        if (now > bedTimeDT.plus({ minutes: this.settings.wakeWindow })) {
+          recommendedCycle = 4;
+        }
+      }
+    }
+
+    const tmNote = document.getElementById('tmNote');
+    if (tmNote) {
+      let noteText = "";
+      const baseResult = results.find(r => r.cycles === recommendedCycle) || results[1];
+      const wakeTimeMin = baseResult.wakeTime;
+      const wakeTimeDT = luxon.DateTime.local().startOf('day').plus({ minutes: wakeTimeMin });
+      const napStart = wakeTimeDT.plus({ hours: 7 }).toLocaleString(luxon.DateTime.TIME_SIMPLE);
+
+      if (tmMode === 'sharp') {
+        noteText = `🎯 Recommended: 6 cycles for maximum cognitive performance.`;
+      } else if (tmMode === 'survive') {
+        noteText = `☕ Recommended: ${recommendedCycle} cycles. Try a 20-min power nap around ${napStart} to stay alert.`;
+      } else if (tmMode === 'recover') {
+        noteText = `🛌 Recommended: 6 cycles. A 90-min recovery nap around ${napStart} is encouraged.`;
+      }
+
+      tmNote.textContent = noteText;
+      tmNote.hidden = false;
+    }
+
     const listHtml = results.map((r, i) => {
+      const isRecommended = r.cycles === recommendedCycle;
       const isBest = Math.abs(r.cycles - 5) === 0;
       const resultTime = this.mode === 'wake' ? r.bedTimeStr : r.wakeTimeStr;
-      const isSelected = this.selectedResult === i;
+      const isSelected = parseInt(this.selectedResult) === i;
       const windowLabel = this.mode === 'wake' ? 'Go to bed between:' : 'Wake between:';
       const showWindow = this.settings.wakeWindow > 0;
 
@@ -636,9 +680,10 @@ const app = {
       }
 
       return `
-        <button class="result-card ${isSelected ? 'selected' : ''} ${isBest ? 'best' : ''}" data-index="${i}">
+        <button class="result-card ${isSelected ? 'selected' : ''} ${isRecommended ? 'recommended' : ''}" data-index="${i}" data-cycles="${r.cycles}" data-testid="card-result-${i}">
           <div class="copy-btn" title="Copy to clipboard" data-index="${i}">📋</div>
-          ${isBest ? `<div class="badge-meme" style="font-size: 11px; color: #fbbf24; font-weight: 600; text-transform: uppercase; margin-bottom: 8px;">${bestBadge}</div>` : ''}
+          ${isRecommended ? `<div class="recommended-badge">Recommended</div>` : (isBest && !isMeme ? `<div class="badge-meme" style="font-size: 11px; color: #fbbf24; font-weight: 600; text-transform: uppercase; margin-bottom: 8px;">${bestBadge}</div>` : '')}
+          ${isBest && isMeme ? `<div class="badge-meme" style="font-size: 11px; color: #fbbf24; font-weight: 600; text-transform: uppercase; margin-bottom: 8px;">${bestBadge}</div>` : ''}
           <div class="result-time">${resultTime}</div>
           ${showWindow ? `<div class="result-window">${windowLabel} ${r.wakeWindowStr}</div>` : ''}
           <div class="result-details">
@@ -657,7 +702,6 @@ const app = {
 
     document.querySelectorAll('.result-card').forEach(card => {
       card.addEventListener('click', (e) => {
-        // If clicking copy button, don't trigger selection
         if (e.target.classList.contains('copy-btn')) {
           this.copyResult(e.target.dataset.index);
           return;
@@ -675,7 +719,6 @@ const app = {
       });
     });
 
-    // If a result was loaded from URL, trigger glow animation on it
     if (this.selectedResult !== null) {
       const selectedCard = document.querySelector(`.result-card[data-index="${this.selectedResult}"]`);
       if (selectedCard) {
@@ -719,11 +762,21 @@ const app = {
     });
   },
 
+  setTomorrowMode(mode) {
+    this.tomorrowMode = mode;
+    document.querySelectorAll('.tm-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tm === mode);
+    });
+    this.saveSettings();
+    this.calculate();
+  },
+
   saveSettings() {
     localStorage.setItem('sleepSettings', JSON.stringify({
       settings: this.settings,
       timeFormat: this.timeFormat,
-      memeMode: this.memeMode
+      memeMode: this.memeMode,
+      tomorrowMode: this.tomorrowMode
     }));
   },
 
@@ -895,6 +948,12 @@ const app = {
         this.hour = data.hour || 1;
         this.minute = data.minute || 0;
         this.period = data.period || 'AM';
+        this.tomorrowMode = data.tomorrowMode || 'sharp';
+
+        // Update Tomorrow Mode UI
+        document.querySelectorAll('.tm-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.tm === this.tomorrowMode);
+        });
         
         // Force Meme Mode OFF on every refresh as requested
         this.memeMode = false;
