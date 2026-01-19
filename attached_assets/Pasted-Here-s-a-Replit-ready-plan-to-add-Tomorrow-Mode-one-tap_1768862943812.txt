@@ -1,0 +1,296 @@
+Here’s a Replit-ready plan to add **“Tomorrow Mode” (one-tap presets)** to your existing **vanilla JS sleep calculator** (Luxon + html2canvas), without adding frameworks or a backend.
+
+---
+
+## Goal
+
+Add a small control that lets users pick a **purpose for tomorrow**, and the calculator automatically:
+
+* highlights the **best recommended cycle option** (4–6 cycles)
+* adjusts how “strict” the bedtime suggestion feels (tight vs flexible)
+* optionally suggests a **nap rescue** for “Survive” / “Recover”
+* saves their choice (localStorage) so it sticks on return
+
+Modes:
+
+1. **Need to be sharp**
+2. **Just survive**
+3. **Recovery day**
+
+---
+
+## 1) UI changes (HTML)
+
+Place this near your wake time input or above the results.
+
+```html
+<div class="tomorrow-mode">
+  <div class="tm-label">Tomorrow Mode</div>
+  <div class="tm-buttons" role="tablist" aria-label="Tomorrow Mode">
+    <button class="tm-btn" data-tm="sharp" type="button">Need to be sharp</button>
+    <button class="tm-btn" data-tm="survive" type="button">Just survive</button>
+    <button class="tm-btn" data-tm="recover" type="button">Recovery day</button>
+  </div>
+</div>
+```
+
+Add a tiny line under results (optional):
+
+```html
+<div id="tmNote" class="tm-note" hidden></div>
+```
+
+---
+
+## 2) Styling (CSS)
+
+Keep it simple and compact:
+
+```css
+.tomorrow-mode { margin: 12px 0 8px; }
+.tm-label { font-size: 12px; opacity: .75; margin-bottom: 6px; }
+.tm-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+.tm-btn {
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.06);
+  color: inherit;
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.tm-btn.is-active {
+  background: rgba(255,255,255,.14);
+  border-color: rgba(255,255,255,.30);
+}
+.result-card.is-recommended {
+  outline: 2px solid rgba(255,255,255,.35);
+}
+.tm-note { margin-top: 10px; font-size: 13px; opacity: .85; }
+```
+
+(Use your existing card class names; `result-card` is just an example.)
+
+---
+
+## 3) Data model + persistence (localStorage)
+
+Create a small module file (or add to your main JS) to manage Tomorrow Mode:
+
+```js
+const TM_KEY = "nightowl_tomorrow_mode";
+
+function getTomorrowMode() {
+  return localStorage.getItem(TM_KEY) || "sharp"; // default
+}
+function setTomorrowMode(mode) {
+  localStorage.setItem(TM_KEY, mode);
+}
+```
+
+On page load:
+
+* read mode
+* mark correct button active
+* re-render results
+
+---
+
+## 4) Core logic: how Tomorrow Mode changes recommendations
+
+You already compute 3 options: **4, 5, 6 cycles** with a 10-min wake window.
+
+### Build “candidate plans”
+
+When user sets wake time, you already compute bed windows like:
+
+* for each cycle `c` in {4,5,6}:
+
+  * `bedStart[c]`, `bedEnd[c]`
+
+Represent candidates like:
+
+```js
+const candidates = [
+  { cycles: 4, bedStart, bedEnd, sleepHours: ... },
+  { cycles: 5, bedStart, bedEnd, sleepHours: ... },
+  { cycles: 6, bedStart, bedEnd, sleepHours: ... },
+];
+```
+
+### Ranking rules per mode (simple + feels smart)
+
+**Need to be sharp**
+
+* Recommend **6 cycles** if possible, otherwise 5, then 4
+* Copy note: “Prioritizing more full cycles for performance.”
+
+**Just survive**
+
+* Recommend **5 cycles** (balanced)
+* If user is generating this *late* (current time already past 5-cycle bedtime), recommend **4**
+* Add “Nap rescue” suggestion: short nap tomorrow (20 min)
+
+**Recovery day**
+
+* Recommend **6 cycles**
+* Also suggest either:
+
+  * a **90-minute nap** window, or
+  * an early bedtime + optional short nap
+
+#### “Late right now” check (optional, sticky feature)
+
+This adds real usefulness and retention:
+
+* If it’s already past the recommended bedtime window, auto-downshift recommendation.
+
+Example:
+
+```js
+const now = luxon.DateTime.local();
+const missed = now > candidate.bedEnd;
+```
+
+### Suggested selection function
+
+```js
+function chooseRecommendedCandidate(candidates, mode) {
+  const byCycles = (n) => candidates.find(c => c.cycles === n);
+
+  if (mode === "sharp") return byCycles(6) || byCycles(5) || byCycles(4);
+
+  if (mode === "survive") {
+    const c5 = byCycles(5);
+    const c4 = byCycles(4);
+    // If bedtime for 5 cycles is already missed, recommend 4
+    if (c5 && luxon.DateTime.local() > c5.bedEnd) return c4 || c5;
+    return c5 || c4 || byCycles(6);
+  }
+
+  // recover
+  return byCycles(6) || byCycles(5) || byCycles(4);
+}
+```
+
+---
+
+## 5) Add mode-specific “note” + optional nap suggestion
+
+For the two modes that benefit from a nap hint:
+
+### Nap heuristics (simple, non-medical)
+
+Based on wake time tomorrow:
+
+* **Power nap**: wake + 6.5 to 8 hours (typical midday dip)
+* Duration:
+
+  * survive: **20 minutes**
+  * recover: **90 minutes** (one full cycle) or 20 minutes if user prefers short
+
+Example generator:
+
+```js
+function napSuggestion(wakeTime, mode) {
+  const start = wakeTime.plus({ hours: 7 });
+  if (mode === "survive") {
+    return { label: "Power nap", durMin: 20, start };
+  }
+  if (mode === "recover") {
+    return { label: "Recovery nap", durMin: 90, start };
+  }
+  return null;
+}
+```
+
+Render the note below results:
+
+* Sharp: “Recommended: 6 cycles (performance-first)”
+* Survive: “Recommended: 5 cycles (balanced). If you’re dragging, try a 20-min nap around 2:10 PM.”
+* Recover: “Recommended: 6 cycles. Optional 90-min nap around 1:40 PM.”
+
+(Use Luxon to format time in user locale.)
+
+---
+
+## 6) Update the results UI to highlight the recommendation
+
+Where you render the cycle options cards:
+
+* add `is-recommended` class to the chosen card
+* optionally move it to the top (“Recommended” first)
+
+Example:
+
+```js
+cards.forEach(card => card.classList.toggle("is-recommended", card.dataset.cycles == recommended.cycles));
+```
+
+Add a small badge on that card:
+
+* “Recommended (Tomorrow Mode)”
+
+---
+
+## 7) Add it to the Sleep Ticket (html2canvas)
+
+This is big for retention/share: the ticket reflects the mode.
+
+Add a line on the ticket:
+
+* “Tomorrow Mode: Need to be sharp”
+  or a small icon label near the cycles area.
+
+Implementation:
+
+* when building ticket DOM, set text based on current mode
+* include it in the ticket element so html2canvas captures it
+
+---
+
+## 8) Wiring: hook buttons into your existing calculator
+
+### Button events
+
+```js
+document.querySelectorAll(".tm-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const mode = btn.dataset.tm;
+    setTomorrowMode(mode);
+    document.querySelectorAll(".tm-btn").forEach(b => b.classList.toggle("is-active", b === btn));
+    recalcAndRender(); // call your existing update function
+  });
+});
+```
+
+### On load
+
+```js
+const saved = getTomorrowMode();
+document.querySelector(`.tm-btn[data-tm="${saved}"]`)?.classList.add("is-active");
+recalcAndRender();
+```
+
+---
+
+## 9) QA checklist (10 minutes)
+
+* Switching modes updates recommendation instantly
+* Recommendation changes if current time already missed bedtime (survive mode)
+* Ticket export includes tomorrow mode label
+* Mode persists after refresh (localStorage)
+* Works on mobile (buttons wrap)
+* Reduced-motion users: no changes needed (this feature is static)
+
+---
+
+## Optional “retention booster” add-on (tiny, high impact)
+
+Add a one-liner under the buttons:
+
+* “Saved on this device ✅”
+  People like that it “remembers me” without accounts.
+
+---
+
+If you paste the names/IDs of your existing “render results” function and the DOM structure for your cycle cards, I can map this plan into **exact drop-in code** using your real selectors (so you don’t have to adapt anything).
