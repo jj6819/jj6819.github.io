@@ -720,7 +720,7 @@ const app = {
 
     // If a result was loaded from URL, trigger glow animation on it
     if (this.selectedResult !== null) {
-      const selectedCard = document.querySelector(\`.result-card[data-index="\${this.selectedResult}"]\`);
+      const selectedCard = document.querySelector(`.result-card[data-index="${this.selectedResult}"]`);
       if (selectedCard) {
         selectedCard.classList.add('glow');
         setTimeout(() => selectedCard.classList.remove('glow'), 600);
