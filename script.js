@@ -1763,11 +1763,20 @@ const jetLagPlanner = {
       overlay.style.display = 'flex';
       video.play().catch(err => console.log("Video play failed:", err));
       
-      // We use the 'loop' attribute for perfect visual frame-locking.
-      // Modern browsers handle the audio gap much better when 'loop' is true
-      // and it ensures the stars don't jump.
-      video.loop = true;
-      video.currentTime = 0; // Reset to start when opening
+      // Advanced Seamless Loop Strategy:
+      // We use a small overlap (0.3s) to jump back to start before the video ends.
+      // This bypasses the hardware/browser 'tick' and visual 'snap' at the absolute end.
+      const loopOverlap = 0.3;
+      this._videoLoopHandler = () => {
+        if (video.currentTime > video.duration - loopOverlap) {
+          video.currentTime = 0;
+          // No need to call play() again if it's already playing, 
+          // but setting currentTime keeps the engine moving smoothly.
+        }
+      };
+      video.addEventListener('timeupdate', this._videoLoopHandler);
+      video.loop = false; // Disable native loop to use our custom logic
+      video.currentTime = 0;
 
       if (overlay.requestFullscreen) {
         overlay.requestFullscreen();
@@ -1775,7 +1784,10 @@ const jetLagPlanner = {
     } else {
       overlay.style.display = 'none';
       video.pause();
-      video.loop = false;
+      if (this._videoLoopHandler) {
+        video.removeEventListener('timeupdate', this._videoLoopHandler);
+        this._videoLoopHandler = null;
+      }
       if (document.fullscreenElement) {
         document.exitFullscreen();
       }
