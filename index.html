@@ -173,6 +173,7 @@
       <button class="app-mode-btn" data-app-mode="nap">Nap Calculator</button>
       <button class="app-mode-btn" data-app-mode="jetlag">Jet Lag Planner</button>
       <button class="app-mode-btn" data-app-mode="caffeine">Caffeine Cutoff</button>
+      <button class="app-mode-btn" data-app-mode="sleep-screen">Sleep Screen</button>
     </div>
 
     <div id="sleepCalcMode">
@@ -624,6 +625,14 @@
         <button class="ticket-btn ticket-btn-primary" id="downloadTicketBtn"><span class="btn-icon">📱</span><span class="btn-text">Download</span></button>
       </div>
     </div>
+  </div>
+
+  <div id="sleepScreenOverlay" class="sleep-screen-overlay" style="display: none;">
+    <video id="sleepScreenVideo" loop muted playsinline>
+      <source src="/attached_assets/French_Night_-_HD_720p_1768950137351.mov" type="video/quicktime">
+      Your browser does not support the video tag.
+    </video>
+    <div class="sleep-screen-hint">Tap anywhere to exit</div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>

@@ -1719,6 +1719,11 @@ const jetLagPlanner = {
     modeBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         const mode = btn.dataset.appMode;
+
+        if (mode === 'sleep-screen') {
+          this.toggleSleepScreen(true);
+          return;
+        }
         
         // Update tabs
         modeBtns.forEach(b => b.classList.remove('active'));
@@ -1741,6 +1746,32 @@ const jetLagPlanner = {
         }
       });
     });
+
+    // Sleep Screen Exit
+    const sleepScreenOverlay = document.getElementById('sleepScreenOverlay');
+    if (sleepScreenOverlay) {
+      sleepScreenOverlay.addEventListener('click', () => this.toggleSleepScreen(false));
+    }
+  },
+
+  toggleSleepScreen(show) {
+    const overlay = document.getElementById('sleepScreenOverlay');
+    const video = document.getElementById('sleepScreenVideo');
+    if (!overlay || !video) return;
+
+    if (show) {
+      overlay.style.display = 'flex';
+      video.play().catch(err => console.log("Video play failed:", err));
+      if (overlay.requestFullscreen) {
+        overlay.requestFullscreen();
+      }
+    } else {
+      overlay.style.display = 'none';
+      video.pause();
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+    }
   },
 
   setupEventListeners() {
