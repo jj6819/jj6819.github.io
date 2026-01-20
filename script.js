@@ -1785,13 +1785,16 @@ const jetLagPlanner = {
       video.loop = false;
       video.currentTime = 0;
 
-      // Handle Fullscreen for mobile
+      // Handle Fullscreen for mobile and iPad
       if (overlay.requestFullscreen) {
         overlay.requestFullscreen();
       } else if (overlay.webkitRequestFullscreen) {
         overlay.webkitRequestFullscreen();
       } else if (video.webkitEnterFullscreen) {
-        // iOS Safari special handling
+        // iOS Safari (iPhone & iPad) special handling
+        video.webkitEnterFullscreen();
+      } else if (video.webkitDisplayingFullscreen) {
+        // Additional iPad check
         video.webkitEnterFullscreen();
       }
     } else {
