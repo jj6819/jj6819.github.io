@@ -2675,6 +2675,31 @@ ol.article-list li::before {
   margin-bottom: 24px;
 }
 
+.airport-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.airport-input-wrapper input {
+  width: 100%;
+  padding-right: 35px !important;
+}
+
+.airport-input-wrapper::after {
+  content: '▼';
+  position: absolute;
+  right: 12px;
+  font-size: 10px;
+  color: #64748b;
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+.airport-input-wrapper:hover::after {
+  color: #fbbf24;
+}
+
 .segment-card {
   background: rgba(30, 41, 59, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.1);
