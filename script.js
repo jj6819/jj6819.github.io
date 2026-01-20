@@ -998,6 +998,7 @@ const app = {
   }
 };
 
+// ========== STAR FIELD (Shared) ==========
 function createStars() {
   const container = document.getElementById('starsContainer');
   if (!container) return;
