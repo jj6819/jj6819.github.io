@@ -269,24 +269,8 @@ const app = {
       canvas.height = Math.floor(h * dpr);
       canvas.style.width = "100%";
       canvas.style.height = "100%";
+      canvas.style.display = "block";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    function initStars() {
-      stars = [];
-      const count = Math.round(Math.min(140, (w * h) / 16000));
-      for (let i = 0; i < count; i++) {
-        stars.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          r: Math.random() * 1.2 + 0.2,
-          a: Math.random() * 0.35 + 0.05,
-          vx: (Math.random() * 0.12 + 0.02) * (Math.random() < 0.5 ? -1 : 1),
-          vy: (Math.random() * 0.08 + 0.01),
-          tw: Math.random() * 0.6 + 0.2,
-          ph: Math.random() * Math.PI * 2
-        });
-      }
     }
 
     function draw(ts) {
@@ -303,6 +287,7 @@ const app = {
         s.y += s.vy * (dt * 60);
         if (s.x < -5) s.x = w + 5;
         if (s.x > w + 5) s.x = -5;
+        if (s.y < -5) s.y = h + 5;
         if (s.y > h + 5) s.y = -5;
         const twinkle = 0.65 + 0.35 * Math.sin(ts * 0.0005 * s.tw + s.ph);
         const alpha = s.a * twinkle;
@@ -332,9 +317,18 @@ const app = {
 
     window.NightOwlSleepScreenTab = {
       onModeChange(activeMode) {
+        console.log("Sleep Screen mode change triggered:", activeMode);
         if (activeMode === "sleepscreen") {
-          // Small delay to ensure the container is visible for canvas sizing
-          setTimeout(() => startSleepScreen(), 150);
+          // Increase delay and add a direct visibility check
+          setTimeout(() => {
+            const tab = document.getElementById('sleepScreenTab');
+            console.log("Sleep Screen Tab status:", {
+              display: window.getComputedStyle(tab).display,
+              width: tab.offsetWidth,
+              height: tab.offsetHeight
+            });
+            startSleepScreen();
+          }, 500);
         } else {
           stopSleepScreen();
         }
@@ -1810,44 +1804,35 @@ const jetLagPlanner = {
 
   setupModeSwitch() {
     const modeBtns = document.querySelectorAll('.app-mode-btn');
-    const sleepMode = document.getElementById('sleepCalcMode');
-    const napMode = document.getElementById('napMode');
-    const jetLagMode = document.getElementById('jetLagMode');
-    const caffeineMode = document.getElementById('caffeineMode');
-    const sleepScreenMode = document.getElementById('sleepScreenMode');
+    const containers = {
+      calculator: document.getElementById('sleepCalcMode'),
+      nap: document.getElementById('napMode'),
+      jetlag: document.getElementById('jetlagMode'),
+      caffeine: document.getElementById('caffeineMode'),
+      sleepscreen: document.getElementById('sleepScreenMode')
+    };
 
     if (!modeBtns.length) return;
 
     modeBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        const mode = btn.dataset.appMode;
+        const targetMode = btn.dataset.appMode;
         
         // Update tabs
-        modeBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        modeBtns.forEach(b => b.classList.toggle('active', b === btn));
 
         // Toggle Content
-        if (sleepMode) sleepMode.style.display = 'none';
-        if (napMode) napMode.style.display = 'none';
-        if (jetLagMode) jetLagMode.style.display = 'none';
-        if (caffeineMode) caffeineMode.style.display = 'none';
-        if (sleepScreenMode) sleepScreenMode.style.display = 'none';
+        Object.keys(containers).forEach(key => {
+          const el = containers[key];
+          if (el) el.style.display = (key === targetMode) ? 'block' : 'none';
+        });
 
-        if (mode === 'calculator') {
-          if(sleepMode) sleepMode.style.display = 'block';
-        } else if (mode === 'nap') {
-          if(napMode) napMode.style.display = 'block';
-        } else if (mode === 'jetlag') {
-          if(jetLagMode) jetLagMode.style.display = 'block';
-        } else if (mode === 'caffeine') {
-          if(caffeineMode) caffeineMode.style.display = 'block';
-        } else if (mode === 'sleepscreen') {
-          if(sleepScreenMode) sleepScreenMode.style.display = 'block';
-        }
+        // Immersive sleep screen mode
+        document.body.classList.toggle('sleep-screen-active', targetMode === 'sleepscreen');
 
         // start/stop sleep screen rendering
         if (window.NightOwlSleepScreenTab) {
-          window.NightOwlSleepScreenTab.onModeChange(mode);
+          window.NightOwlSleepScreenTab.onModeChange(targetMode);
         }
       });
     });
