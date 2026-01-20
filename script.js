@@ -27,7 +27,6 @@ const app = {
     this.updateMemeUI();
     this.calculate();
     
-    this.initSleepScreen();
     const yearEl = document.getElementById('year');
     if (yearEl) yearEl.textContent = new Date().getFullYear();
     
@@ -244,101 +243,6 @@ const app = {
         document.querySelectorAll('.nap-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
       });
-    });
-  },
-
-  initSleepScreen() {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const tabRoot = document.getElementById("sleepScreenTab");
-    const canvas = document.getElementById("sleepStars");
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d", { alpha: true });
-
-    let running = false;
-    let rafId = null;
-    let stars = [];
-    let lastTs = 0;
-
-    let w = 0, h = 0;
-    function resizeCanvas() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = tabRoot.offsetWidth || tabRoot.clientWidth || 800;
-      h = tabRoot.offsetHeight || tabRoot.clientHeight || 600;
-      
-      canvas.width = Math.floor(w * dpr);
-      canvas.height = Math.floor(h * dpr);
-      canvas.style.width = "100%";
-      canvas.style.height = "100%";
-      canvas.style.display = "block";
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    function draw(ts) {
-      if (!running || w === 0) return;
-      const dt = Math.min(0.05, (ts - lastTs) / 1000 || 0.016);
-      lastTs = ts;
-      
-      // Clear with background color to ensure visibility
-      ctx.fillStyle = "#05070f";
-      ctx.fillRect(0, 0, w, h);
-      
-      for (const s of stars) {
-        s.x += s.vx * (dt * 60);
-        s.y += s.vy * (dt * 60);
-        if (s.x < -5) s.x = w + 5;
-        if (s.x > w + 5) s.x = -5;
-        if (s.y < -5) s.y = h + 5;
-        if (s.y > h + 5) s.y = -5;
-        const twinkle = 0.65 + 0.35 * Math.sin(ts * 0.0005 * s.tw + s.ph);
-        const alpha = s.a * twinkle;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(210, 230, 255, ${alpha.toFixed(3)})`;
-        ctx.fill();
-      }
-      rafId = requestAnimationFrame(draw);
-    }
-
-    function startSleepScreen() {
-      if (running || prefersReducedMotion) return;
-      resizeCanvas();
-      initStars();
-      running = true;
-      lastTs = performance.now();
-      rafId = requestAnimationFrame(draw);
-      console.log("Sleep Screen Started: ", {w, h, running});
-    }
-
-    function stopSleepScreen() {
-      running = false;
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = null;
-    }
-
-    window.NightOwlSleepScreenTab = {
-      onModeChange(activeMode) {
-        console.log("Sleep Screen mode change triggered:", activeMode);
-        if (activeMode === "sleepscreen") {
-          // Increase delay and add a direct visibility check
-          setTimeout(() => {
-            const tab = document.getElementById('sleepScreenTab');
-            console.log("Sleep Screen Tab status:", {
-              display: window.getComputedStyle(tab).display,
-              width: tab.offsetWidth,
-              height: tab.offsetHeight
-            });
-            startSleepScreen();
-          }, 500);
-        } else {
-          stopSleepScreen();
-        }
-      }
-    };
-
-    window.addEventListener("resize", () => {
-      if (!running || prefersReducedMotion) return;
-      resizeCanvas();
-      initStars();
     });
   },
 
@@ -1804,35 +1708,35 @@ const jetLagPlanner = {
 
   setupModeSwitch() {
     const modeBtns = document.querySelectorAll('.app-mode-btn');
-    const containers = {
-      calculator: document.getElementById('sleepCalcMode'),
-      nap: document.getElementById('napMode'),
-      jetlag: document.getElementById('jetlagMode'),
-      caffeine: document.getElementById('caffeineMode'),
-      sleepscreen: document.getElementById('sleepScreenMode')
-    };
+    const sleepMode = document.getElementById('sleepCalcMode');
+    const napMode = document.getElementById('napMode');
+    const jetLagMode = document.getElementById('jetLagMode');
+    const caffeineMode = document.getElementById('caffeineMode');
 
     if (!modeBtns.length) return;
 
     modeBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        const targetMode = btn.dataset.appMode;
+        const mode = btn.dataset.appMode;
         
         // Update tabs
-        modeBtns.forEach(b => b.classList.toggle('active', b === btn));
+        modeBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
 
         // Toggle Content
-        Object.keys(containers).forEach(key => {
-          const el = containers[key];
-          if (el) el.style.display = (key === targetMode) ? 'block' : 'none';
-        });
+        if (sleepMode) sleepMode.style.display = 'none';
+        if (napMode) napMode.style.display = 'none';
+        if (jetLagMode) jetLagMode.style.display = 'none';
+        if (caffeineMode) caffeineMode.style.display = 'none';
 
-        // Immersive sleep screen mode
-        document.body.classList.toggle('sleep-screen-active', targetMode === 'sleepscreen');
-
-        // start/stop sleep screen rendering
-        if (window.NightOwlSleepScreenTab) {
-          window.NightOwlSleepScreenTab.onModeChange(targetMode);
+        if (mode === 'calculator') {
+          if(sleepMode) sleepMode.style.display = 'block';
+        } else if (mode === 'nap') {
+          if(napMode) napMode.style.display = 'block';
+        } else if (mode === 'jetlag') {
+          if(jetLagMode) jetLagMode.style.display = 'block';
+        } else if (mode === 'caffeine') {
+          if(caffeineMode) caffeineMode.style.display = 'block';
         }
       });
     });
