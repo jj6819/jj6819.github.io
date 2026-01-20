@@ -2456,29 +2456,70 @@ ol.article-list li::before {
 
 @media (max-width: 480px) {
   .ticket-preview {
-    width: 240px;
-    height: 426px;
+    width: 260px;
+    height: 462px;
   }
   
   .ticket-icon {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
   }
   
   .ticket-personality-name {
-    font-size: 18px;
+    font-size: 19px;
   }
   
   .ticket-quote {
-    font-size: 12px;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+  
+  .ticket-times {
+    padding: 12px 18px;
+  }
+
+  .ticket-time-value {
+    font-size: 14px;
   }
   
   .ticket-actions {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 8px;
   }
   
   .ticket-btn {
-    width: 100%;
+    width: auto;
+    flex: 1;
+    padding: 10px 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .ticket-preview {
+    width: 220px;
+    height: 390px;
+  }
+  
+  .ticket-icon {
+    width: 55px;
+    height: 55px;
+  }
+  
+  .ticket-personality-name {
+    font-size: 16px;
+  }
+  
+  .ticket-quote {
+    font-size: 11px;
+    margin-bottom: 12px;
+  }
+  
+  .ticket-times {
+    padding: 8px 12px;
+  }
+
+  .ticket-time-value {
+    font-size: 13px;
   }
 }
 
