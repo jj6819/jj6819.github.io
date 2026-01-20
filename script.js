@@ -1540,7 +1540,6 @@ const sleepTicket = {
     const ticketModal = document.getElementById('ticketModal');
     const regenerateBtn = document.getElementById('regenerateQuoteBtn');
     const downloadBtn = document.getElementById('downloadTicketBtn');
-    const challengeBtn = document.getElementById('challengeBtn');
 
     if (ticketToggle) {
       ticketToggle.addEventListener('click', () => this.openModal());
@@ -1560,6 +1559,7 @@ const sleepTicket = {
       regenerateBtn.addEventListener('click', () => this.regenerateQuote());
     }
 
+    const challengeBtn = document.getElementById('challengeBtn');
     if (challengeBtn) {
       challengeBtn.addEventListener('click', () => this.cycleChallenge());
     }
@@ -1568,11 +1568,461 @@ const sleepTicket = {
       downloadBtn.addEventListener('click', () => this.downloadTicket());
     }
 
+    // Close on Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && ticketModal?.style.display === 'flex') {
         this.closeModal();
       }
     });
+  }
+};
+
+/* ========== JET LAG PLANNER ========== */
+const jetLagPlanner = {
+  initialized: false,
+  segments: [],
+  airports: {
+    // North America
+    "ATL": { city: "Atlanta", tz: "America/New_York" },
+    "JFK": { city: "New York (JFK)", tz: "America/New_York" },
+    "EWR": { city: "Newark", tz: "America/New_York" },
+    "LGA": { city: "New York (LGA)", tz: "America/New_York" },
+    "LAX": { city: "Los Angeles", tz: "America/Los_Angeles" },
+    "SFO": { city: "San Francisco", tz: "America/Los_Angeles" },
+    "ORD": { city: "Chicago (O'Hare)", tz: "America/Chicago" },
+    "DFW": { city: "Dallas/Fort Worth", tz: "America/Chicago" },
+    "DEN": { city: "Denver", tz: "America/Denver" },
+    "SEA": { city: "Seattle", tz: "America/Los_Angeles" },
+    "LAS": { city: "Las Vegas", tz: "America/Los_Angeles" },
+    "MCO": { city: "Orlando", tz: "America/New_York" },
+    "MIA": { city: "Miami", tz: "America/New_York" },
+    "CLT": { city: "Charlotte", tz: "America/New_York" },
+    "PHX": { city: "Phoenix", tz: "America/Phoenix" },
+    "IAH": { city: "Houston", tz: "America/Chicago" },
+    "BOS": { city: "Boston", tz: "America/New_York" },
+    "MSP": { city: "Minneapolis", tz: "America/Chicago" },
+    "DTW": { city: "Detroit", tz: "America/New_York" },
+    "PHL": { city: "Philadelphia", tz: "America/New_York" },
+    "SLC": { city: "Salt Lake City", tz: "America/Denver" },
+    "SAN": { city: "San Diego", tz: "America/Los_Angeles" },
+    "IAD": { city: "Washington (Dulles)", tz: "America/New_York" },
+    "DCA": { city: "Washington (Reagan)", tz: "America/New_York" },
+    "YYZ": { city: "Toronto", tz: "America/Toronto" },
+    "YVR": { city: "Vancouver", tz: "America/Vancouver" },
+    "YUL": { city: "Montreal", tz: "America/Toronto" },
+    "YYC": { city: "Calgary", tz: "America/Edmonton" },
+    "MEX": { city: "Mexico City", tz: "America/Mexico_City" },
+    "CUN": { city: "Cancun", tz: "America/Cancun" },
+
+    // Europe
+    "LHR": { city: "London (Heathrow)", tz: "Europe/London" },
+    "LGW": { city: "London (Gatwick)", tz: "Europe/London" },
+    "CDG": { city: "Paris (CDG)", tz: "Europe/Paris" },
+    "ORY": { city: "Paris (Orly)", tz: "Europe/Paris" },
+    "AMS": { city: "Amsterdam", tz: "Europe/Amsterdam" },
+    "FRA": { city: "Frankfurt", tz: "Europe/Berlin" },
+    "MUC": { city: "Munich", tz: "Europe/Berlin" },
+    "IST": { city: "Istanbul", tz: "Europe/Istanbul" },
+    "MAD": { city: "Madrid", tz: "Europe/Madrid" },
+    "BCN": { city: "Barcelona", tz: "Europe/Madrid" },
+    "FCO": { city: "Rome", tz: "Europe/Rome" },
+    "ZRH": { city: "Zurich", tz: "Europe/Zurich" },
+    "VIE": { city: "Vienna", tz: "Europe/Vienna" },
+    "CPH": { city: "Copenhagen", tz: "Europe/Copenhagen" },
+    "OSL": { city: "Oslo", tz: "Europe/Oslo" },
+    "ARN": { city: "Stockholm", tz: "Europe/Stockholm" },
+    "HEL": { city: "Helsinki", tz: "Europe/Helsinki" },
+    "DUB": { city: "Dublin", tz: "Europe/Dublin" },
+    "BRU": { city: "Brussels", tz: "Europe/Brussels" },
+    "LIS": { city: "Lisbon", tz: "Europe/Lisbon" },
+    "ATH": { city: "Athens", tz: "Europe/Athens" },
+
+    // Asia & Pacific
+    "HND": { city: "Tokyo (Haneda)", tz: "Asia/Tokyo" },
+    "NRT": { city: "Tokyo (Narita)", tz: "Asia/Tokyo" },
+    "KIX": { city: "Osaka", tz: "Asia/Tokyo" },
+    "ICN": { city: "Seoul", tz: "Asia/Seoul" },
+    "PEK": { city: "Beijing", tz: "Asia/Shanghai" },
+    "PVG": { city: "Shanghai", tz: "Asia/Shanghai" },
+    "HKG": { city: "Hong Kong", tz: "Asia/Hong_Kong" },
+    "TPE": { city: "Taipei", tz: "Asia/Taipei" },
+    "SIN": { city: "Singapore", tz: "Asia/Singapore" },
+    "BKK": { city: "Bangkok", tz: "Asia/Bangkok" },
+    "KUL": { city: "Kuala Lumpur", tz: "Asia/Kuala_Lumpur" },
+    "CGK": { city: "Jakarta", tz: "Asia/Jakarta" },
+    "MNL": { city: "Manila", tz: "Asia/Manila" },
+    "SGN": { city: "Ho Chi Minh City", tz: "Asia/Ho_Chi_Minh" },
+    "DEL": { city: "New Delhi", tz: "Asia/Kolkata" },
+    "BOM": { city: "Mumbai", tz: "Asia/Kolkata" },
+    "SYD": { city: "Sydney", tz: "Australia/Sydney" },
+    "MEL": { city: "Melbourne", tz: "Australia/Melbourne" },
+    "BNE": { city: "Brisbane", tz: "Australia/Brisbane" },
+    "AKL": { city: "Auckland", tz: "Pacific/Auckland" },
+
+    // Middle East
+    "DXB": { city: "Dubai", tz: "Asia/Dubai" },
+    "AUH": { city: "Abu Dhabi", tz: "Asia/Dubai" },
+    "DOH": { city: "Doha", tz: "Asia/Qatar" },
+    "RUH": { city: "Riyadh", tz: "Asia/Riyadh" },
+    "TLV": { city: "Tel Aviv", tz: "Asia/Jerusalem" },
+
+    // South America
+    "GRU": { city: "São Paulo", tz: "America/Sao_Paulo" },
+    "GIG": { city: "Rio de Janeiro", tz: "America/Sao_Paulo" },
+    "BOG": { city: "Bogota", tz: "America/Bogota" },
+    "LIM": { city: "Lima", tz: "America/Lima" },
+    "SCL": { city: "Santiago", tz: "America/Santiago" },
+    "EZE": { city: "Buenos Aires", tz: "America/Argentina/Buenos_Aires" },
+
+    // Africa
+    "JNB": { city: "Johannesburg", tz: "Africa/Johannesburg" },
+    "CPT": { city: "Cape Town", tz: "Africa/Johannesburg" },
+    "CAI": { city: "Cairo", tz: "Africa/Cairo" },
+    "LOS": { city: "Lagos", tz: "Africa/Lagos" },
+    "ADD": { city: "Addis Ababa", tz: "Africa/Addis_Ababa" }
+  },
+
+  init() {
+    if (this.initialized) return;
+    this.initialized = true;
+
+    this.setupModeSwitch();
+    this.setupEventListeners();
+    this.addSegment();
+    this.setupAirportAutocomplete();
+  },
+
+  setupAirportAutocomplete() {
+    // Create datalist
+    let datalist = document.getElementById('airport-codes');
+    if (!datalist) {
+      datalist = document.createElement('datalist');
+      datalist.id = 'airport-codes';
+      document.body.appendChild(datalist);
+    }
+    
+    // Populate datalist
+    datalist.innerHTML = Object.entries(this.airports).map(([code, data]) => 
+      `<option value="${code}">${data.city}</option>`
+    ).join('');
+  },
+
+  setupModeSwitch() {
+    const modeBtns = document.querySelectorAll('.app-mode-btn');
+    const sleepMode = document.getElementById('sleepCalcMode');
+    const napMode = document.getElementById('napMode');
+    const jetLagMode = document.getElementById('jetLagMode');
+    const caffeineMode = document.getElementById('caffeineMode');
+
+    if (!modeBtns.length) return;
+
+    modeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mode = btn.dataset.appMode;
+        
+        // Update tabs
+        modeBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Toggle Content
+        if (sleepMode) sleepMode.style.display = 'none';
+        if (napMode) napMode.style.display = 'none';
+        if (jetLagMode) jetLagMode.style.display = 'none';
+        if (caffeineMode) caffeineMode.style.display = 'none';
+
+        if (mode === 'calculator') {
+          if(sleepMode) sleepMode.style.display = 'block';
+        } else if (mode === 'nap') {
+          if(napMode) napMode.style.display = 'block';
+        } else if (mode === 'jetlag') {
+          if(jetLagMode) jetLagMode.style.display = 'block';
+        } else if (mode === 'caffeine') {
+          if(caffeineMode) caffeineMode.style.display = 'block';
+        }
+      });
+    });
+  },
+
+  setupEventListeners() {
+    const addSegBtn = document.getElementById('addSegmentBtn');
+    if (addSegBtn) addSegBtn.addEventListener('click', () => this.addSegment());
+    
+    const genBtn = document.getElementById('generateJetLagBtn');
+    if (genBtn) genBtn.addEventListener('click', () => this.generatePlan());
+    
+    const ticketBtn = document.getElementById('jetLagTicketBtn');
+    if (ticketBtn) ticketBtn.addEventListener('click', () => this.openTicketModal());
+    
+    const shareBtn = document.getElementById('jetLagShareBtn');
+    if (shareBtn) shareBtn.addEventListener('click', () => this.sharePlan());
+  },
+
+  addSegment() {
+    const list = document.getElementById('segmentList');
+    if (!list) return;
+    const div = document.createElement('div');
+    div.className = 'segment-card';
+    div.innerHTML = `
+      <div class="segment-header">
+        <span class="segment-number">Flight ${this.segments.length + 1}</span>
+        <button class="remove-segment" onclick="this.closest('.segment-card').remove()">×</button>
+      </div>
+      <div class="segment-inputs">
+        <div class="input-group">
+          <label>From (Airport Code)</label>
+          <input type="text" class="input-field airport-input" placeholder="e.g. JFK" maxlength="3" list="airport-codes" oninput="this.value = this.value.toUpperCase()">
+        </div>
+        <div class="input-group">
+          <label>To (Airport Code)</label>
+          <input type="text" class="input-field airport-input" placeholder="e.g. LHR" maxlength="3" list="airport-codes" oninput="this.value = this.value.toUpperCase()">
+        </div>
+        <div class="input-group">
+          <label>Departure (Local Time)</label>
+          <input type="datetime-local" class="input-field depart-time">
+        </div>
+        <div class="input-group">
+          <label>Arrival (Local Time)</label>
+          <input type="datetime-local" class="input-field arrive-time">
+        </div>
+      </div>
+    `;
+    list.appendChild(div);
+  },
+
+  generatePlan() {
+    // Collect Data
+    const cards = document.querySelectorAll('.segment-card');
+    this.segments = [];
+    
+    if (typeof luxon === 'undefined') {
+        alert('Timezone library loading...'); 
+        return;
+    }
+    const DateTime = luxon.DateTime;
+
+    let valid = true;
+
+    cards.forEach(card => {
+      const from = card.querySelector('.input-group:nth-child(1) input').value;
+      const to = card.querySelector('.input-group:nth-child(2) input').value;
+      const departStr = card.querySelector('.depart-time').value;
+      const arriveStr = card.querySelector('.arrive-time').value;
+
+      if (!from || !to || !departStr || !arriveStr) {
+        valid = false;
+        return;
+      }
+
+      if (!this.airports[from] || !this.airports[to]) {
+        alert(`Unknown airport code: ${!this.airports[from] ? from : to}. Try major hubs like JFK, LHR, LAX.`);
+        valid = false;
+        return;
+      }
+
+      // Create DateTime objects with Timezones
+      const departTime = DateTime.fromISO(departStr, { zone: this.airports[from].tz });
+      const arriveTime = DateTime.fromISO(arriveStr, { zone: this.airports[to].tz });
+
+      this.segments.push({
+        from, to, departTime, arriveTime
+      });
+    });
+
+    if (!valid) {
+        if (this.segments.length === 0) alert("Please fill in all flight details.");
+        return;
+    }
+
+    this.calculateSchedule();
+  },
+
+  calculateSchedule() {
+    const timeline = document.getElementById('jetLagTimeline');
+    timeline.innerHTML = '';
+    const results = document.getElementById('jetLagResults');
+    results.style.display = 'block';
+
+    const finalSegment = this.segments[this.segments.length - 1];
+    const destZone = finalSegment.arriveTime.zoneName;
+    
+    const canSleepOnPlane = document.querySelector('input[name="planeSleep"]:checked').value === 'yes';
+    const strategy = document.querySelector('input[name="strategy"]:checked').value;
+
+    this.segments.forEach((seg, index) => {
+      // Capture Origin Time string before converting
+      const originTimeStr = seg.departTime.toFormat('h:mm a');
+      
+      // 1. Departure Event
+      this.addTimelineItem(seg.departTime.setZone(destZone), 
+          `Depart ${seg.from}`, 
+          `Flight to ${seg.to} (Local time: ${originTimeStr})`, 
+          destZone);
+
+      // 2. In-flight sleep
+      const flightDuration = seg.arriveTime.diff(seg.departTime, 'minutes').minutes;
+      
+      if (canSleepOnPlane && flightDuration > 180) {
+         // Suggest sleep starting 1 hour after takeoff
+         const sleepStart = seg.departTime.plus({ minutes: 60 });
+         const sleepStartOriginStr = sleepStart.toFormat('h:mm a');
+
+         // Wake up 90 mins before landing
+         const sleepEnd = seg.arriveTime.minus({ minutes: 90 });
+         
+         if (sleepEnd > sleepStart) {
+            const duration = sleepEnd.diff(sleepStart, 'minutes').minutes;
+            const cycles = Math.floor(duration / 90);
+            
+            if (cycles > 0) {
+               this.addTimelineItem(sleepStart.setZone(destZone), 
+                 `Sleep on Plane (${cycles} cycles)`, 
+                 `~${Math.round(cycles * 1.5)} hours. Start at ${sleepStartOriginStr} (Origin time). Wear mask & earplugs.`, 
+                 destZone
+               );
+            }
+         }
+      }
+
+      // 3. Arrival
+      this.addTimelineItem(seg.arriveTime.setZone(destZone), `Arrive ${seg.to}`, `Land at local time ${seg.arriveTime.toFormat('h:mm a')}`, destZone);
+    });
+
+    // 4. First Night Sleep Calculation
+    const arrival = finalSegment.arriveTime;
+    let bedTime;
+
+    if (arrival.hour >= 0 && arrival.hour < 5) {
+       // Late night arrival (12am-5am): Sleep ASAP
+       bedTime = arrival.plus({ hours: 1.5 });
+    } else if (arrival.hour >= 5 && arrival.hour < 12) {
+       // Morning arrival (5am-12pm): Try to stay awake until early evening
+       bedTime = arrival.set({ hour: 20, minute: 30 }); // 8:30 PM
+       
+       // If "Nap Strategy" selected and exhausted (no plane sleep), suggest nap
+       if (strategy === 'naps' && !canSleepOnPlane) {
+           this.addTimelineItem(arrival.plus({ hours: 1 }).setZone(destZone), 
+               `Power Nap`, `20 minutes only to recharge without ruining tonight's sleep.`, destZone);
+           // Push bedtime slightly later since they napped
+           bedTime = bedTime.plus({ minutes: 30 });
+       }
+    } else if (arrival.hour >= 12 && arrival.hour < 17) {
+       // Afternoon arrival (12pm-5pm): Standard bedtime
+       bedTime = arrival.set({ hour: 22, minute: 0 }); // 10:00 PM
+       
+       // If exhausted, pull bedtime earlier
+       if (!canSleepOnPlane) {
+           bedTime = bedTime.minus({ hours: 1 }); // 9:00 PM
+       }
+    } else {
+       // Evening arrival (5pm-11:59pm): Wind down for ~3 hours
+       bedTime = arrival.plus({ hours: 3 });
+       
+       // If exhausted, shorten wind down
+       if (!canSleepOnPlane) {
+           bedTime = arrival.plus({ hours: 2 });
+       }
+
+       // But don't stay up past 2am if possible, and don't sleep before 10pm if arriving early evening
+       if (bedTime.hour >= 2 && bedTime.day !== arrival.day) {
+           bedTime = arrival.plus({ hours: 1.5 }); // Cap wind down if it pushes too late
+       }
+    }
+
+    // Ensure bedtime is in the future
+    if (bedTime < arrival) {
+        bedTime = bedTime.plus({ days: 1 });
+    }
+
+    this.addTimelineItem(
+      bedTime.setZone(destZone), 
+      `Goal Bedtime`, 
+      `Your target bedtime in ${this.airports[finalSegment.to].city} to reset your body clock. Try to stay awake until then! <br><br>👉 <strong>Tap "Jet Lag Ticket" below to save this goal.</strong>`, 
+      destZone,
+      true // isGoal flag
+    );
+    
+    // Scroll to results
+    results.scrollIntoView({ behavior: 'smooth' });
+    
+    // Store for ticket
+    this.currentPlan = {
+      destCity: this.airports[finalSegment.to].city,
+      bedTime: bedTime.toFormat('h:mm a'),
+      wakeTime: bedTime.plus({ hours: 7.5 }).toFormat('h:mm a'),
+      cycles: strategy === 'naps' ? "Nap Strategy" : "Cycle Strategy"
+    };
+  },
+
+  sharePlan() {
+    if (!this.currentPlan) return;
+    const text = `✈️ My Jet Lag Plan for ${this.currentPlan.destCity}:\n` +
+                 `Bedtime: ${this.currentPlan.bedTime}\n` +
+                 `Wake Up: ${this.currentPlan.wakeTime}\n` +
+                 `Strategy: ${this.currentPlan.cycles}\n` +
+                 `\nGenerate yours at nightowlsleepcalc.com`;
+    
+    if (navigator.share) {
+      navigator.share({ title: 'Jet Lag Plan', text: text, url: 'https://nightowlsleepcalc.com' }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('jetLagShareBtn');
+        const originalText = btn.innerHTML;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.innerHTML = originalText, 2000);
+      });
+    }
+  },
+
+  addTimelineItem(timeObj, title, desc, zone, isGoal = false) {
+    const timeline = document.getElementById('jetLagTimeline');
+    const div = document.createElement('div');
+    div.className = `timeline-block ${isGoal ? 'goal-block' : ''}`;
+    div.innerHTML = `
+      <div class="timeline-dot"></div>
+      <div class="timeline-time">${timeObj.toFormat('MMM dd, h:mm a')} (${timeObj.zoneName.split('/')[1]})</div>
+      <div class="timeline-title">${title} ${isGoal ? '🏁' : ''}</div>
+      <div class="timeline-desc">${desc}</div>
+    `;
+    timeline.appendChild(div);
+  },
+
+  openTicketModal() {
+    if (!this.currentPlan) return;
+    
+    // Set flag on sleepTicket so regeneration works
+    sleepTicket.isJetLag = true;
+    
+    const ticketModal = document.getElementById('ticketModal');
+    const ticketBg = document.getElementById('ticketBg');
+    const ticketIcon = document.getElementById('ticketIcon');
+    const ticketPersonalityName = document.getElementById('ticketPersonalityName');
+    const ticketQuote = document.getElementById('ticketQuote');
+    const ticketBedtime = document.getElementById('ticketBedtime');
+    const ticketWakeTime = document.getElementById('ticketWakeTime');
+    const ticketCycles = document.getElementById('ticketCycles');
+    const ticketSubtitle = document.getElementById('ticketSubtitle');
+
+    const ticketBedtimeLabel = document.getElementById('ticketBedtimeLabel');
+
+    // Reuse existing modal but modify content
+    ticketModal.style.display = 'flex';
+
+    // Update subtitle for jet lag mode
+    if (ticketSubtitle) ticketSubtitle.textContent = "Share your jet lag ticket on Instagram Stories";
+    
+    // Set Ticket Content
+    ticketBg.className = 'ticket-bg bg-gradient-3'; 
+    ticketIcon.src = '/attached_assets/generated_images/cute_3d_pilot_owl_icon.png';
+    // Use innerHTML to allow styling "Jet Lag" and City separately
+    ticketPersonalityName.innerHTML = `<div class="ticket-header-small">Jet Lag</div><div class="ticket-dest-large">${this.currentPlan.destCity}</div>`;
+    ticketQuote.textContent = sleepTicket.getRandomQuote();
+    
+    // Explicitly set the label to GOAL BEDTIME for clarity
+    if (ticketBedtimeLabel) ticketBedtimeLabel.textContent = "GOAL BEDTIME";
+    
+    ticketBedtime.textContent = this.currentPlan.bedTime;
+    ticketWakeTime.textContent = this.currentPlan.wakeTime;
+    ticketCycles.textContent = this.currentPlan.cycles || "Sync Strategy";
   }
 };
 
@@ -1585,34 +2035,54 @@ const caffeineCalc = {
   calculate() {
     const bedtimeInput = document.getElementById('caffeineBedtime').value;
     const mg = parseInt(document.getElementById('caffeineSource').value);
+    
+    // Get beverage name for label
     const sourceSelect = document.getElementById('caffeineSource');
     const selectedText = sourceSelect.options[sourceSelect.selectedIndex].text;
-    const beverageName = selectedText.split(' (')[0];
+    const beverageName = selectedText.split(' (')[0]; // "Coffee", "Black Tea", etc.
     
     if (!bedtimeInput) return;
 
+    // Convert bedtime to minutes from midnight
     const [h, m] = bedtimeInput.split(':').map(Number);
     let bedtimeMins = h * 60 + m;
-    const halfLife = 5;
-    const targetMg = 20;
+    
+    // Caffeine Half-life logic
+    // We want < 25mg remaining at bedtime to sleep well (arbitrary but safe threshold)
+    // Formula: Final = Initial * (1/2)^(time/halfLife)
+    // We need to solve for 'time': time = halfLife * log2(Initial/Final)
+    
+    const halfLife = 5; // hours
+    const targetMg = 20; // safe threshold
+    
+    // How many half-lives to get to target?
+    // time = 5 * Math.log2(mg / 20)
+    
     const hoursNeeded = halfLife * Math.log2(mg / targetMg);
     const minsNeeded = hoursNeeded * 60;
     
+    // If bedtime is 11pm (23:00), and we need 10 hours buffer
+    // Cutoff = Bedtime - minsNeeded
+    
     let cutoffMins = bedtimeMins - minsNeeded;
-    if (cutoffMins < 0) cutoffMins += 24 * 60;
+    if (cutoffMins < 0) cutoffMins += 24 * 60; // Handle previous day wrapping
     
     const cutoffDate = new Date();
     cutoffDate.setHours(Math.floor(cutoffMins / 60));
     cutoffDate.setMinutes(Math.floor(cutoffMins % 60));
     
     const formatter = new Intl.DateTimeFormat([], { hour: 'numeric', minute: '2-digit' });
+    
     const resultEl = document.getElementById('caffeineResults');
     const timeEl = document.getElementById('caffeineCutoffTime');
+    const leftEl = document.getElementById('caffeineLeft');
     const labelEl = document.getElementById('caffeineResultLabel');
     
     if (resultEl && timeEl) {
       timeEl.textContent = formatter.format(cutoffDate);
+      if(leftEl) leftEl.textContent = `less than ${targetMg}mg`;
       if(labelEl) labelEl.textContent = `Latest ${beverageName} Time`;
+      
       resultEl.style.display = 'block';
       resultEl.classList.add('glow');
       setTimeout(() => resultEl.classList.remove('glow'), 600);
@@ -1622,10 +2092,26 @@ const caffeineCalc = {
 
 document.addEventListener('DOMContentLoaded', () => {
   try {
-    app.init();
-    sleepTicket.init();
-    caffeineCalc.init();
+    if (typeof sleepTicket !== 'undefined') sleepTicket.init();
   } catch (e) {
-    console.error("Init error:", e);
+    console.error("Error init sleepTicket", e);
+  }
+
+  try {
+    if (typeof jetLagPlanner !== 'undefined') jetLagPlanner.init();
+  } catch (e) {
+    console.error("Error init jetLagPlanner", e);
+  }
+
+  try {
+    if (typeof caffeineCalc !== 'undefined') caffeineCalc.init();
+  } catch (e) {
+    console.error("Error init caffeineCalc", e);
+  }
+
+  try {
+    if (typeof app !== 'undefined') app.init();
+  } catch (e) {
+    console.error("Error init app", e);
   }
 });
