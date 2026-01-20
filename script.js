@@ -1763,11 +1763,16 @@ const jetLagPlanner = {
       overlay.style.display = 'flex';
       video.play().catch(err => console.log("Video play failed:", err));
       
-      // Attempt to fix audio loop gap in some browsers
-      video.onended = () => {
-        video.currentTime = 0;
-        video.play();
+      // Smooth loop logic: Crossfade audio by overlapping start and end
+      // Since we can't easily crossfade a single element, we use timeupdate
+      const loopBuffer = 0.5; // seconds to overlap
+      this._videoLoopHandler = () => {
+        if (video.currentTime > video.duration - loopBuffer) {
+          video.currentTime = 0;
+          video.play();
+        }
       };
+      video.addEventListener('timeupdate', this._videoLoopHandler);
 
       if (overlay.requestFullscreen) {
         overlay.requestFullscreen();
@@ -1775,7 +1780,9 @@ const jetLagPlanner = {
     } else {
       overlay.style.display = 'none';
       video.pause();
-      video.onended = null;
+      if (this._videoLoopHandler) {
+        video.removeEventListener('timeupdate', this._videoLoopHandler);
+      }
       if (document.fullscreenElement) {
         document.exitFullscreen();
       }
