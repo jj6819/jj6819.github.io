@@ -1763,16 +1763,11 @@ const jetLagPlanner = {
       overlay.style.display = 'flex';
       video.play().catch(err => console.log("Video play failed:", err));
       
-      // Smooth loop logic: Crossfade audio by overlapping start and end
-      // Since we can't easily crossfade a single element, we use timeupdate
-      const loopBuffer = 0.3; // seconds to overlap
-      this._videoLoopHandler = () => {
-        if (video.currentTime > video.duration - loopBuffer) {
-          video.currentTime = 0;
-          video.play();
-        }
-      };
-      video.addEventListener('timeupdate', this._videoLoopHandler);
+      // We use the 'loop' attribute for perfect visual frame-locking.
+      // Modern browsers handle the audio gap much better when 'loop' is true
+      // and it ensures the stars don't jump.
+      video.loop = true;
+      video.currentTime = 0; // Reset to start when opening
 
       if (overlay.requestFullscreen) {
         overlay.requestFullscreen();
@@ -1780,9 +1775,7 @@ const jetLagPlanner = {
     } else {
       overlay.style.display = 'none';
       video.pause();
-      if (this._videoLoopHandler) {
-        video.removeEventListener('timeupdate', this._videoLoopHandler);
-      }
+      video.loop = false;
       if (document.fullscreenElement) {
         document.exitFullscreen();
       }
