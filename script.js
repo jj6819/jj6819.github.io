@@ -1762,12 +1762,20 @@ const jetLagPlanner = {
     if (show) {
       overlay.style.display = 'flex';
       video.play().catch(err => console.log("Video play failed:", err));
+      
+      // Attempt to fix audio loop gap in some browsers
+      video.onended = () => {
+        video.currentTime = 0;
+        video.play();
+      };
+
       if (overlay.requestFullscreen) {
         overlay.requestFullscreen();
       }
     } else {
       overlay.style.display = 'none';
       video.pause();
+      video.onended = null;
       if (document.fullscreenElement) {
         document.exitFullscreen();
       }
