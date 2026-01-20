@@ -1771,13 +1771,13 @@ const jetLagPlanner = {
         <div class="input-group">
           <label>From (Airport Code)</label>
           <div class="airport-input-wrapper">
-            <input type="text" class="input-field airport-input" placeholder="e.g. JFK" maxlength="3" list="airport-codes" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="input-field airport-input" placeholder="e.g. JFK" maxlength="3" list="airport-codes" oninput="this.value = this.value.toUpperCase()" onclick="this.setSelectionRange(0, this.value.length)">
           </div>
         </div>
         <div class="input-group">
           <label>To (Airport Code)</label>
           <div class="airport-input-wrapper">
-            <input type="text" class="input-field airport-input" placeholder="e.g. LHR" maxlength="3" list="airport-codes" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" class="input-field airport-input" placeholder="e.g. LHR" maxlength="3" list="airport-codes" oninput="this.value = this.value.toUpperCase()" onclick="this.setSelectionRange(0, this.value.length)">
           </div>
         </div>
         <div class="input-group">
