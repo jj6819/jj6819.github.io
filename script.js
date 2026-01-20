@@ -1765,7 +1765,7 @@ const jetLagPlanner = {
       
       // Smooth loop logic: Crossfade audio by overlapping start and end
       // Since we can't easily crossfade a single element, we use timeupdate
-      const loopBuffer = 0.1; // seconds to overlap
+      const loopBuffer = 0.2; // seconds to overlap
       this._videoLoopHandler = () => {
         if (video.currentTime > video.duration - loopBuffer) {
           video.currentTime = 0;
