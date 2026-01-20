@@ -1761,25 +1761,38 @@ const jetLagPlanner = {
 
     if (show) {
       overlay.style.display = 'flex';
-      video.play().catch(err => console.log("Video play failed:", err));
       
-      // Advanced Seamless Loop Strategy:
-      // We use a small overlap (0.3s) to jump back to start before the video ends.
-      // This bypasses the hardware/browser 'tick' and visual 'snap' at the absolute end.
+      // Ensure video is muted for autoplay compatibility on mobile
+      video.muted = false; 
+      
+      const startVideo = () => {
+        video.play().catch(err => {
+          console.log("Video play failed, trying muted:", err);
+          video.muted = true;
+          video.play();
+        });
+      };
+
+      startVideo();
+      
       const loopOverlap = 0.3;
       this._videoLoopHandler = () => {
         if (video.currentTime > video.duration - loopOverlap) {
           video.currentTime = 0;
-          // No need to call play() again if it's already playing, 
-          // but setting currentTime keeps the engine moving smoothly.
         }
       };
       video.addEventListener('timeupdate', this._videoLoopHandler);
-      video.loop = false; // Disable native loop to use our custom logic
+      video.loop = false;
       video.currentTime = 0;
 
+      // Handle Fullscreen for mobile
       if (overlay.requestFullscreen) {
         overlay.requestFullscreen();
+      } else if (overlay.webkitRequestFullscreen) {
+        overlay.webkitRequestFullscreen();
+      } else if (video.webkitEnterFullscreen) {
+        // iOS Safari special handling
+        video.webkitEnterFullscreen();
       }
     } else {
       overlay.style.display = 'none';
@@ -1788,8 +1801,9 @@ const jetLagPlanner = {
         video.removeEventListener('timeupdate', this._videoLoopHandler);
         this._videoLoopHandler = null;
       }
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
+      if (document.fullscreenElement || document.webkitFullscreenElement) {
+        const exit = document.exitFullscreen || document.webkitExitFullscreen;
+        if (exit) exit.call(document);
       }
     }
   },
