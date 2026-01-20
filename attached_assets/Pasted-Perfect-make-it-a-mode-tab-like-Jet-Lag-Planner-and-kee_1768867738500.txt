@@ -1,0 +1,257 @@
+Perfect — make it a **mode tab** (like Jet Lag Planner), and keep it **pure visual** (no “tap to exit” text, no UI inside the scene). The key difference vs an overlay is: **start the animation only when the tab is active, stop it when you switch away** (so you don’t burn CPU in the background).
+
+Below is a drop-in plan + code you can adapt to your existing tab system.
+
+---
+
+## 1) Add a new tab + section
+
+Add a new tab button alongside your existing ones:
+
+```html
+<button class="mode-tab" data-mode="sleep">Sleep Calculator</button>
+<button class="mode-tab" data-mode="jetlag">Jet Lag Planner</button>
+<button class="mode-tab" data-mode="caffeine">Caffeine Cutoff</button>
+<button class="mode-tab" data-mode="sleepscreen">Sleep Screen</button>
+```
+
+Add a matching section container:
+
+```html
+<section class="mode-panel" id="mode-sleepscreen" data-mode="sleepscreen" hidden>
+  <div id="sleepScreenTab">
+    <div class="sleep-bg"></div>
+    <canvas id="sleepStars"></canvas>
+    <div class="sleep-orb" aria-hidden="true"></div>
+    <div class="sleep-vignette" aria-hidden="true"></div>
+  </div>
+</section>
+```
+
+---
+
+## 2) CSS for the Sleep Screen tab (pure visual, fullscreen)
+
+This makes the tab fill the viewport (adjust `--headerH` to your layout):
+
+```css
+/* Sleep Screen tab container */
+#sleepScreenTab {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - var(--headerH, 72px));
+  background: #05070f;
+  overflow: hidden;
+  border-radius: 16px; /* optional; remove if you want true edge-to-edge */
+}
+
+/* Background */
+#sleepScreenTab .sleep-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1200px 800px at 20% 20%, rgba(30, 55, 90, 0.20), transparent 60%),
+    radial-gradient(900px 700px at 80% 40%, rgba(50, 25, 70, 0.16), transparent 65%),
+    linear-gradient(180deg, #050712 0%, #02030a 60%, #010109 100%);
+}
+
+/* Vignette */
+#sleepScreenTab .sleep-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 35%, rgba(0,0,0,0.55) 75%, rgba(0,0,0,0.85) 100%);
+  pointer-events: none;
+}
+
+/* Stars canvas */
+#sleepStars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.25;
+}
+
+/* Breathing orb */
+#sleepScreenTab .sleep-orb {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(360px, 60vmin);
+  height: min(360px, 60vmin);
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(170, 210, 255, 0.22), transparent 45%),
+    radial-gradient(circle at 55% 60%, rgba(170, 120, 255, 0.14), transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(110, 190, 255, 0.10), rgba(20, 40, 80, 0.02) 55%, transparent 70%);
+  box-shadow:
+    0 0 50px rgba(120, 190, 255, 0.10),
+    0 0 120px rgba(160, 120, 255, 0.08);
+  opacity: 0.85;
+  animation: sleepBreath 12s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes sleepBreath {
+  0%   { transform: translate(-50%, -50%) scale(0.92); opacity: 0.78; }
+  40%  { transform: translate(-50%, -50%) scale(1.00); opacity: 0.86; }
+  55%  { transform: translate(-50%, -50%) scale(1.03); opacity: 0.88; }
+  100% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.78; }
+}
+
+/* Optional subtle grain */
+#sleepScreenTab::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  #sleepStars { display: none; }
+  #sleepScreenTab .sleep-orb { animation: none; }
+}
+```
+
+---
+
+## 3) JS: start/stop animation when the tab is active
+
+This is the crucial part for a “mode” implementation: don’t animate when the user isn’t on the Sleep Screen tab.
+
+```html
+<script>
+(() => {
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const tabRoot = document.getElementById("sleepScreenTab");
+  const canvas = document.getElementById("sleepStars");
+  const ctx = canvas.getContext("2d", { alpha: true });
+
+  let running = false;
+  let rafId = null;
+  let stars = [];
+  let lastTs = 0;
+
+  function resizeCanvas() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(tabRoot.clientWidth * dpr);
+    canvas.height = Math.floor(tabRoot.clientHeight * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function initStars() {
+    stars = [];
+    const w = tabRoot.clientWidth;
+    const h = tabRoot.clientHeight;
+    const count = Math.round(Math.min(140, (w * h) / 16000));
+
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 1.2 + 0.2,
+        a: Math.random() * 0.35 + 0.05,
+        vx: (Math.random() * 0.12 + 0.02) * (Math.random() < 0.5 ? -1 : 1),
+        vy: (Math.random() * 0.08 + 0.01),
+        tw: Math.random() * 0.6 + 0.2,
+        ph: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function draw(ts) {
+    if (!running) return;
+
+    const w = tabRoot.clientWidth;
+    const h = tabRoot.clientHeight;
+    const dt = Math.min(0.05, (ts - lastTs) / 1000 || 0.016);
+    lastTs = ts;
+
+    ctx.clearRect(0, 0, w, h);
+
+    for (const s of stars) {
+      s.x += s.vx * (dt * 60);
+      s.y += s.vy * (dt * 60);
+
+      if (s.x < -5) s.x = w + 5;
+      if (s.x > w + 5) s.x = -5;
+      if (s.y > h + 5) s.y = -5;
+
+      const twinkle = 0.65 + 0.35 * Math.sin(ts * 0.0005 * s.tw + s.ph);
+      const alpha = s.a * twinkle;
+
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(210, 230, 255, ${alpha.toFixed(3)})`;
+      ctx.fill();
+    }
+
+    rafId = requestAnimationFrame(draw);
+  }
+
+  function startSleepScreen() {
+    if (running || prefersReducedMotion) return;
+    resizeCanvas();
+    initStars();
+    running = true;
+    lastTs = performance.now();
+    rafId = requestAnimationFrame(draw);
+  }
+
+  function stopSleepScreen() {
+    running = false;
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = null;
+  }
+
+  // Hook into your tab switching:
+  // Call window.NightOwlSleepScreenTab.onModeChange(activeMode)
+  window.NightOwlSleepScreenTab = {
+    onModeChange(activeMode) {
+      if (activeMode === "sleepscreen") startSleepScreen();
+      else stopSleepScreen();
+    }
+  };
+
+  window.addEventListener("resize", () => {
+    if (!running || prefersReducedMotion) return;
+    resizeCanvas();
+    initStars();
+  });
+})();
+</script>
+```
+
+---
+
+## 4) Tie it into your existing mode/tab switcher
+
+Wherever you handle tab switching now, add one line after setting the active mode:
+
+```js
+function setMode(mode) {
+  // your existing logic that shows/hides panels
+  // ...
+
+  // start/stop sleep screen rendering
+  if (window.NightOwlSleepScreenTab) {
+    window.NightOwlSleepScreenTab.onModeChange(mode);
+  }
+}
+```
+
+That’s it.
+
+---
+
+## 5) Small UX polish (optional but recommended)
+
+* When Sleep Screen is active, consider **hiding other page controls** (or at least scrolling) so it feels calm.
+* Keep the animation slow (12–16s breath cycle). If you want it even more sedating, bump `sleepBreath` to **16s**.
+
+If you paste your existing tab switch code (the `setMode` function or whatever you call it), I’ll show you the exact minimal edit so it plugs in cleanly with your current DOM structure.
