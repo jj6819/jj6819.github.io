@@ -169,7 +169,7 @@
       <button class="app-mode-btn" data-app-mode="nap">Nap Calculator</button>
       <button class="app-mode-btn" data-app-mode="jetlag">Jet Lag Planner</button>
       <button class="app-mode-btn" data-app-mode="caffeine">Caffeine Cutoff</button>
-      <button class="app-mode-btn" data-app-mode="sleepscreen">Sleep Screen</button>
+      <button class="app-mode-btn" data-app-mode="sleepscreen" data-testid="button-app-mode-sleepscreen">Sleep Screen</button>
     </div>
 
     <div id="sleepCalcMode">
@@ -540,8 +540,22 @@
             <p><strong>Why?</strong> Caffeine has a half-life of about 5 hours. If you drink it later, it blocks your adenosine receptors, making it harder to fall into deep sleep.</p>
           </div>
         </div>
+      </div>
+    </div>
 
-        <div class="learn-more-block">
+    <!-- Sleep Screen Mode -->
+    <div id="sleepScreenMode" style="display: none;" data-testid="container-sleep-screen">
+      <div class="main-content" style="padding: 0; overflow: hidden; border-radius: 16px;">
+        <div id="sleepScreenTab">
+          <div class="sleep-bg"></div>
+          <canvas id="sleepStars"></canvas>
+          <div class="sleep-orb" aria-hidden="true"></div>
+          <div class="sleep-vignette" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learn-more-block">
           <h3>The science of caffeine & sleep</h3>
           <p>Learn exactly how caffeine half-life works and why your afternoon coffee might be sabotaging your deep sleep.</p>
           <a href="/caffeine-calculator/" class="learn-more-btn">Read the Caffeine Guide →</a>

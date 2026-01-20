@@ -27,6 +27,7 @@ const app = {
     this.updateMemeUI();
     this.calculate();
     
+    this.initSleepScreen();
     const yearEl = document.getElementById('year');
     if (yearEl) yearEl.textContent = new Date().getFullYear();
     
@@ -243,6 +244,98 @@ const app = {
         document.querySelectorAll('.nap-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
       });
+    });
+  },
+
+  initSleepScreen() {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const tabRoot = document.getElementById("sleepScreenTab");
+    const canvas = document.getElementById("sleepStars");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d", { alpha: true });
+
+    let running = false;
+    let rafId = null;
+    let stars = [];
+    let lastTs = 0;
+
+    function resizeCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(tabRoot.clientWidth * dpr);
+      canvas.height = Math.floor(tabRoot.clientHeight * dpr);
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function initStars() {
+      stars = [];
+      const w = tabRoot.clientWidth;
+      const h = tabRoot.clientHeight;
+      const count = Math.round(Math.min(140, (w * h) / 16000));
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.2 + 0.2,
+          a: Math.random() * 0.35 + 0.05,
+          vx: (Math.random() * 0.12 + 0.02) * (Math.random() < 0.5 ? -1 : 1),
+          vy: (Math.random() * 0.08 + 0.01),
+          tw: Math.random() * 0.6 + 0.2,
+          ph: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function draw(ts) {
+      if (!running) return;
+      const w = tabRoot.clientWidth;
+      const h = tabRoot.clientHeight;
+      const dt = Math.min(0.05, (ts - lastTs) / 1000 || 0.016);
+      lastTs = ts;
+      ctx.clearRect(0, 0, w, h);
+      for (const s of stars) {
+        s.x += s.vx * (dt * 60);
+        s.y += s.vy * (dt * 60);
+        if (s.x < -5) s.x = w + 5;
+        if (s.x > w + 5) s.x = -5;
+        if (s.y > h + 5) s.y = -5;
+        const twinkle = 0.65 + 0.35 * Math.sin(ts * 0.0005 * s.tw + s.ph);
+        const alpha = s.a * twinkle;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(210, 230, 255, ${alpha.toFixed(3)})`;
+        ctx.fill();
+      }
+      rafId = requestAnimationFrame(draw);
+    }
+
+    function startSleepScreen() {
+      if (running || prefersReducedMotion) return;
+      resizeCanvas();
+      initStars();
+      running = true;
+      lastTs = performance.now();
+      rafId = requestAnimationFrame(draw);
+    }
+
+    function stopSleepScreen() {
+      running = false;
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+
+    window.NightOwlSleepScreenTab = {
+      onModeChange(activeMode) {
+        if (activeMode === "sleepscreen") startSleepScreen();
+        else stopSleepScreen();
+      }
+    };
+
+    window.addEventListener("resize", () => {
+      if (!running || prefersReducedMotion) return;
+      resizeCanvas();
+      initStars();
     });
   },
 
@@ -1712,6 +1805,7 @@ const jetLagPlanner = {
     const napMode = document.getElementById('napMode');
     const jetLagMode = document.getElementById('jetLagMode');
     const caffeineMode = document.getElementById('caffeineMode');
+    const sleepScreenMode = document.getElementById('sleepScreenMode');
 
     if (!modeBtns.length) return;
 
@@ -1728,6 +1822,7 @@ const jetLagPlanner = {
         if (napMode) napMode.style.display = 'none';
         if (jetLagMode) jetLagMode.style.display = 'none';
         if (caffeineMode) caffeineMode.style.display = 'none';
+        if (sleepScreenMode) sleepScreenMode.style.display = 'none';
 
         if (mode === 'calculator') {
           if(sleepMode) sleepMode.style.display = 'block';
@@ -1737,6 +1832,13 @@ const jetLagPlanner = {
           if(jetLagMode) jetLagMode.style.display = 'block';
         } else if (mode === 'caffeine') {
           if(caffeineMode) caffeineMode.style.display = 'block';
+        } else if (mode === 'sleepscreen') {
+          if(sleepScreenMode) sleepScreenMode.style.display = 'block';
+        }
+
+        // start/stop sleep screen rendering
+        if (window.NightOwlSleepScreenTab) {
+          window.NightOwlSleepScreenTab.onModeChange(mode);
         }
       });
     });
