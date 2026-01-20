@@ -259,10 +259,14 @@ const app = {
     let stars = [];
     let lastTs = 0;
 
+    let w = 0, h = 0;
     function resizeCanvas() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.floor(tabRoot.clientWidth * dpr);
-      canvas.height = Math.floor(tabRoot.clientHeight * dpr);
+      w = tabRoot.offsetWidth || tabRoot.clientWidth || 800;
+      h = tabRoot.offsetHeight || tabRoot.clientHeight || 600;
+      
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
       canvas.style.width = "100%";
       canvas.style.height = "100%";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -270,8 +274,6 @@ const app = {
 
     function initStars() {
       stars = [];
-      const w = tabRoot.clientWidth;
-      const h = tabRoot.clientHeight;
       const count = Math.round(Math.min(140, (w * h) / 16000));
       for (let i = 0; i < count; i++) {
         stars.push({
@@ -288,9 +290,7 @@ const app = {
     }
 
     function draw(ts) {
-      if (!running) return;
-      const w = tabRoot.clientWidth;
-      const h = tabRoot.clientHeight;
+      if (!running || w === 0) return;
       const dt = Math.min(0.05, (ts - lastTs) / 1000 || 0.016);
       lastTs = ts;
       ctx.clearRect(0, 0, w, h);
@@ -317,6 +317,7 @@ const app = {
       running = true;
       lastTs = performance.now();
       rafId = requestAnimationFrame(draw);
+      console.log("Sleep Screen Started: ", {w, h, running});
     }
 
     function stopSleepScreen() {
@@ -327,8 +328,12 @@ const app = {
 
     window.NightOwlSleepScreenTab = {
       onModeChange(activeMode) {
-        if (activeMode === "sleepscreen") startSleepScreen();
-        else stopSleepScreen();
+        if (activeMode === "sleepscreen") {
+          // Small delay to ensure the container is visible for canvas sizing
+          setTimeout(() => startSleepScreen(), 150);
+        } else {
+          stopSleepScreen();
+        }
       }
     };
 
