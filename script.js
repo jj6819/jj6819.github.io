@@ -293,7 +293,11 @@ const app = {
       if (!running || w === 0) return;
       const dt = Math.min(0.05, (ts - lastTs) / 1000 || 0.016);
       lastTs = ts;
-      ctx.clearRect(0, 0, w, h);
+      
+      // Clear with background color to ensure visibility
+      ctx.fillStyle = "#05070f";
+      ctx.fillRect(0, 0, w, h);
+      
       for (const s of stars) {
         s.x += s.vx * (dt * 60);
         s.y += s.vy * (dt * 60);

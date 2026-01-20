@@ -1385,28 +1385,30 @@ footer {
 #sleepScreenTab {
   position: relative;
   width: 100%;
-  height: 600px; /* Immersive height for the breathing orb */
-  background: #05070f;
+  height: 600px;
+  background: #05070f !important;
   overflow: hidden;
   border-radius: 16px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Background */
 #sleepScreenTab .sleep-bg {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(1200px 800px at 20% 20%, rgba(30, 55, 90, 0.20), transparent 60%),
-    radial-gradient(900px 700px at 80% 40%, rgba(50, 25, 70, 0.16), transparent 65%),
-    linear-gradient(180deg, #050712 0%, #02030a 60%, #010109 100%);
+  background: radial-gradient(circle at center, #1e1b4b 0%, #05070f 100%) !important;
+  z-index: 0;
 }
 
 /* Vignette */
 #sleepScreenTab .sleep-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, transparent 35%, rgba(0,0,0,0.55) 75%, rgba(0,0,0,0.85) 100%);
+  background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.8) 100%) !important;
   pointer-events: none;
+  z-index: 10;
 }
 
 /* Stars canvas */
@@ -1415,35 +1417,37 @@ footer {
   inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.25;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 1 !important;
+  display: block !important;
 }
 
 /* Breathing orb */
 #sleepScreenTab .sleep-orb {
   position: absolute;
-  left: 50%;
-  top: 50%;
   width: min(360px, 60vmin);
   height: min(360px, 60vmin);
-  transform: translate(-50%, -50%);
   border-radius: 999px;
   background:
-    radial-gradient(circle at 35% 30%, rgba(170, 210, 255, 0.22), transparent 45%),
-    radial-gradient(circle at 55% 60%, rgba(170, 120, 255, 0.14), transparent 55%),
-    radial-gradient(circle at 50% 50%, rgba(110, 190, 255, 0.10), rgba(20, 40, 80, 0.02) 55%, transparent 70%);
+    radial-gradient(circle at 35% 30%, rgba(170, 210, 255, 0.4), transparent 45%),
+    radial-gradient(circle at 55% 60%, rgba(168, 85, 247, 0.3), transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.2), rgba(20, 40, 80, 0.05) 55%, transparent 70%);
   box-shadow:
-    0 0 50px rgba(120, 190, 255, 0.10),
-    0 0 120px rgba(160, 120, 255, 0.08);
-  opacity: 0.85;
-  animation: sleepBreath 12s ease-in-out infinite;
+    0 0 60px rgba(120, 190, 255, 0.2),
+    0 0 140px rgba(160, 120, 255, 0.15);
+  opacity: 1 !important;
+  animation: sleepBreath 8s ease-in-out infinite !important;
   will-change: transform, opacity;
+  z-index: 5;
+  pointer-events: none;
+  display: block !important;
 }
 
 @keyframes sleepBreath {
-  0%   { transform: translate(-50%, -50%) scale(0.92); opacity: 0.78; }
-  40%  { transform: translate(-50%, -50%) scale(1.00); opacity: 0.86; }
-  55%  { transform: translate(-50%, -50%) scale(1.03); opacity: 0.88; }
-  100% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.78; }
+  0%   { transform: scale(0.9); opacity: 0.7; }
+  50%  { transform: scale(1.1); opacity: 0.9; }
+  100% { transform: scale(0.9); opacity: 0.7; }
 }
 
 /* Optional subtle grain */
@@ -1452,48 +1456,9 @@ footer {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.06;
+  opacity: 0.1;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-}
-
-#sleepStars {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
-
-#sleepScreenTab .sleep-orb {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(360px, 60vmin);
-  height: min(360px, 60vmin);
-  transform: translate(-50%, -50%);
-  border-radius: 999px;
-  background:
-    radial-gradient(circle at 35% 30%, rgba(170, 210, 255, 0.22), transparent 45%),
-    radial-gradient(circle at 55% 60%, rgba(170, 120, 255, 0.14), transparent 55%),
-    radial-gradient(circle at 50% 50%, rgba(110, 190, 255, 0.10), rgba(20, 40, 80, 0.02) 55%, transparent 70%);
-  box-shadow:
-    0 0 50px rgba(120, 190, 255, 0.10),
-    0 0 120px rgba(160, 120, 255, 0.08);
-  opacity: 0.85;
-  animation: sleepBreath 12s ease-in-out infinite;
-  will-change: transform, opacity;
-  z-index: 2;
-  pointer-events: none;
-}
-
-#sleepScreenTab .sleep-vignette {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle, transparent 20%, rgba(5, 7, 15, 0.4) 100%);
-  pointer-events: none;
-  z-index: 3;
+  z-index: 15;
 }
 
 /* Reduced motion support */
