@@ -986,10 +986,6 @@ input[type="range"] {
     object-fit: cover;
   }
   
-  .sleep-screen-hint {
-    font-size: 16px;
-    bottom: 40px;
-  }
 }
 
 /* Meme Mode Unique Toggle */
@@ -2575,24 +2571,6 @@ ol.article-list li::before {
   object-fit: cover;
 }
 
-.sleep-screen-hint {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 14px;
-  font-family: 'DM Sans', sans-serif;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  pointer-events: none;
-  animation: fadeInOut 3s infinite;
-}
-
-@keyframes fadeInOut {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 0.6; }
-}
 
 /* ========== FOOTER LINKS ========== */
 .footer-links {
