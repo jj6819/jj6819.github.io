@@ -2743,19 +2743,20 @@ ol.article-list li::before {
   background: transparent;
   color: #94a3b8;
   border: none;
-  padding: 12px 20px;
+  padding: 10px 12px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   border-radius: 12px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex: 1;
-  min-width: 140px;
+  min-width: 110px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  line-height: 1.2;
 }
 
 .app-mode-btn.active {
