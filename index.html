@@ -40,8 +40,25 @@
         "@id": "#website",
         "url": "https://nightowlsleepcalc.com/",
         "name": "NightOwl Sleep Calc",
+        "alternateName": "NightOwl",
         "description": "NightOwl helps you calculate the best bedtime, wake time, nap, caffeine cutoff, and jet lag plan with sleep cycles, wake windows, and sleep latency settings.",
-        "inLanguage": "en"
+        "inLanguage": "en",
+        "publisher": {
+          "@id": "#org"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "#org",
+        "name": "NightOwl Sleep Calc",
+        "url": "https://nightowlsleepcalc.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://nightowlsleepcalc.com/attached_assets/NightOwl_logo2_1768776420360.png"
+        },
+        "sameAs": [
+          "https://nightowlsleepcalc.com/"
+        ]
       },
       {
         "@type": "WebApplication",
@@ -59,10 +76,17 @@
           "priceCurrency": "USD"
         },
         "publisher": {
-          "@type": "Organization",
-          "name": "NightOwl Sleep Calc",
-          "url": "https://nightowlsleepcalc.com/"
-        }
+          "@id": "#org"
+        },
+        "about": [
+          "Sleep cycles",
+          "Bedtime calculator",
+          "Wake time calculator",
+          "Nap calculator",
+          "Caffeine cutoff",
+          "Jet lag planner"
+        ],
+        "keywords": "sleep calculator, bedtime calculator, wake time calculator, nap calculator, caffeine cutoff, jet lag planner, sleep cycles, wake window"
       },
       {
         "@type": "FAQPage",
